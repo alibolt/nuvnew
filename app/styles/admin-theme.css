@@ -1,0 +1,4361 @@
+/* 
+ * Nuvi Admin Panel Central Theme
+ * This file contains all styling for admin panels across the platform
+ */
+
+/* ========================================
+   1. CSS Variables & Theme Configuration
+   ======================================== */
+:root {
+  /* Brand Colors */
+  --nuvi-primary: #8B9F7E;
+  --nuvi-primary-hover: #7A8E6D;
+  --nuvi-primary-light: rgba(139, 159, 126, 0.1);
+  --nuvi-primary-lighter: rgba(139, 159, 126, 0.05);
+  
+  --nuvi-secondary: #D4A5A5;
+  --nuvi-secondary-hover: #C39595;
+  --nuvi-secondary-light: rgba(212, 165, 165, 0.1);
+  
+  /* Base Colors */
+  --nuvi-background: #FAFAF8;
+  --nuvi-surface: #FFFFFF;
+  --nuvi-text-primary: #2B2B2B;
+  --nuvi-text-secondary: #6B7280;
+  --nuvi-text-muted: #9CA3AF;
+  
+  /* Border & Divider */
+  --nuvi-border: #E5E7EB;
+  --nuvi-border-hover: #D1D5DB;
+  
+  /* Status Colors */
+  --nuvi-success: #10B981;
+  --nuvi-success-light: rgba(16, 185, 129, 0.1);
+  --nuvi-warning: #F59E0B;
+  --nuvi-warning-light: rgba(245, 158, 11, 0.1);
+  --nuvi-error: #EF4444;
+  --nuvi-error-light: rgba(239, 68, 68, 0.1);
+  --nuvi-info: #3B82F6;
+  --nuvi-info-light: rgba(59, 130, 246, 0.1);
+  
+  /* Spacing Scale - More compact */
+  --nuvi-spacing-xs: 0.125rem; /* 2px */
+  --nuvi-spacing-sm: 0.25rem;  /* 4px */
+  --nuvi-spacing-md: 0.5rem;   /* 8px */
+  --nuvi-spacing-lg: 0.75rem;  /* 12px */
+  --nuvi-spacing-xl: 1rem;     /* 16px */
+  --nuvi-spacing-2xl: 1.5rem;  /* 24px */
+  
+  /* Border Radius */
+  --nuvi-radius-sm: 0.375rem;
+  --nuvi-radius-md: 0.5rem;
+  --nuvi-radius-lg: 0.75rem;
+  --nuvi-radius-xl: 1rem;
+  --nuvi-radius-full: 9999px;
+  
+  /* Shadows */
+  --nuvi-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --nuvi-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --nuvi-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --nuvi-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  /* Transitions */
+  --nuvi-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --nuvi-transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --nuvi-transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark Mode Variables */
+.dark {
+  --nuvi-background: #1F2937;
+  --nuvi-surface: #111827;
+  --nuvi-text-primary: #F9FAFB;
+  --nuvi-text-secondary: #D1D5DB;
+  --nuvi-text-muted: #9CA3AF;
+  --nuvi-border: #374151;
+  --nuvi-border-hover: #4B5563;
+}
+
+/* ========================================
+   2. Base Styles & Resets
+   ======================================== */
+.nuvi-admin {
+  background-color: var(--nuvi-background);
+  color: var(--nuvi-text-primary);
+  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.nuvi-admin * {
+  box-sizing: border-box;
+}
+
+/* ========================================
+   3. Layout Components
+   ======================================== */
+
+/* Main Layout Container */
+.nuvi-layout {
+  min-height: 100vh;
+  background-color: var(--nuvi-background);
+}
+
+/* Dashboard Wrapper */
+.nuvi-dashboard-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--nuvi-background);
+}
+
+/* Content Container - Unified width for consistency */
+.nuvi-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: var(--nuvi-spacing-xl) var(--nuvi-spacing-lg);
+}
+
+/* Z-index management - use design system values */
+.nuvi-z-dropdown { z-index: var(--z-dropdown); }
+.nuvi-z-sticky { z-index: var(--z-sticky); }
+.nuvi-z-fixed { z-index: var(--z-fixed); }
+.nuvi-z-modal { z-index: var(--z-modal); }
+.nuvi-z-popover { z-index: var(--z-popover); }
+.nuvi-z-tooltip { z-index: var(--z-tooltip); }
+.nuvi-z-notification { z-index: var(--z-notification); }
+
+/* Legacy z-index classes for backward compatibility */
+.nuvi-z-10 { z-index: var(--z-dropdown); }
+.nuvi-z-20 { z-index: var(--z-sticky); }
+.nuvi-z-30 { z-index: var(--z-fixed); }
+.nuvi-z-40 { z-index: var(--z-modal); }
+.nuvi-z-50 { z-index: var(--z-popover); }
+
+/* Missing spacing utilities */
+.nuvi-mt-2xl { margin-top: 2rem; }
+.nuvi-space-y-lg > * + * { margin-top: 1rem; }
+.nuvi-space-y-xl > * + * { margin-top: 1.25rem; }
+.nuvi-space-y-2xl > * + * { margin-top: 1.5rem; }
+
+/* Typography hierarchy */
+.nuvi-text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+.nuvi-text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+.nuvi-font-bold { font-weight: 700; }
+
+/* Missing form container classes */
+.nuvi-max-w-4xl {
+  max-width: 56rem;
+  margin: 0 auto;
+}
+
+.nuvi-max-w-5xl {
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+.nuvi-max-w-6xl {
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.nuvi-max-w-full {
+  max-width: 100%;
+}
+
+/* Responsive grid utilities */
+.nuvi-grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.nuvi-grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.nuvi-grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.nuvi-grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.nuvi-grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+
+/* Responsive breakpoints */
+@media (min-width: 768px) {
+  .md\:nuvi-grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+  .md\:nuvi-grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .md\:nuvi-grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .md\:nuvi-grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .md\:nuvi-grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+
+@media (min-width: 640px) {
+  .sm\:nuvi-flex-row { flex-direction: row; }
+  .sm\:nuvi-items-center { align-items: center; }
+  .sm\:nuvi-justify-between { justify-content: space-between; }
+  .sm\:nuvi-gap-md { gap: var(--nuvi-spacing-md); }
+  .sm\:nuvi-order-1 { order: 1; }
+  .sm\:nuvi-order-2 { order: 2; }
+}
+
+.nuvi-flex-col { flex-direction: column; }
+.nuvi-order-1 { order: 1; }
+.nuvi-order-2 { order: 2; }
+.nuvi-min-w-\[600px\] { min-width: 600px; }
+
+/* Compact container - Removed, using single container for consistency */
+.nuvi-container-compact {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: var(--nuvi-spacing-xl) var(--nuvi-spacing-lg);
+}
+
+/* Full width section - breaks out of container */
+.nuvi-full-width-section {
+  margin-left: calc(-1 * var(--nuvi-spacing-lg));
+  margin-right: calc(-1 * var(--nuvi-spacing-lg));
+  width: calc(100% + 2 * var(--nuvi-spacing-lg));
+}
+
+/* Header */
+.nuvi-header {
+  background-color: var(--nuvi-surface);
+  height: 4rem;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  backdrop-filter: blur(8px);
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+.nuvi-header-content {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 var(--nuvi-spacing-lg);
+}
+
+/* Sidebar */
+.nuvi-sidebar {
+  width: 16rem;
+  min-width: 16rem;
+  max-width: 16rem;
+  background-color: var(--nuvi-surface);
+  border-right: 1px solid var(--nuvi-border);
+  min-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.nuvi-sidebar-nav {
+  padding: var(--nuvi-spacing-lg) var(--nuvi-spacing-md);
+}
+
+.nuvi-sidebar-section {
+  margin-bottom: var(--nuvi-spacing-xl);
+}
+
+.nuvi-sidebar-section-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--nuvi-text-muted);
+  padding: 0 var(--nuvi-spacing-md);
+  margin-bottom: var(--nuvi-spacing-sm);
+}
+
+.nuvi-sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: var(--nuvi-spacing-sm);
+  padding: var(--nuvi-spacing-sm) var(--nuvi-spacing-md);
+  border-radius: var(--nuvi-radius-lg);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--nuvi-text-secondary);
+  text-decoration: none;
+  transition: all var(--nuvi-transition-base);
+  border-left: 4px solid transparent;
+  margin-bottom: 2px;
+}
+
+.nuvi-sidebar-link:hover {
+  background-color: var(--nuvi-primary-lighter);
+  color: var(--nuvi-text-primary);
+}
+
+.nuvi-sidebar-link.active {
+  background-color: var(--nuvi-primary-light);
+  color: var(--nuvi-primary);
+  border-left-color: var(--nuvi-primary);
+  padding-left: calc(var(--nuvi-spacing-md) - 4px);
+}
+
+.nuvi-sidebar-link-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+/* Main Content Area */
+.nuvi-main {
+  flex: 1;
+  padding: 0;
+  background-color: var(--nuvi-background);
+  min-height: 100vh;
+  width: 100%;
+  padding-top: 3rem;
+  margin-top: -3rem;
+}
+
+/* Dashboard main content - ensure consistent container */
+[data-dashboard-layout] .nuvi-main {
+  padding: var(--nuvi-spacing-xl) 0;
+}
+
+.nuvi-page-header {
+  margin-bottom: var(--nuvi-spacing-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nuvi-page-header > div:first-child {
+  flex: 1;
+}
+
+.nuvi-page-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--nuvi-text-primary);
+  margin: 0;
+}
+
+.nuvi-page-description {
+  color: var(--nuvi-text-secondary);
+  font-size: 0.813rem;
+  margin: 0;
+  margin-top: var(--nuvi-spacing-xs);
+}
+
+/* ========================================
+   4. Components
+   ======================================== */
+
+/* Cards */
+.nuvi-card {
+  background-color: var(--nuvi-surface);
+  border-radius: var(--nuvi-radius-lg);
+  border: 1px solid var(--nuvi-border);
+  transition: all var(--nuvi-transition-base);
+  overflow: hidden;
+}
+
+.nuvi-card:hover {
+  border-color: var(--nuvi-border-hover);
+}
+
+.nuvi-card-selected {
+  border-color: var(--nuvi-primary);
+  background-color: var(--nuvi-primary-lighter);
+  box-shadow: 0 0 0 1px var(--nuvi-primary);
+}
+
+.nuvi-card-header {
+  padding: var(--nuvi-spacing-md) var(--nuvi-spacing-lg);
+  border-bottom: 1px solid var(--nuvi-border);
+  border-top-left-radius: var(--nuvi-radius-lg);
+  border-top-right-radius: var(--nuvi-radius-lg);
+}
+
+.nuvi-card-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--nuvi-text-primary);
+}
+
+.nuvi-card-content {
+  padding: var(--nuvi-spacing-lg);
+}
+
+/* Compact card variant */
+.nuvi-card-compact .nuvi-card-content {
+  padding: var(--nuvi-spacing-md) var(--nuvi-spacing-lg);
+}
+
+/* App Cards */
+.nuvi-app-card {
+  border: 1px solid var(--nuvi-border);
+  border-radius: var(--nuvi-radius-lg);
+  padding: var(--nuvi-spacing-lg);
+  text-align: center;
+  transition: all var(--nuvi-transition-base);
+  background-color: var(--nuvi-surface);
+}
+
+.nuvi-app-card:hover {
+  border-color: var(--nuvi-border-hover);
+  box-shadow: var(--nuvi-shadow-md);
+}
+
+.nuvi-app-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  margin: 0 auto var(--nuvi-spacing-md);
+  background-color: var(--nuvi-background);
+  border-radius: var(--nuvi-radius-lg);
+}
+
+/* Empty State */
+.nuvi-empty-state {
+  text-align: center;
+  padding: var(--nuvi-spacing-xl) var(--nuvi-spacing-lg);
+  background-color: var(--nuvi-background);
+  border-radius: var(--nuvi-radius-lg);
+  border: 1px dashed var(--nuvi-border);
+}
+
+/* Theme Preview */
+.nuvi-theme-preview-wrapper {
+  position: relative;
+  width: 100%;
+  height: 700px;
+  background-color: var(--nuvi-background);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nuvi-theme-preview-frame {
+  border: none;
+  display: block;
+  transition: all var(--nuvi-transition-slow);
+  background: white;
+  box-shadow: var(--nuvi-shadow-lg);
+  border-radius: var(--nuvi-radius-md);
+}
+
+.nuvi-theme-preview-frame.desktop {
+  width: 100%;
+  height: 100%;
+}
+
+.nuvi-theme-preview-frame.tablet {
+  width: 768px;
+  height: 1024px;
+  transform: scale(0.65);
+  transform-origin: center;
+}
+
+.nuvi-theme-preview-frame.mobile {
+  width: 375px;
+  height: 812px;
+  transform: scale(0.8);
+  transform-origin: center;
+  border-radius: 2rem;
+}
+
+/* XS Button Size */
+.nuvi-btn-xs {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  min-height: 1.5rem;
+  border-radius: 0.25rem;
+}
+
+.nuvi-btn-xs svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+/* Utility classes for smaller icons */
+.h-3\.5 {
+  height: 0.875rem;
+}
+
+.w-3\.5 {
+  width: 0.875rem;
+}
+
+.nuvi-p-0 {
+  padding: 0;
+}
+
+/* Action Cards */
+.nuvi-action-card {
+  display: flex;
+  align-items: center;
+  gap: var(--nuvi-spacing-md);
+  padding: var(--nuvi-spacing-lg);
+  background-color: var(--nuvi-surface);
+  border: 1px solid var(--nuvi-border);
+  border-radius: var(--nuvi-radius-lg);
+  transition: all var(--nuvi-transition-base);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.nuvi-action-card:hover {
+  border-color: var(--nuvi-border-hover);
+  background-color: var(--nuvi-primary-lighter);
+  transform: translateY(-2px);
+  box-shadow: var(--nuvi-shadow-sm);
+}
+
+/* Theme Preview Small */
+.nuvi-theme-preview-small {
+  width: 100%;
+  height: 300px;
+  border: 1px solid var(--nuvi-border);
+  border-radius: var(--nuvi-radius-lg);
+  overflow: hidden;
+  background-color: var(--nuvi-background);
+}
+
+.nuvi-theme-preview-iframe-small {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* Theme Preview Large */
+.nuvi-theme-preview-large {
+  width: 100%;
+  height: 600px;
+  background-color: #f5f5f5;
+  border-top: 1px solid var(--nuvi-border);
+}
+
+.nuvi-theme-preview-iframe-large {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* Color Preview */
+.nuvi-color-preview {
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--nuvi-radius-md);
+  border: 1px solid var(--nuvi-border);
+}
+
+/* Upload Area */
+.nuvi-upload-area {
+  text-align: center;
+  padding: var(--nuvi-spacing-xl);
+  border: 2px dashed var(--nuvi-border);
+  border-radius: var(--nuvi-radius-lg);
+  background-color: var(--nuvi-background);
+}
+
+/* Navigation Item */
+.nuvi-nav-item {
+  padding: var(--nuvi-spacing-sm) var(--nuvi-spacing-md);
+  background-color: var(--nuvi-background);
+  border: 1px solid var(--nuvi-border);
+  border-radius: var(--nuvi-radius-md);
+  cursor: move;
+}
+
+.nuvi-nav-item:hover {
+  border-color: var(--nuvi-border-hover);
+}
+
+/* Section Item */
+.nuvi-section-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--nuvi-spacing-md);
+  background-color: var(--nuvi-background);
+  border: 1px solid var(--nuvi-border);
+  border-radius: var(--nuvi-radius-md);
+  cursor: move;
+}
+
+.nuvi-section-item:hover {
+  border-color: var(--nuvi-border-hover);
+}
+
+/* Input Small */
+.nuvi-input-sm {
+  padding: 0.375rem 0.5rem;
+  font-size: 0.813rem;
+  min-height: 1.75rem;
+  border-radius: 0.25rem;
+}
+
+.nuvi-select-sm {
+  padding: 0.375rem 0.5rem;
+  font-size: 0.813rem;
+  min-height: 1.75rem;
+  border-radius: 0.25rem;
+  padding-right: 2rem;
+  background-size: 0.75rem 0.75rem;
+  background-position: right 0.5rem center;
+}
+
+.nuvi-textarea {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--nuvi-border);
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  background-color: var(--nuvi-surface);
+  color: var(--nuvi-text-primary);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: none;
+  resize: vertical;
+  min-height: 3rem;
+}
+
+.nuvi-textarea:focus {
+  outline: none;
+  border-color: var(--nuvi-primary);
+  box-shadow: 0 0 0 1px var(--nuvi-primary);
+  background-color: var(--nuvi-surface);
+}
+
+.nuvi-textarea:hover:not(:focus) {
+  border-color: var(--nuvi-border-hover);
+}
+
+.nuvi-textarea-sm {
+  padding: 0.375rem 0.5rem;
+  font-size: 0.813rem;
+  min-height: 2.5rem;
+  border-radius: 0.25rem;
+}
+
+/* Buttons - Shopify Polaris exact specifications */
+.nuvi-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 500;
+  border-radius: 0.25rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  text-decoration: none;
+  outline: none;
+  position: relative;
+  white-space: nowrap;
+  line-height: 1.25;
+  min-height: 2rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  text-align: center;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.nuvi-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--nuvi-primary);
+}
+
+.nuvi-btn:active {
+  transform: none;
+}
+
+.nuvi-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Button Variants - Shopify Polaris-inspired */
+
+/* Primary - Most important actions (Polaris exact colors) */
+.nuvi-btn-primary {
+  background: #008060;
+  color: #ffffff;
+  border-color: #008060;
+  box-shadow: 0 0 0 0.0625rem rgba(0, 0, 0, 0.05), 0 0.0625rem 0 0.0625rem rgba(0, 0, 0, 0.1);
+}
+
+.nuvi-btn-primary:hover:not(:disabled) {
+  background: #00664d;
+  border-color: #00664d;
+  box-shadow: 0 0 0 0.0625rem rgba(0, 0, 0, 0.1), 0 0.125rem 0.25rem 0 rgba(0, 0, 0, 0.2);
+}
+
+.nuvi-btn-primary:active:not(:disabled) {
+  background: #004d3a;
+  border-color: #004d3a;
+  box-shadow: 0 0 0 0.0625rem rgba(0, 0, 0, 0.1);
+}
+
+/* Secondary/Default - Standard button style */
+.nuvi-btn,
+.nuvi-btn-secondary {
+  background: #ffffff;
+  color: #303030;
+  border-color: #c9cccf;
+  box-shadow: 0 0 0 0.0625rem rgba(0, 0, 0, 0.05), 0 0.0625rem 0 0.0625rem rgba(0, 0, 0, 0.05);
+}
+
+.nuvi-btn:hover:not(:disabled),
+.nuvi-btn-secondary:hover:not(:disabled) {
+  background: #f6f6f7;
+  border-color: #8c9196;
+  box-shadow: 0 0 0 0.0625rem rgba(0, 0, 0, 0.1), 0 0.125rem 0.25rem 0 rgba(0, 0, 0, 0.1);
+}
+
+.nuvi-btn:active:not(:disabled),
+.nuvi-btn-secondary:active:not(:disabled) {
+  background: #f0f0f1;
+  border-color: #8c9196;
+  box-shadow: 0 0 0 0.0625rem rgba(0, 0, 0, 0.1);
+}
+
+/* Tertiary - Less prominent actions */
+.nuvi-btn-tertiary {
+  background: transparent;
+  color: #303030;
+  border-color: #c9cccf;
+}
+
+.nuvi-btn-tertiary:hover:not(:disabled) {
+  background: #f6f6f7;
+  border-color: #8c9196;
+}
+
+.nuvi-btn-tertiary:active:not(:disabled) {
+  background: #f0f0f1;
+  border-color: #8c9196;
+}
+
+/* Plain - Link-like buttons (Polaris exact) */
+.nuvi-btn-plain {
+  background: transparent;
+  color: #005bd3;
+  border-color: transparent;
+  text-decoration: underline;
+  text-underline-offset: 0.0625rem;
+  padding: 0.1875rem 0.25rem;
+  min-height: auto;
+  box-shadow: none;
+}
+
+.nuvi-btn-plain:hover:not(:disabled) {
+  background: rgba(0, 91, 211, 0.05);
+  color: #004499;
+  text-decoration: none;
+}
+
+.nuvi-btn-plain:active:not(:disabled) {
+  background: rgba(0, 91, 211, 0.1);
+  color: #003d82;
+}
+
+/* Monochrome Plain - Subdued plain buttons */
+.nuvi-btn-monochrome-plain {
+  background: transparent;
+  color: #6d7175;
+  border-color: transparent;
+  text-decoration: underline;
+  text-underline-offset: 0.0625rem;
+  padding: 0.1875rem 0.25rem;
+  min-height: auto;
+  box-shadow: none;
+}
+
+.nuvi-btn-monochrome-plain:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.05);
+  color: #303030;
+  text-decoration: none;
+}
+
+/* Primary Critical - Destructive primary actions */
+.nuvi-btn-primary-critical {
+  background: #d72c0d;
+  color: #ffffff;
+  border-color: #d72c0d;
+  box-shadow: 0 0 0 0.0625rem rgba(0, 0, 0, 0.05), 0 0.0625rem 0 0.0625rem rgba(0, 0, 0, 0.1);
+}
+
+.nuvi-btn-primary-critical:hover:not(:disabled) {
+  background: #bf2718;
+  border-color: #bf2718;
+  box-shadow: 0 0 0 0.0625rem rgba(0, 0, 0, 0.1), 0 0.125rem 0.25rem 0 rgba(0, 0, 0, 0.2);
+}
+
+.nuvi-btn-primary-critical:active:not(:disabled) {
+  background: #a02014;
+  border-color: #a02014;
+  box-shadow: 0 0 0 0.0625rem rgba(0, 0, 0, 0.1);
+}
+
+/* Plain Critical - Destructive plain actions */
+.nuvi-btn-plain-critical {
+  background: transparent;
+  color: #d72c0d;
+  border-color: transparent;
+  text-decoration: underline;
+  text-underline-offset: 0.0625rem;
+  padding: 0.1875rem 0.25rem;
+  min-height: auto;
+  box-shadow: none;
+}
+
+.nuvi-btn-plain-critical:hover:not(:disabled) {
+  background: rgba(215, 44, 13, 0.05);
+  color: #bf2718;
+  text-decoration: none;
+}
+
+.nuvi-btn-plain-critical:active:not(:disabled) {
+  background: rgba(215, 44, 13, 0.1);
+  color: #a02014;
+}
+
+/* Legacy aliases for backward compatibility */
+.nuvi-btn-critical {
+  background: #d72c0d;
+  color: #ffffff;
+  border-color: #d72c0d;
+  box-shadow: 0 0 0 0.0625rem rgba(0, 0, 0, 0.05), 0 0.0625rem 0 0.0625rem rgba(0, 0, 0, 0.1);
+}
+
+.nuvi-btn-critical:hover:not(:disabled) {
+  background: #bf2718;
+  border-color: #bf2718;
+  box-shadow: 0 0 0 0.0625rem rgba(0, 0, 0, 0.1), 0 0.125rem 0.25rem 0 rgba(0, 0, 0, 0.2);
+}
+
+.nuvi-btn-critical:active:not(:disabled) {
+  background: #a02014;
+  border-color: #a02014;
+  box-shadow: 0 0 0 0.0625rem rgba(0, 0, 0, 0.1);
+}
+
+.nuvi-btn-success {
+  background: #008060;
+  color: #ffffff;
+  border-color: #008060;
+  box-shadow: 0 0 0 0.0625rem rgba(0, 0, 0, 0.05), 0 0.0625rem 0 0.0625rem rgba(0, 0, 0, 0.1);
+}
+
+.nuvi-btn-success:hover:not(:disabled) {
+  background: #00664d;
+  border-color: #00664d;
+  box-shadow: 0 0 0 0.0625rem rgba(0, 0, 0, 0.1), 0 0.125rem 0.25rem 0 rgba(0, 0, 0, 0.2);
+}
+
+.nuvi-btn-success:active:not(:disabled) {
+  background: #004d3a;
+  border-color: #004d3a;
+  box-shadow: 0 0 0 0.0625rem rgba(0, 0, 0, 0.1);
+}
+
+/* Button Sizes - Shopify Polaris exact specifications */
+
+/* Micro - Smallest size for compact layouts */
+.nuvi-btn-micro {
+  padding: 0.25rem 0.375rem;
+  font-size: 0.75rem;
+  min-height: 1.5rem;
+  gap: 0.125rem;
+}
+
+/* Slim - Compact horizontal padding */
+.nuvi-btn-slim {
+  padding: 0.25rem 0.375rem;
+  font-size: 0.8125rem;
+  min-height: 2.25rem;
+  gap: 0.25rem;
+}
+
+/* Small - Legacy support */
+.nuvi-btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.813rem;
+  min-height: 1.75rem;
+  border-radius: 0.25rem;
+}
+
+.nuvi-btn-xs {
+  padding: 0.125rem 0.25rem;
+  font-size: 0.7rem;
+  min-height: 1.5rem;
+  border-radius: 0.25rem;
+}
+
+/* Medium - Default size (inherits from base .nuvi-btn) */
+.nuvi-btn-md {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+  min-height: 2.25rem;
+  gap: 0.25rem;
+}
+
+/* Large - For prominent actions */
+.nuvi-btn-lg {
+  padding: 0.4375rem 1rem;
+  font-size: 0.875rem;
+  min-height: 2.75rem;
+  gap: 0.375rem;
+}
+
+/* Icon adjustments for different sizes - Polaris standard */
+.nuvi-btn-micro svg,
+.nuvi-btn-slim svg,
+.nuvi-btn-sm svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.nuvi-btn-md svg,
+.nuvi-btn svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.nuvi-btn-lg svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Legacy support */
+.nuvi-btn-xs svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Missing button variants to complete the Polaris system */
+
+/* Ghost - Minimal buttons without borders */
+.nuvi-btn-ghost {
+  background: transparent;
+  color: #303030;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.nuvi-btn-ghost:hover:not(:disabled) {
+  background: #f6f6f7;
+}
+
+/* Active state for button toggles */
+.nuvi-btn-active,
+.nuvi-btn-ghost.nuvi-btn-active {
+  background-color: var(--nuvi-primary);
+  color: white;
+  border-color: var(--nuvi-primary);
+}
+
+.nuvi-btn-ghost.nuvi-btn-active:hover:not(:disabled) {
+  background-color: var(--nuvi-primary-dark);
+  border-color: var(--nuvi-primary-dark);
+}
+
+.nuvi-btn-ghost:active:not(:disabled) {
+  background: #f0f0f1;
+}
+
+/* Outline - Tertiary actions (legacy alias) */
+.nuvi-btn-outline {
+  background: transparent;
+  color: #303030;
+  border-color: #c9cccf;
+  box-shadow: 0 0 0 0.0625rem rgba(0, 0, 0, 0.05);
+}
+
+.nuvi-btn-outline:hover:not(:disabled) {
+  background: #f6f6f7;
+  border-color: #8c9196;
+  box-shadow: 0 0 0 0.0625rem rgba(0, 0, 0, 0.1);
+}
+
+.nuvi-btn-outline:active:not(:disabled) {
+  background: #f0f0f1;
+  border-color: #8c9196;
+  box-shadow: 0 0 0 0.0625rem rgba(0, 0, 0, 0.1);
+}
+
+/* Danger - Alternative naming for critical */
+.nuvi-btn-danger {
+  background: linear-gradient(180deg, #d72c0d 0%, #b22408 100%);
+  color: #ffffff;
+  border-color: rgba(142, 31, 11, 0.4);
+  box-shadow: 0 1px 0 0 rgba(22, 29, 37, 0.05), inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+}
+
+.nuvi-btn-danger:hover:not(:disabled) {
+  background: linear-gradient(180deg, #b22408 0%, #8e1f0b 100%);
+  box-shadow: 0 2px 4px 0 rgba(22, 29, 37, 0.1), inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+}
+
+.nuvi-btn-danger:active:not(:disabled) {
+  background: #8e1f0b;
+  box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  transform: translateY(1px);
+}
+
+/* Button Loading State */
+.nuvi-btn-loading {
+  position: relative;
+  color: transparent !important;
+  pointer-events: none;
+}
+
+.nuvi-btn-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: nuvi-spin 0.8s linear infinite;
+  color: inherit;
+}
+
+.nuvi-btn-loading.nuvi-btn-xs::after {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-width: 1.5px;
+}
+
+.nuvi-btn-loading.nuvi-btn-sm::after {
+  width: 0.875rem;
+  height: 0.875rem;
+  border-width: 1.5px;
+}
+
+.nuvi-btn-loading.nuvi-btn-lg::after {
+  width: 1.125rem;
+  height: 1.125rem;
+  border-width: 2.5px;
+}
+
+/* Loading spinner animation */
+@keyframes nuvi-spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Button Full Width */
+.nuvi-btn-full {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Icon-only buttons */
+.nuvi-btn-icon-only {
+  padding: 0;
+  width: 2rem;
+  height: 2rem;
+  min-width: 2rem;
+}
+
+.nuvi-btn-icon-only.nuvi-btn-xs {
+  width: 1.75rem;
+  height: 1.75rem;
+  min-width: 1.75rem;
+}
+
+.nuvi-btn-icon-only.nuvi-btn-sm {
+  width: 2rem;
+  height: 2rem;
+  min-width: 2rem;
+}
+
+.nuvi-btn-icon-only.nuvi-btn-md {
+  width: 2.25rem;
+  height: 2.25rem;
+  min-width: 2.25rem;
+}
+
+.nuvi-btn-icon-only.nuvi-btn-lg {
+  width: 2.5rem;
+  height: 2.5rem;
+  min-width: 2.5rem;
+}
+
+/* Button Group */
+.nuvi-btn-group {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--nuvi-surface);
+  border-radius: 0.375rem;
+  border: 1px solid rgba(0, 0, 0, 0.13);
+  overflow: hidden;
+}
+
+.nuvi-btn-group .nuvi-btn {
+  border: none;
+  border-radius: 0;
+  border-right: 1px solid rgba(0, 0, 0, 0.13);
+  box-shadow: none;
+}
+
+.nuvi-btn-group .nuvi-btn:last-child {
+  border-right: none;
+}
+
+.nuvi-btn-group .nuvi-btn:first-child {
+  border-top-left-radius: 0.375rem;
+  border-bottom-left-radius: 0.375rem;
+}
+
+.nuvi-btn-group .nuvi-btn:last-child {
+  border-top-right-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
+}
+
+/* Button with Disclosure (dropdown indicator) */
+.nuvi-btn-disclosure {
+  position: relative;
+}
+
+.nuvi-btn-disclosure::after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-top: 3px solid currentColor;
+  margin-left: 0.25rem;
+  opacity: 0.7;
+}
+
+/* Form Elements */
+.nuvi-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--nuvi-text-primary);
+  margin-bottom: 0.375rem;
+  line-height: 1.25;
+  flex-direction: row;
+}
+
+.nuvi-label svg {
+  flex-shrink: 0;
+}
+
+.nuvi-label.nuvi-required::after {
+  content: '*';
+  color: var(--nuvi-error);
+  margin-left: 0.125rem;
+}
+
+
+.nuvi-input-error {
+  border-color: var(--nuvi-error);
+}
+
+.nuvi-input-error:focus {
+  border-color: var(--nuvi-error);
+  box-shadow: 0 0 0 1px var(--nuvi-error);
+}
+
+.nuvi-select {
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--nuvi-border);
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.25;
+  background-color: var(--nuvi-surface);
+  color: var(--nuvi-text-primary);
+  transition: all 0.15s ease;
+  box-shadow: none;
+  outline: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 0.875rem 0.875rem;
+  padding-right: 2.5rem;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.nuvi-select:focus {
+  outline: none;
+  border-color: var(--nuvi-primary);
+  box-shadow: 0 0 0 1px var(--nuvi-primary);
+  background-color: var(--nuvi-surface);
+}
+
+.nuvi-select:hover:not(:focus) {
+  border-color: var(--nuvi-border-hover);
+}
+
+.nuvi-checkbox {
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid var(--nuvi-border);
+  border-radius: 0.25rem;
+  background-color: var(--nuvi-surface);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: relative;
+}
+
+.nuvi-checkbox:checked {
+  background-color: var(--nuvi-primary);
+  border-color: var(--nuvi-primary);
+}
+
+.nuvi-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  background-color: white;
+  border-radius: 1px;
+}
+
+.nuvi-checkbox:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(139, 159, 126, 0.2);
+}
+
+.nuvi-checkbox:hover:not(:focus) {
+  border-color: var(--nuvi-border-hover);
+}
+
+/* Custom styled checkbox - NuviDesign */
+input[type="checkbox"].nuvi-checkbox-custom {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+input[type="checkbox"].nuvi-checkbox-custom:checked {
+  background-color: #0EA5E9;
+  border-color: #0EA5E9;
+}
+
+input[type="checkbox"].nuvi-checkbox-custom:checked::after {
+  content: '';
+  position: absolute;
+  display: block;
+  left: 5px;
+  top: 2px;
+  width: 5px;
+  height: 9px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+input[type="checkbox"].nuvi-checkbox-custom:hover:not(:disabled):not(:checked) {
+  border-color: #D1D5DB;
+  background-color: #F9FAFB;
+}
+
+input[type="checkbox"].nuvi-checkbox-custom:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2);
+}
+
+input[type="checkbox"].nuvi-checkbox-custom:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #F3F4F6;
+}
+
+/* Custom styled radio buttons */
+input[type="radio"].nuvi-radio-custom {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #D1D5DB;
+  border-radius: 50%;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0;
+}
+
+input[type="radio"].nuvi-radio-custom:checked {
+  border-color: #8B9F7E;
+  background-color: white;
+}
+
+input[type="radio"].nuvi-radio-custom:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background-color: #8B9F7E;
+  border-radius: 50%;
+}
+
+input[type="radio"].nuvi-radio-custom:hover:not(:disabled) {
+  border-color: #9CA3AF;
+}
+
+input[type="radio"].nuvi-radio-custom:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(139, 159, 126, 0.15);
+}
+
+input[type="radio"].nuvi-radio-custom:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Radio group wrapper for better spacing */
+.nuvi-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nuvi-radio-group-horizontal {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.nuvi-radio-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.nuvi-radio-item label {
+  cursor: pointer;
+  font-size: 14px;
+  color: #374151;
+  user-select: none;
+}
+
+.nuvi-radio-item:hover label {
+  color: #111827;
+}
+
+.nuvi-form-group {
+  margin-bottom: 1rem;
+}
+
+.nuvi-text-error {
+  color: var(--nuvi-error);
+}
+
+/* Alerts */
+.nuvi-alert {
+  padding: 0.75rem 1rem;
+  border-radius: var(--nuvi-radius-md);
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.nuvi-alert-error {
+  background-color: var(--nuvi-error-light);
+  color: var(--nuvi-error);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* Badges */
+.nuvi-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: var(--nuvi-radius-full);
+  white-space: nowrap;
+}
+
+.nuvi-badge-secondary {
+  background-color: var(--nuvi-border);
+  color: var(--nuvi-text-secondary);
+}
+
+.nuvi-badge-removable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.nuvi-badge-removable:hover {
+  background-color: var(--nuvi-border-hover);
+}
+
+.nuvi-badge-remove {
+  margin-left: 0.25rem;
+  font-weight: 700;
+  opacity: 0.7;
+}
+
+.nuvi-badge-remove:hover {
+  opacity: 1;
+}
+
+/* Progress Bars */
+.nuvi-progress-bar {
+  width: 100%;
+  height: 0.5rem;
+  background-color: var(--nuvi-border);
+  border-radius: var(--nuvi-radius-full);
+  overflow: hidden;
+}
+
+.nuvi-progress-fill {
+  height: 100%;
+  transition: width var(--nuvi-transition-base);
+}
+
+/* Spinner */
+.nuvi-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--nuvi-border);
+  border-radius: 50%;
+  border-top-color: var(--nuvi-primary);
+  animation: spin 1s linear infinite;
+}
+
+/* Tooltip */
+.nuvi-tooltip {
+  background-color: var(--nuvi-text-primary);
+  color: var(--nuvi-surface);
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--nuvi-radius-md);
+  font-size: 0.875rem;
+  white-space: nowrap;
+  box-shadow: var(--nuvi-shadow-lg);
+  z-index: var(--z-tooltip);
+}
+
+/* Charts */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: var(--nuvi-border);
+}
+
+.recharts-tooltip-wrapper {
+  z-index: 100;
+}
+
+.recharts-default-tooltip {
+  background-color: var(--nuvi-surface) !important;
+  border: 1px solid var(--nuvi-border) !important;
+  border-radius: var(--nuvi-radius-md) !important;
+  box-shadow: var(--nuvi-shadow-lg) !important;
+}
+
+.recharts-tooltip-label {
+  color: var(--nuvi-text-primary) !important;
+  font-weight: 600 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.recharts-tooltip-item {
+  color: var(--nuvi-text-secondary) !important;
+}
+
+/* Badge variants */
+.nuvi-badge-success {
+  background-color: var(--nuvi-success-light);
+  color: var(--nuvi-success);
+}
+
+.nuvi-badge-warning {
+  background-color: var(--nuvi-warning-light);
+  color: var(--nuvi-warning);
+}
+
+.nuvi-badge-error {
+  background-color: var(--nuvi-error-light);
+  color: var(--nuvi-error);
+}
+
+/* Variant Table Styles */
+.nuvi-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--nuvi-border);
+  border-radius: var(--nuvi-radius-md);
+  overflow: hidden;
+}
+
+.nuvi-table th {
+  background-color: var(--nuvi-background);
+  padding: 0.75rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--nuvi-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--nuvi-border);
+}
+
+.nuvi-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--nuvi-border);
+  background-color: var(--nuvi-surface);
+}
+
+.nuvi-table tr:hover td {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.nuvi-table tr:last-child td {
+  border-bottom: none;
+}
+
+.nuvi-variant-tag {
+  display: inline-block;
+  background-color: var(--nuvi-border);
+  color: var(--nuvi-text-secondary);
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--nuvi-radius-sm);
+  margin-right: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Status Pill Buttons */
+.nuvi-status-pill {
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 4rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.nuvi-status-pill:hover {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.nuvi-status-pill:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Animations */
+@keyframes animate-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: animate-spin 1s linear infinite;
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
+
+/* Tabs - Simplified and consistent */
+.nuvi-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background-color: var(--nuvi-surface);
+  width: 100%;
+  border-bottom: 1px solid var(--nuvi-border);
+  backdrop-filter: blur(12px);
+  background-color: rgba(255, 255, 255, 0.95);
+  overflow-x: auto;
+}
+
+.nuvi-tabs-list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 var(--nuvi-spacing-lg);
+  height: 3rem;
+  gap: var(--nuvi-spacing-md);
+  min-width: fit-content;
+}
+
+/* Tab sections layout - Simplified */
+.nuvi-tabs-left {
+  display: flex;
+  align-items: center;
+  gap: var(--nuvi-spacing-sm);
+  flex: 0 0 auto;
+}
+
+.nuvi-tabs-right {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  margin-left: var(--nuvi-spacing-md);
+}
+
+.nuvi-tabs-center {
+  display: flex;
+  align-items: center;
+  gap: var(--nuvi-spacing-xs);
+  flex: 1 1 auto;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin: 0 var(--nuvi-spacing-sm);
+  padding: 0;
+}
+
+.nuvi-tabs-center::-webkit-scrollbar {
+  display: none;
+}
+
+.nuvi-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--nuvi-spacing-xs);
+  padding: var(--nuvi-spacing-xs) var(--nuvi-spacing-sm);
+  height: 2rem;
+  font-size: 0.813rem;
+  font-weight: 500;
+  color: var(--nuvi-text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: var(--nuvi-radius-sm);
+  cursor: pointer;
+  transition: all var(--nuvi-transition-fast);
+  position: relative;
+  white-space: nowrap;
+  min-width: fit-content;
+  flex-shrink: 0;
+}
+
+/* Make main tab icons smaller */
+.nuvi-tabs .nuvi-tab svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+/* Select Dropdown for Store Selector */
+.nuvi-select-trigger {
+  height: 36px;
+  border: 1px solid var(--nuvi-border);
+  background: var(--nuvi-bg-white);
+  font-weight: 500;
+  min-width: 200px;
+  font-size: 0.875rem;
+}
+
+/* Store Selector Icon Style */
+.nuvi-store-selector {
+  min-width: auto !important;
+  padding: var(--nuvi-spacing-sm) var(--nuvi-spacing-md) !important;
+  background: var(--nuvi-background) !important;
+  border: 1px solid var(--nuvi-border) !important;
+  transition: all 0.2s ease;
+  height: 36px;
+  display: flex;
+  align-items: center;
+}
+
+.nuvi-store-selector:hover {
+  background: var(--nuvi-primary-lighter) !important;
+  border-color: var(--nuvi-primary) !important;
+}
+
+.nuvi-store-selector:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 3px var(--nuvi-primary-light) !important;
+}
+
+/* Nuvi Logo */
+.nuvi-logo {
+  color: var(--nuvi-text-secondary);
+  opacity: 0.7;
+  transition: all var(--nuvi-transition-base);
+}
+
+.nuvi-logo:hover {
+  opacity: 1;
+  color: var(--nuvi-primary);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .nuvi-tabs-list {
+    padding: 0 var(--nuvi-spacing-sm);
+    gap: var(--nuvi-spacing-sm);
+  }
+  
+  .nuvi-tabs-left {
+    flex: 0 0 auto;
+  }
+  
+  .nuvi-tabs-left .nuvi-text-sm {
+    font-size: 0.75rem;
+  }
+  
+  .nuvi-tabs-center {
+    margin: 0;
+    gap: 0;
+  }
+  
+  .nuvi-tab {
+    padding: var(--nuvi-spacing-xs) var(--nuvi-spacing-xs);
+    font-size: 0.75rem;
+  }
+  
+  /* Hide logo on mobile */
+  .nuvi-tabs-right {
+    display: none;
+  }
+  
+  /* Hide tab labels on very small screens, show only icons */
+  @media (max-width: 480px) {
+    .nuvi-tab-label {
+      display: none;
+    }
+    
+    .nuvi-tab {
+      padding: var(--nuvi-spacing-xs);
+      min-width: 2.5rem;
+    }
+    
+    .nuvi-tabs .nuvi-tab svg {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+}
+
+.nuvi-tab:hover {
+  color: var(--nuvi-text-primary);
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.nuvi-tab.active {
+  color: var(--nuvi-primary);
+  font-weight: 600;
+  background-color: var(--nuvi-primary-lighter);
+  box-shadow: inset 0 0 0 1px rgba(139, 159, 126, 0.2);
+}
+
+/* Sub Tabs for inner navigation - Consistent alignment */
+.nuvi-sub-tabs {
+  background-color: transparent;
+  width: 100%;
+  position: sticky;
+  top: 3rem;
+  z-index: 20;
+  border-bottom: 1px solid var(--nuvi-border);
+  margin-bottom: var(--nuvi-spacing-lg);
+  background-color: var(--nuvi-background);
+}
+
+.nuvi-sub-tabs::-webkit-scrollbar {
+  height: 4px;
+}
+
+.nuvi-sub-tabs::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.nuvi-sub-tabs::-webkit-scrollbar-thumb {
+  background-color: var(--nuvi-border);
+  border-radius: 2px;
+}
+
+.nuvi-sub-tabs-list {
+  display: flex;
+  align-items: center;
+  gap: var(--nuvi-spacing-xs);
+  height: 2.5rem;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 var(--nuvi-spacing-lg);
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.nuvi-sub-tabs .nuvi-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--nuvi-spacing-xs);
+  font-size: 0.75rem;
+  padding: var(--nuvi-spacing-xs) var(--nuvi-spacing-md);
+  height: 1.75rem;
+  white-space: nowrap;
+  position: relative;
+  flex-shrink: 0;
+  color: var(--nuvi-text-secondary);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--nuvi-transition-fast);
+  background: transparent;
+  border: none;
+  border-radius: var(--nuvi-radius-sm);
+  min-width: fit-content;
+}
+
+.nuvi-sub-tabs .nuvi-tab:hover {
+  color: var(--nuvi-text-primary);
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.nuvi-sub-tabs .nuvi-tab.active {
+  color: var(--nuvi-primary);
+  font-weight: 600;
+  background-color: var(--nuvi-primary-lighter);
+  box-shadow: inset 0 0 0 1px rgba(139, 159, 126, 0.15);
+}
+
+/* Ensure sub-tabs buttons are properly displayed */
+.nuvi-sub-tabs button.nuvi-tab {
+  display: inline-flex !important;
+  background: none !important;
+  border: none !important;
+  margin: 0 !important;
+  width: auto !important;
+  text-align: left !important;
+}
+
+/* Fix for vertical list appearance - force horizontal layout */
+.nuvi-sub-tabs {
+  display: block !important;
+  width: 100% !important;
+}
+
+.nuvi-sub-tabs .nuvi-sub-tabs-list {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  width: 100% !important;
+  flex-wrap: nowrap !important;
+}
+
+/* Reset Tailwind button defaults and force horizontal layout */
+.nuvi-sub-tabs .nuvi-sub-tabs-list > button,
+.nuvi-sub-tabs .nuvi-sub-tabs-list > .nuvi-tab {
+  display: inline-flex !important;
+  width: auto !important;
+  max-width: none !important;
+  min-width: auto !important;
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+  text-align: left !important;
+  vertical-align: middle !important;
+}
+
+/* Secondary sub-tabs for nested navigation */
+.nuvi-sub-tabs-secondary {
+  background-color: transparent;
+  width: 100%;
+  margin-bottom: var(--nuvi-spacing-lg);
+  padding-bottom: var(--nuvi-spacing-sm);
+  border-bottom: 1px solid var(--nuvi-border);
+}
+
+.nuvi-sub-tabs-secondary .nuvi-sub-tabs-list {
+  display: flex;
+  align-items: center;
+  gap: var(--nuvi-spacing-xs);
+  height: 2rem;
+  width: 100%;
+}
+
+.nuvi-sub-tabs-secondary .nuvi-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--nuvi-spacing-xs);
+  font-size: 0.688rem;
+  padding: var(--nuvi-spacing-xs) var(--nuvi-spacing-sm);
+  height: 1.5rem;
+  color: var(--nuvi-text-secondary);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--nuvi-transition-fast);
+  background: transparent;
+  border: none;
+  border-radius: var(--nuvi-radius-sm);
+  min-width: fit-content;
+}
+
+.nuvi-sub-tabs-secondary .nuvi-tab:hover {
+  color: var(--nuvi-text-primary);
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.nuvi-sub-tabs-secondary .nuvi-tab.active {
+  color: var(--nuvi-primary);
+  font-weight: 600;
+  background-color: var(--nuvi-primary-lighter);
+}
+
+/* Additional specificity to override any conflicts */
+div.nuvi-sub-tabs div.nuvi-sub-tabs-list {
+  display: flex !important;
+  flex-direction: row !important;
+}
+
+div.nuvi-sub-tabs div.nuvi-sub-tabs-list > button.nuvi-tab {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  flex: 0 0 auto !important;
+  min-width: 0 !important;
+  flex-basis: auto !important;
+}
+
+/* Ensure Tailwind preflight doesn't affect sub-tabs layout */
+.nuvi-sub-tabs button {
+  font-family: inherit;
+  font-feature-settings: inherit;
+  font-variation-settings: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  margin: 0;
+  padding: inherit;
+  display: inline-flex !important;
+  width: auto !important;
+}
+
+/* Override any default button styles from Tailwind */
+.nuvi-sub-tabs-list button {
+  display: inline-flex !important;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  width: auto !important;
+  text-align: inherit;
+}
+
+/* Forms */
+.nuvi-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  color: var(--nuvi-text-primary);
+  background-color: var(--nuvi-surface);
+  border: 1px solid var(--nuvi-border);
+  border-radius: 0.375rem;
+  transition: all 0.15s ease;
+  outline: none;
+  box-shadow: none;
+  min-height: 2.5rem;
+  height: 2.5rem;
+}
+
+.nuvi-input:focus {
+  outline: none;
+  border-color: var(--nuvi-primary);
+  box-shadow: 0 0 0 1px var(--nuvi-primary);
+}
+
+.nuvi-input:hover:not(:focus) {
+  border-color: var(--nuvi-border-hover);
+}
+
+.nuvi-input:disabled {
+  background-color: var(--nuvi-background);
+  cursor: not-allowed;
+}
+
+.nuvi-input[type="textarea"],
+.nuvi-input.textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+/* Search input with icon */
+.nuvi-input.nuvi-pl-10 {
+  padding-left: 2.5rem;
+}
+
+/* Position utilities */
+.nuvi-absolute { position: absolute; }
+.nuvi-relative { position: relative; }
+
+.nuvi-left-3 { left: 0.75rem; }
+.nuvi-top-1\/2 { top: 50%; }
+.-nuvi-translate-y-1\/2 { transform: translateY(-50%); }
+
+/* Transform utilities */
+.nuvi-transform { transform: translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)); }
+.nuvi--translate-y-1\/2 { --tw-translate-y: -50%; }
+
+.nuvi-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--nuvi-text-primary);
+  margin-bottom: var(--nuvi-spacing-xs);
+}
+
+.nuvi-form-group {
+  margin-bottom: var(--nuvi-spacing-md);
+}
+
+/* Badges */
+.nuvi-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px var(--nuvi-spacing-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: var(--nuvi-radius-full);
+}
+
+.nuvi-badge-sm {
+  padding: 1px 4px;
+  font-size: 0.625rem;
+}
+
+.nuvi-badge-success {
+  background-color: var(--nuvi-success-light);
+  color: var(--nuvi-success);
+}
+
+.nuvi-badge-warning {
+  background-color: var(--nuvi-warning-light);
+  color: var(--nuvi-warning);
+}
+
+.nuvi-badge-error {
+  background-color: var(--nuvi-error-light);
+  color: var(--nuvi-error);
+}
+
+.nuvi-badge-primary {
+  background-color: var(--nuvi-primary-light);
+  color: var(--nuvi-primary);
+}
+
+/* Settings Page Styles */
+.nuvi-settings-content {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 var(--nuvi-spacing-lg);
+}
+
+.nuvi-settings-card {
+  background-color: var(--nuvi-surface);
+  border-radius: var(--nuvi-radius-lg);
+  border: 1px solid var(--nuvi-border);
+  overflow: hidden;
+}
+
+.nuvi-settings-header {
+  padding: var(--nuvi-spacing-md) var(--nuvi-spacing-lg);
+  border-bottom: 1px solid var(--nuvi-border);
+  background-color: rgba(0, 0, 0, 0.01);
+}
+
+.nuvi-settings-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--nuvi-text-primary);
+  margin: 0;
+}
+
+.nuvi-settings-description {
+  font-size: 0.75rem;
+  color: var(--nuvi-text-secondary);
+  margin: 0;
+  margin-top: 2px;
+}
+
+.nuvi-settings-body {
+  padding: var(--nuvi-spacing-lg);
+}
+
+/* Form Sections */
+.nuvi-form-section {
+  padding: var(--nuvi-spacing-md) 0;
+  border-bottom: 1px solid var(--nuvi-border);
+}
+
+.nuvi-form-section:first-child {
+  padding-top: 0;
+}
+
+.nuvi-form-section:last-child {
+  border-bottom: none;
+  padding-bottom: var(--nuvi-spacing-sm);
+}
+
+.nuvi-section-title {
+  font-size: 0.813rem;
+  font-weight: 600;
+  color: var(--nuvi-text-primary);
+  margin-bottom: var(--nuvi-spacing-sm);
+}
+
+/* Notification Items */
+.nuvi-notification-section {
+  padding: var(--nuvi-spacing-lg) 0;
+}
+
+.nuvi-notification-section:first-child {
+  padding-top: 0;
+}
+
+.nuvi-notification-item {
+  padding: var(--nuvi-spacing-md);
+  background-color: var(--nuvi-background);
+  border-radius: var(--nuvi-radius-md);
+  border: 1px solid var(--nuvi-border);
+}
+
+.nuvi-notification-item h5 {
+  font-size: 0.813rem;
+  margin: 0;
+  margin-bottom: var(--nuvi-spacing-xs);
+}
+
+/* Toggle Switch */
+.nuvi-switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 22px;
+}
+
+.nuvi-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.nuvi-switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--nuvi-border);
+  transition: all var(--nuvi-transition-fast);
+  border-radius: var(--nuvi-radius-full);
+}
+
+.nuvi-switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: all var(--nuvi-transition-fast);
+  border-radius: 50%;
+}
+
+.nuvi-switch input:checked + .nuvi-switch-slider {
+  background-color: var(--nuvi-primary);
+}
+
+.nuvi-switch input:checked + .nuvi-switch-slider:before {
+  transform: translateX(18px);
+}
+
+/* Legal Sections */
+.nuvi-legal-section {
+  padding: var(--nuvi-spacing-lg) 0;
+  border-bottom: 1px solid var(--nuvi-border);
+}
+
+.nuvi-legal-section:last-child {
+  border-bottom: none;
+}
+
+/* Payment Provider Cards */
+.nuvi-provider-card,
+.nuvi-carrier-card {
+  padding: var(--nuvi-spacing-md);
+  background-color: var(--nuvi-background);
+  border-radius: var(--nuvi-radius-md);
+  border: 1px solid var(--nuvi-border);
+  transition: all var(--nuvi-transition-fast);
+}
+
+.nuvi-provider-card:hover,
+.nuvi-carrier-card:hover {
+  border-color: var(--nuvi-border-hover);
+}
+
+.nuvi-provider-logo,
+.nuvi-carrier-logo {
+  width: 48px;
+  height: 48px;
+  background-color: var(--nuvi-surface);
+  border-radius: var(--nuvi-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--nuvi-text-secondary);
+}
+
+/* Zone and Tax Rate Items */
+.nuvi-zone-item,
+.nuvi-tax-rate-item {
+  padding: var(--nuvi-spacing-md);
+  background-color: var(--nuvi-background);
+  border-radius: var(--nuvi-radius-md);
+  border: 1px solid var(--nuvi-border);
+}
+
+.nuvi-zones-list,
+.nuvi-tax-rates-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nuvi-spacing-sm);
+}
+
+/* Section Titles */
+.nuvi-mb-0 {
+  margin-bottom: 0;
+}
+
+/* Domain Cards */
+.nuvi-domain-card {
+  padding: var(--nuvi-spacing-md);
+  background-color: var(--nuvi-background);
+  border-radius: var(--nuvi-radius-md);
+  border: 1px solid var(--nuvi-border);
+}
+
+.nuvi-domain-section,
+.nuvi-analytics-section {
+  padding: var(--nuvi-spacing-lg) 0;
+}
+
+.nuvi-domain-section:first-child,
+.nuvi-analytics-section:first-child {
+  padding-top: 0;
+}
+
+/* Utility Classes */
+
+/* Alerts */
+.nuvi-alert {
+  padding: var(--nuvi-spacing-md);
+  border-radius: var(--nuvi-radius-lg);
+  display: flex;
+  gap: var(--nuvi-spacing-sm);
+}
+
+.nuvi-alert-info {
+  background-color: var(--nuvi-info-light);
+  color: #1E40AF;
+}
+
+.nuvi-alert-success {
+  background-color: var(--nuvi-success-light);
+  color: #065F46;
+}
+
+.nuvi-alert-warning {
+  background-color: var(--nuvi-warning-light);
+  color: #92400E;
+}
+
+.nuvi-alert-error {
+  background-color: var(--nuvi-error-light);
+  color: #991B1B;
+}
+
+/* ========================================
+   5. Utilities
+   ======================================== */
+
+/* Flex Utilities */
+.nuvi-flex {
+  display: flex;
+}
+
+.nuvi-flex-col {
+  flex-direction: column;
+}
+
+.nuvi-items-center {
+  align-items: center;
+}
+
+.nuvi-justify-between {
+  justify-content: space-between;
+}
+
+.nuvi-gap-sm {
+  gap: var(--nuvi-spacing-sm);
+}
+
+.nuvi-gap-xs {
+  gap: var(--nuvi-spacing-xs);
+}
+
+.nuvi-ml-sm {
+  margin-left: var(--nuvi-spacing-sm);
+}
+
+.nuvi-h-6 {
+  height: 1.5rem;
+}
+
+.nuvi-w-6 {
+  width: 1.5rem;
+}
+
+.nuvi-h-12 {
+  height: 3rem;
+}
+
+.nuvi-w-12 {
+  width: 3rem;
+}
+
+.nuvi-gap-md {
+  gap: var(--nuvi-spacing-md);
+}
+
+.nuvi-gap-lg {
+  gap: var(--nuvi-spacing-lg);
+}
+
+/* Spacing Utilities */
+.nuvi-mt-sm { margin-top: var(--nuvi-spacing-sm); }
+.nuvi-mt-md { margin-top: var(--nuvi-spacing-md); }
+.nuvi-mt-lg { margin-top: var(--nuvi-spacing-lg); }
+.nuvi-mb-sm { margin-bottom: var(--nuvi-spacing-sm); }
+.nuvi-mb-md { margin-bottom: var(--nuvi-spacing-md); }
+.nuvi-mb-lg { margin-bottom: var(--nuvi-spacing-lg); }
+
+/* Width Utilities */
+.w-24 { width: 6rem; }
+.w-32 { width: 8rem; }
+.flex-shrink-0 { flex-shrink: 0; }
+
+/* Text Utilities */
+.nuvi-text-sm { font-size: 0.875rem; }
+.nuvi-text-lg { font-size: 1.125rem; }
+.nuvi-text-xl { font-size: 1.25rem; }
+.nuvi-font-medium { font-weight: 500; }
+.nuvi-font-semibold { font-weight: 600; }
+.nuvi-text-muted { color: var(--nuvi-text-muted); }
+.capitalize { text-transform: capitalize; }
+.italic { font-style: italic; }
+
+/* Grid System */
+.nuvi-grid {
+  display: grid;
+}
+
+.nuvi-grid-compact {
+  display: grid;
+  gap: var(--nuvi-spacing-sm);
+}
+
+/* Gap utilities */
+.nuvi-gap-0 { gap: 0; }
+.nuvi-gap-xs { gap: var(--nuvi-spacing-xs); }
+.nuvi-gap-sm { gap: var(--nuvi-spacing-sm); }
+.nuvi-gap-md { gap: var(--nuvi-spacing-md); }
+.nuvi-gap-lg { gap: var(--nuvi-spacing-lg); }
+.nuvi-gap-xl { gap: var(--nuvi-spacing-xl); }
+
+/* Grid columns */
+.nuvi-grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.nuvi-grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.nuvi-grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.nuvi-grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+@media (min-width: 768px) {
+  .nuvi-md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nuvi-md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .nuvi-md\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1024px) {
+  .nuvi-lg\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nuvi-lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .nuvi-lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .nuvi-lg\:col-span-2 { grid-column: span 2 / span 2; }
+}
+
+/* Stats Grid */
+.nuvi-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--nuvi-spacing-lg);
+  margin-bottom: var(--nuvi-spacing-xl);
+}
+
+.nuvi-stat-card {
+  background-color: var(--nuvi-surface);
+  border: 1px solid var(--nuvi-border);
+  border-radius: var(--nuvi-radius-lg);
+  padding: var(--nuvi-spacing-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--nuvi-spacing-md);
+  transition: all var(--nuvi-transition-base);
+}
+
+.nuvi-stat-card:hover {
+  border-color: var(--nuvi-border-hover);
+  box-shadow: var(--nuvi-shadow-sm);
+}
+
+.nuvi-stat-icon {
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--nuvi-primary-lighter);
+  color: var(--nuvi-primary);
+  border-radius: var(--nuvi-radius-lg);
+  flex-shrink: 0;
+}
+
+.nuvi-stat-label {
+  font-size: 0.813rem;
+  color: var(--nuvi-text-secondary);
+  margin-bottom: var(--nuvi-spacing-xs);
+}
+
+.nuvi-stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--nuvi-text-primary);
+  line-height: 1.2;
+}
+
+.nuvi-stat-change {
+  font-size: 0.75rem;
+  margin-top: var(--nuvi-spacing-xs);
+}
+
+.nuvi-stat-change.positive {
+  color: var(--nuvi-success);
+}
+
+.nuvi-stat-change.negative {
+  color: var(--nuvi-error);
+}
+
+.nuvi-stat-change.neutral {
+  color: var(--nuvi-text-muted);
+}
+
+/* Settings Page Tabs - Simpler style for settings pages */
+.nuvi-settings-tabs {
+  border-bottom: 1px solid var(--nuvi-border);
+  margin-bottom: var(--nuvi-spacing-lg);
+}
+
+.nuvi-settings-tabs-list {
+  display: flex;
+  gap: var(--nuvi-spacing-lg);
+}
+
+.nuvi-settings-tab {
+  padding: var(--nuvi-spacing-sm) var(--nuvi-spacing-xs);
+  border-bottom: 2px solid transparent;
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--nuvi-text-muted);
+  background: none;
+  border-radius: 0;
+  cursor: pointer;
+  transition: all var(--nuvi-transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--nuvi-spacing-xs);
+}
+
+.nuvi-settings-tab:hover {
+  color: var(--nuvi-text-secondary);
+  border-bottom-color: var(--nuvi-border-hover);
+}
+
+.nuvi-settings-tab.active {
+  color: var(--nuvi-primary);
+  border-bottom-color: var(--nuvi-primary);
+}
+
+.nuvi-settings-tab svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* ========================================
+   6. Animations & Transitions
+   ======================================== */
+
+@keyframes nuvi-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes nuvi-slide-in {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes nuvi-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes nuvi-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes nuvi-slide-down {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+@keyframes nuvi-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes nuvi-scale-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+.nuvi-animate-fade-in {
+  animation: nuvi-fade-in var(--nuvi-transition-base);
+}
+
+.nuvi-animate-slide-in {
+  animation: nuvi-slide-in var(--nuvi-transition-slow);
+}
+
+.nuvi-animate-pulse {
+  animation: nuvi-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.nuvi-animate-slide-up {
+  animation: nuvi-slide-up var(--nuvi-transition-base) ease-out;
+}
+
+.nuvi-animate-slide-down {
+  animation: nuvi-slide-down var(--nuvi-transition-base) ease-out;
+}
+
+.nuvi-animate-fade-out {
+  animation: nuvi-fade-out var(--nuvi-transition-fast) ease-out;
+}
+
+.nuvi-animate-scale-out {
+  animation: nuvi-scale-out var(--nuvi-transition-base) ease-out;
+}
+
+/* Tab content animation */
+.nuvi-tab-content {
+  position: relative;
+  min-height: 300px;
+}
+
+.nuvi-tab-panel {
+  animation: nuvi-slide-up 0.2s ease-out;
+}
+
+/* Dashboard specific tab content */
+.nuvi-dashboard .nuvi-tab-content {
+  padding: 0;
+}
+
+.nuvi-dashboard .nuvi-tab-panel {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: var(--nuvi-spacing-xl) var(--nuvi-spacing-lg);
+}
+
+/* ========================================
+   7. Responsive Design
+   ======================================== */
+
+/* Mobile Layout Adjustments */
+@media (max-width: 768px) {
+  .nuvi-sidebar {
+    position: fixed;
+    left: -100%;
+    transition: left var(--nuvi-transition-slow);
+    z-index: 50;
+  }
+  
+  .nuvi-sidebar.open {
+    left: 0;
+  }
+  
+  .nuvi-main {
+    padding: var(--nuvi-spacing-md);
+  }
+  
+  .nuvi-header-content {
+    padding: 0 var(--nuvi-spacing-md);
+  }
+}
+
+/* ========================================
+   8. Print Styles
+   ======================================== */
+
+@media print {
+  .nuvi-sidebar,
+  .nuvi-header {
+    display: none;
+  }
+  
+  .nuvi-main {
+    padding: 0;
+  }
+  
+  .nuvi-card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+}
+
+/* ========================================
+   9. Additional Components
+   ======================================== */
+
+/* Dropdowns */
+.nuvi-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 0.5rem;
+  min-width: 16rem;
+  background-color: var(--nuvi-surface);
+  border-radius: var(--nuvi-radius-lg);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--nuvi-border);
+  z-index: 50;
+  animation: nuvi-fade-in 0.15s ease-out;
+}
+
+.nuvi-dropdown-right {
+  right: 0;
+  left: auto;
+}
+
+.nuvi-dropdown-content {
+  padding: 0.5rem;
+}
+
+.nuvi-dropdown-label {
+  font-size: 0.75rem;
+  color: var(--nuvi-text-muted);
+  padding: 0.75rem 0.75rem 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.nuvi-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--nuvi-spacing-sm);
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--nuvi-radius-md);
+  font-size: 0.875rem;
+  text-align: left;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: var(--nuvi-text-primary);
+  text-decoration: none;
+}
+
+.nuvi-dropdown-item:hover {
+  background-color: var(--nuvi-surface-hover);
+}
+
+.nuvi-dropdown-item.active {
+  background-color: var(--nuvi-surface-hover);
+}
+
+.nuvi-dropdown-divider {
+  height: 1px;
+  background-color: var(--nuvi-border);
+  margin: 0.5rem 0;
+}
+
+/* Dropdown trigger helper */
+.nuvi-dropdown-trigger:hover .nuvi-dropdown {
+  display: block;
+}
+
+.nuvi-dropdown-trigger .nuvi-dropdown {
+  display: none;
+}
+
+/* Additional Utility Classes */
+.nuvi-relative {
+  position: relative;
+}
+
+.nuvi-inline-flex {
+  display: inline-flex;
+}
+
+.nuvi-w-full {
+  width: 100%;
+}
+
+.nuvi-text-left {
+  text-align: left;
+}
+
+.nuvi-text-center {
+  text-align: center;
+}
+
+/* Content Container for embedded components */
+.nuvi-content-container {
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+  overflow: hidden;
+  position: relative;
+}
+
+.nuvi-font-bold {
+  font-weight: 700;
+}
+
+.nuvi-text-2xl {
+  font-size: 1.5rem;
+}
+
+.nuvi-text-xs {
+  font-size: 0.75rem;
+}
+
+.nuvi-text-primary {
+  color: var(--nuvi-primary);
+}
+
+.nuvi-text-secondary {
+  color: var(--nuvi-text-secondary);
+}
+
+.nuvi-text-success {
+  color: var(--nuvi-success);
+}
+
+.nuvi-text-error {
+  color: var(--nuvi-error);
+}
+
+.nuvi-bg-surface-hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.nuvi-hover\:bg-surface-hover:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.nuvi-transition {
+  transition: all var(--nuvi-transition-base);
+}
+
+.nuvi-rounded-md {
+  border-radius: var(--nuvi-radius-md);
+}
+
+.nuvi-rounded-lg {
+  border-radius: var(--nuvi-radius-lg);
+}
+
+.nuvi-p-sm {
+  padding: var(--nuvi-spacing-sm);
+}
+
+.nuvi-p-md {
+  padding: var(--nuvi-spacing-md);
+}
+
+.nuvi-px-sm {
+  padding-left: var(--nuvi-spacing-sm);
+  padding-right: var(--nuvi-spacing-sm);
+}
+
+.nuvi-px-md {
+  padding-left: var(--nuvi-spacing-md);
+  padding-right: var(--nuvi-spacing-md);
+}
+
+.nuvi-py-sm {
+  padding-top: var(--nuvi-spacing-sm);
+  padding-bottom: var(--nuvi-spacing-sm);
+}
+
+.nuvi-py-md {
+  padding-top: var(--nuvi-spacing-md);
+  padding-bottom: var(--nuvi-spacing-md);
+}
+
+.nuvi-py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.nuvi-px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.nuvi-p-1 {
+  padding: 0.25rem;
+}
+
+.nuvi-p-2 {
+  padding: 0.5rem;
+}
+
+.nuvi-text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.nuvi-h-8 {
+  height: 2rem;
+}
+
+.nuvi-w-8 {
+  width: 2rem;
+}
+
+.nuvi-w-10 {
+  width: 2.5rem;
+}
+
+.nuvi-h-4 {
+  height: 1rem;
+}
+
+.nuvi-w-4 {
+  width: 1rem;
+}
+
+.nuvi-h-3 {
+  height: 0.75rem;
+}
+
+.nuvi-w-3 {
+  width: 0.75rem;
+}
+
+.nuvi-h-1\.5 {
+  height: 0.375rem;
+}
+
+.nuvi-w-1\.5 {
+  width: 0.375rem;
+}
+
+.nuvi-gap-1 {
+  gap: 0.25rem;
+}
+
+.nuvi-gap-2 {
+  gap: 0.5rem;
+}
+
+.nuvi-ml-1 {
+  margin-left: 0.25rem;
+}
+
+.nuvi-checkbox-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+.nuvi-py-lg {
+  padding-top: var(--nuvi-spacing-lg);
+  padding-bottom: var(--nuvi-spacing-lg);
+}
+
+.nuvi-py-xl {
+  padding-top: var(--nuvi-spacing-xl);
+  padding-bottom: var(--nuvi-spacing-xl);
+}
+
+.nuvi-mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.nuvi-mb-xs {
+  margin-bottom: var(--nuvi-spacing-xs);
+}
+
+.nuvi-mt-xs {
+  margin-top: var(--nuvi-spacing-xs);
+}
+
+.nuvi-space-y-sm > * + * {
+  margin-top: var(--nuvi-spacing-sm);
+}
+
+.nuvi-space-y-md > * + * {
+  margin-top: var(--nuvi-spacing-md);
+}
+
+.nuvi-border {
+  border: 1px solid var(--nuvi-border);
+}
+
+.nuvi-underline {
+  text-decoration: underline;
+}
+
+.nuvi-hover\:underline:hover {
+  text-decoration: underline;
+}
+
+/* Card hover effect */
+.nuvi-card-hover {
+  transition: all var(--nuvi-transition-base);
+}
+
+.nuvi-card-hover:hover {
+  box-shadow: var(--nuvi-shadow-md);
+  transform: translateY(-2px);
+}
+
+/* Surface hover color */
+:root {
+  --nuvi-surface-hover: rgba(0, 0, 0, 0.02);
+}
+
+.dark {
+  --nuvi-surface-hover: rgba(255, 255, 255, 0.02);
+}
+
+/* Additional utilities */
+.nuvi-w-24 {
+  width: 6rem;
+}
+
+.nuvi-h-24 {
+  height: 6rem;
+}
+
+.nuvi-pt-md {
+  padding-top: var(--nuvi-spacing-md);
+}
+
+.nuvi-items-center {
+  align-items: center;
+}
+
+.nuvi-justify-center {
+  justify-content: center;
+}
+
+.nuvi-space-y-xs > * + * {
+  margin-top: var(--nuvi-spacing-xs);
+}
+
+.nuvi-py-xs {
+  padding-top: var(--nuvi-spacing-xs);
+  padding-bottom: var(--nuvi-spacing-xs);
+}
+
+.nuvi-px-xs {
+  padding-left: var(--nuvi-spacing-xs);
+  padding-right: var(--nuvi-spacing-xs);
+}
+
+.nuvi-p-sm {
+  padding: var(--nuvi-spacing-sm);
+}
+
+.nuvi-bg-primary {
+  background-color: var(--nuvi-primary);
+}
+
+.nuvi-bg-muted {
+  background-color: var(--nuvi-muted);
+}
+
+.nuvi-bg-primary-light {
+  background-color: var(--nuvi-primary-light);
+}
+
+/* Transform utilities for toggles */
+.nuvi-translate-x-0 {
+  transform: translateX(0);
+}
+
+.nuvi-translate-x-3 {
+  transform: translateX(0.75rem);
+}
+
+.nuvi-transition {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.nuvi-duration-200 {
+  transition-duration: 200ms;
+}
+
+.nuvi-ease-in-out {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Additional spacing utilities */
+.nuvi-my-lg {
+  margin-top: var(--nuvi-spacing-lg);
+  margin-bottom: var(--nuvi-spacing-lg);
+}
+
+.nuvi-mr-sm {
+  margin-right: var(--nuvi-spacing-sm);
+}
+
+.nuvi-space-y-lg > * + * {
+  margin-top: var(--nuvi-spacing-lg);
+}
+
+.nuvi-p-lg {
+  padding: var(--nuvi-spacing-lg);
+}
+
+/* Missing utilities from dashboard */
+.nuvi-h-16 {
+  height: 4rem;
+}
+
+.nuvi-w-16 {
+  width: 4rem;
+}
+
+.nuvi-h-64 {
+  height: 16rem;
+}
+
+.nuvi-inline {
+  display: inline;
+}
+
+.nuvi-line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.nuvi-object-cover {
+  object-fit: cover;
+}
+
+.nuvi-max-h-96 {
+  max-height: 24rem;
+}
+
+.nuvi-overflow-y-auto {
+  overflow-y: auto;
+}
+
+.nuvi-flex-1 {
+  flex: 1 1 0%;
+}
+
+.nuvi-flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+.nuvi-col-span-2 {
+  grid-column: span 2 / span 2;
+}
+
+.nuvi-rounded {
+  border-radius: var(--nuvi-radius-md);
+}
+
+/* Additional position utilities */
+.nuvi-relative {
+  position: relative;
+}
+
+.nuvi-flex-1 {
+  flex: 1;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.left-3 {
+  left: 0.75rem;
+}
+
+.top-3 {
+  right: 0.75rem;
+}
+
+.right-3 {
+  right: 0.75rem;
+}
+
+.top-1\/2 {
+  top: 50%;
+}
+
+.transform {
+  transform: translateX(0);
+}
+
+.-translate-y-1\/2 {
+  transform: translateY(-50%);
+}
+
+.pl-10 {
+  padding-left: 2.5rem;
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+.pb-2 {
+  padding-bottom: 0.5rem;
+}
+
+.aspect-\[16\/10\] {
+  aspect-ratio: 16 / 10;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.h-16 {
+  height: 4rem;
+}
+
+.w-16 {
+  width: 4rem;
+}
+
+.h-12 {
+  height: 3rem;
+}
+
+.w-12 {
+  width: 3rem;
+}
+
+.h-3 {
+  height: 0.75rem;
+}
+
+.w-3 {
+  width: 0.75rem;
+}
+
+.mr-1 {
+  margin-right: 0.25rem;
+}
+
+.text-green-500 {
+  color: var(--nuvi-primary);
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+.nuvi-text-left {
+  text-align: left;
+}
+
+.nuvi-h-64 {
+  height: 16rem;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Skeleton Loading Styles */
+.nuvi-skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--nuvi-surface-hover);
+  border-radius: var(--nuvi-radius-md);
+}
+
+.nuvi-skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+  animation: nuvi-skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.nuvi-skeleton-text {
+  height: 1rem;
+  margin-bottom: var(--nuvi-spacing-sm);
+  background-color: var(--nuvi-surface-hover);
+  border-radius: var(--nuvi-radius-sm);
+}
+
+.nuvi-skeleton-heading {
+  height: 1.5rem;
+  width: 50%;
+  margin-bottom: var(--nuvi-spacing-md);
+  background-color: var(--nuvi-surface-hover);
+  border-radius: var(--nuvi-radius-sm);
+}
+
+.nuvi-skeleton-card {
+  padding: var(--nuvi-spacing-lg);
+  background-color: var(--nuvi-surface);
+  border: 1px solid var(--nuvi-border);
+  border-radius: var(--nuvi-radius-lg);
+}
+
+.nuvi-skeleton-avatar {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background-color: var(--nuvi-surface-hover);
+}
+
+.nuvi-skeleton-image {
+  width: 100%;
+  height: 200px;
+  background-color: var(--nuvi-surface-hover);
+  border-radius: var(--nuvi-radius-md);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes nuvi-skeleton-pulse {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes nuvi-skeleton-wave {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.nuvi-w-8 {
+  width: 2rem;
+}
+
+.nuvi-h-8 {
+  height: 2rem;
+}
+
+.nuvi-rounded {
+  border-radius: 0.25rem;
+}
+
+.nuvi-items-start {
+  align-items: flex-start;
+}
+
+.nuvi-text-primary {
+  color: var(--nuvi-primary);
+}
+
+.nuvi-text-secondary {
+  color: var(--nuvi-text-secondary);
+}
+
+.nuvi-mb-sm {
+  margin-bottom: var(--nuvi-spacing-sm);
+}
+
+.nuvi-mb-xs {
+  margin-bottom: var(--nuvi-spacing-xs);
+}
+
+.nuvi-mt-sm {
+  margin-top: var(--nuvi-spacing-sm);
+}
+
+.nuvi-gap-sm {
+  gap: var(--nuvi-spacing-sm);
+}
+
+.nuvi-gap-xs {
+  gap: var(--nuvi-spacing-xs);
+}
+
+.nuvi-ml-sm {
+  margin-left: var(--nuvi-spacing-sm);
+}
+
+.nuvi-h-6 {
+  height: 1.5rem;
+}
+
+.nuvi-w-6 {
+  width: 1.5rem;
+}
+
+.nuvi-h-12 {
+  height: 3rem;
+}
+
+.nuvi-w-12 {
+  width: 3rem;
+}
+
+/* CRITICAL FIX: Force horizontal sub-tabs layout with maximum specificity */
+/* Override Tailwind's button reset */
+.nuvi-sub-tabs button {
+  display: inline-flex !important;
+}
+
+body .nuvi-sub-tabs .nuvi-sub-tabs-list {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: stretch !important;
+}
+
+body .nuvi-sub-tabs .nuvi-sub-tabs-list > * {
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+}
+
+/* Ensure buttons in sub-tabs are not affected by Tailwind's button reset */
+.nuvi-sub-tabs .nuvi-sub-tabs-list button.nuvi-tab {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  width: auto !important;
+  max-width: none !important;
+}
+
+/* ========================================
+   10. Position Utilities (for modals)
+   ======================================== */
+
+/* Position utilities */
+.nuvi-fixed {
+  position: fixed;
+}
+
+.nuvi-absolute {
+  position: absolute;
+}
+
+.nuvi-sticky {
+  position: sticky;
+}
+
+/* Inset utilities */
+.nuvi-inset-0 {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.nuvi-inset-x-0 {
+  left: 0;
+  right: 0;
+}
+
+.nuvi-inset-y-0 {
+  top: 0;
+  bottom: 0;
+}
+
+/* Z-index utilities */
+.nuvi-z-0 {
+  z-index: 0;
+}
+
+.nuvi-z-10 {
+  z-index: 10;
+}
+
+.nuvi-z-20 {
+  z-index: 20;
+}
+
+.nuvi-z-30 {
+  z-index: 30;
+}
+
+.nuvi-z-40 {
+  z-index: 40;
+}
+
+.nuvi-z-50 {
+  z-index: 50;
+}
+
+.nuvi-z-\[9999\] {
+  z-index: 9999;
+}
+
+/* Background utilities */
+.nuvi-bg-black\/50 {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.nuvi-bg-white {
+  background-color: #ffffff;
+}
+
+.nuvi-bg-gray-100 {
+  background-color: #f3f4f6;
+}
+
+/* Shadow utilities */
+.nuvi-shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Max width utilities */
+.nuvi-max-w-2xl {
+  max-width: 42rem;
+}
+
+/* Max height utilities */
+.nuvi-max-h-\[90vh\] {
+  max-height: 90vh;
+}
+
+/* Overflow utilities */
+.nuvi-overflow-hidden {
+  overflow: hidden;
+}
+
+.nuvi-overflow-y-auto {
+  overflow-y: auto;
+}
+
+/* Margin utilities */
+.nuvi-mx-4 {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+/* Border utilities */
+.nuvi-border-b {
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--nuvi-border);
+}
+
+/* Hover utilities */
+.hover\:nuvi-bg-gray-100:hover {
+  background-color: #f3f4f6;
+}
+
+/* Additional utilities for modal close button */
+.nuvi-p-xs {
+  padding: var(--nuvi-spacing-xs);
+}
+
+.rotate-45 {
+  transform: rotate(45deg);
+}
+
+/* ========================================
+   11. View Transitions API Support
+   ======================================== */
+
+@supports (view-transition-name: root) {
+  ::view-transition-old(root) {
+    animation: nuvi-scale-out var(--nuvi-transition-base) ease-out;
+  }
+
+  ::view-transition-new(root) {
+    animation: nuvi-slide-up var(--nuvi-transition-base) ease-out;
+  }
+
+  /* Custom named transitions */
+  .page-transition-wrapper {
+    view-transition-name: page-content;
+  }
+
+  ::view-transition-old(page-content) {
+    animation: nuvi-fade-out var(--nuvi-transition-fast) ease-out;
+  }
+
+  ::view-transition-new(page-content) {
+    animation: nuvi-fade-in var(--nuvi-transition-base) ease-out;
+  }
+}
+
+/* Smooth page transitions */
+.page-transition-wrapper {
+  will-change: transform, opacity;
+}
+
+/* ========================================
+   12. AI Chat Styles
+   ======================================== */
+
+/* AI Sidebar Styles */
+.nuvi-fixed {
+  position: fixed;
+}
+
+.nuvi-inset-0 {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.nuvi-right-0 {
+  right: 0;
+}
+
+.nuvi-top-0 {
+  top: 0;
+}
+
+.nuvi-translate-x-0 {
+  transform: translateX(0);
+}
+
+.nuvi-translate-x-full {
+  transform: translateX(100%);
+}
+
+.nuvi-transition-transform {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nuvi-transition-opacity {
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.nuvi-duration-300 {
+  transition-duration: 300ms;
+}
+
+.nuvi-z-40 {
+  z-index: 40;
+}
+
+.nuvi-z-50 {
+  z-index: 50;
+}
+
+.nuvi-bg-black\/50 {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.nuvi-shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+@keyframes nuvi-bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.nuvi-animate-bounce {
+  animation: nuvi-bounce 1s infinite;
+}
+
+.nuvi-w-\[420px\] {
+  width: 420px;
+}
+
+.nuvi-h-screen {
+  height: 100vh;
+}
+
+.nuvi-z-\[9999\] {
+  z-index: 9999;
+}
+
+.nuvi-opacity-0 {
+  opacity: 0;
+}
+
+.nuvi-opacity-100 {
+  opacity: 1;
+}
+
+.nuvi-backdrop-blur-xl {
+  backdrop-filter: blur(24px);
+}
+
+.nuvi-bg-surface\/95 {
+  background-color: rgba(var(--nuvi-surface-rgb), 0.95);
+}
+
+.nuvi-bg-surface\/50 {
+  background-color: rgba(var(--nuvi-surface-rgb), 0.5);
+}
+
+.nuvi-backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+}
+
+.nuvi-from-primary\/10 {
+  --tw-gradient-from: rgba(var(--nuvi-primary-rgb), 0.1);
+}
+
+.nuvi-to-primary\/5 {
+  --tw-gradient-to: rgba(var(--nuvi-primary-rgb), 0.05);
+}
+
+.nuvi-from-primary\/20 {
+  --tw-gradient-from: rgba(var(--nuvi-primary-rgb), 0.2);
+}
+
+.nuvi-to-primary\/10 {
+  --tw-gradient-to: rgba(var(--nuvi-primary-rgb), 0.1);
+}
+
+.nuvi-from-secondary\/20 {
+  --tw-gradient-from: rgba(var(--nuvi-text-secondary-rgb), 0.2);
+}
+
+.nuvi-to-secondary\/10 {
+  --tw-gradient-to: rgba(var(--nuvi-text-secondary-rgb), 0.1);
+}
+
+.nuvi-bg-primary\/60 {
+  background-color: rgba(var(--nuvi-primary-rgb), 0.6);
+}
+
+.nuvi-w-11 {
+  width: 2.75rem;
+}
+
+.nuvi-h-11 {
+  height: 2.75rem;
+}
+
+.nuvi-rounded-xl {
+  border-radius: 0.75rem;
+}
+
+.nuvi-w-9 {
+  width: 2.25rem;
+}
+
+.nuvi-h-9 {
+  height: 2.25rem;
+}
+
+.nuvi-w-8 {
+  width: 2rem;
+}
+
+.nuvi-h-8 {
+  height: 2rem;
+}
+
+.nuvi-w-3 {
+  width: 0.75rem;
+}
+
+.nuvi-h-3 {
+  height: 0.75rem;
+}
+
+.nuvi-rounded-2xl {
+  border-radius: 1rem;
+}
+
+.nuvi-rounded-tr-md {
+  border-top-right-radius: 0.375rem;
+}
+
+.nuvi-rounded-tl-md {
+  border-top-left-radius: 0.375rem;
+}
+
+.nuvi-gap-1\.5 {
+  gap: 0.375rem;
+}
+
+.nuvi-leading-relaxed {
+  line-height: 1.625;
+}
+
+.nuvi-scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+.nuvi-ease-in-out {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nuvi-flex-row-reverse {
+  flex-direction: row-reverse;
+}
+
+.nuvi-items-end {
+  align-items: flex-end;
+}
+
+.nuvi-pr-12 {
+  padding-right: 3rem;
+}
+
+.nuvi-bottom-2 {
+  bottom: 0.5rem;
+}
+
+.nuvi-right-2 {
+  right: 0.5rem;
+}
+
+.-nuvi-bottom-1 {
+  bottom: -0.25rem;
+}
+
+.-nuvi-right-1 {
+  right: -0.25rem;
+}
+
+.nuvi-bg-gradient-to-r {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
+}
+
+.nuvi-bg-gradient-to-br {
+  background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+}
+
+.nuvi-from-primary {
+  --tw-gradient-from: var(--nuvi-primary);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.nuvi-to-primary\/80 {
+  --tw-gradient-to: rgba(var(--nuvi-primary-rgb), 0.8);
+}
+
+:root {
+  --nuvi-surface-rgb: 255, 255, 255;
+  --nuvi-primary-rgb: 59, 130, 246;
+  --nuvi-text-secondary-rgb: 107, 114, 128;
+}
+
+.nuvi-ring-2 {
+  box-shadow: 0 0 0 2px var(--tw-ring-color);
+}
+
+.nuvi-ring-primary\/20 {
+  --tw-ring-color: rgba(var(--nuvi-primary-rgb), 0.2);
+}
+
+.nuvi-shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.nuvi-border-l {
+  border-left-width: 1px;
+}
+
+.nuvi-h-full {
+  height: 100%;
+}
+
+/* ========================================
+   13. Resource List Component Styles
+   ======================================== */
+
+/* Resource List Container */
+.nuvi-resource-list {
+  width: 100%;
+}
+
+.nuvi-resource-list-header {
+  margin-bottom: var(--nuvi-spacing-lg);
+}
+
+.nuvi-resource-list-controls {
+  margin-bottom: var(--nuvi-spacing-md);
+}
+
+/* Resource list header spacing */
+.nuvi-resource-list-header {
+  margin-bottom: 0;
+}
+
+/* View tabs spacing */
+.nuvi-resource-list nav {
+  padding-bottom: 0;
+}
+
+.nuvi-resource-list nav button {
+  padding: 0.75rem 0;
+}
+
+/* Resource List Table Styles */
+.nuvi-resource-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.nuvi-resource-list thead {
+  background-color: var(--nuvi-muted);
+  border-bottom: 1px solid var(--nuvi-border);
+}
+
+.nuvi-resource-list th {
+  padding: var(--nuvi-spacing-sm) var(--nuvi-spacing-md);
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--nuvi-text-secondary);
+}
+
+.nuvi-resource-list tbody tr {
+  border-bottom: 1px solid var(--nuvi-border);
+  transition: background-color 0.15s ease;
+}
+
+.nuvi-resource-list tbody tr:hover {
+  background-color: var(--nuvi-muted-alpha);
+}
+
+.nuvi-resource-list tbody tr.selected {
+  background-color: var(--nuvi-primary-lighter);
+}
+
+.nuvi-resource-list td {
+  padding: var(--nuvi-spacing-md);
+  font-size: 0.875rem;
+  color: var(--nuvi-text-primary);
+}
+
+/* Resource Item Card (for grid view) */
+.nuvi-resource-item-card {
+  position: relative;
+  padding: var(--nuvi-spacing-lg);
+  background-color: var(--nuvi-surface);
+  border: 1px solid var(--nuvi-border);
+  border-radius: var(--nuvi-radius-lg);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.nuvi-resource-item-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--nuvi-shadow-md);
+  border-color: var(--nuvi-border-hover);
+}
+
+.nuvi-resource-item-card.selected {
+  border-color: var(--nuvi-primary);
+  background-color: var(--nuvi-primary-lighter);
+}
+
+/* Empty State */
+.nuvi-resource-empty-state {
+  padding: var(--nuvi-spacing-3xl) var(--nuvi-spacing-lg);
+  text-align: center;
+}
+
+.nuvi-resource-empty-state img {
+  width: 12rem;
+  height: 12rem;
+  margin: 0 auto var(--nuvi-spacing-lg);
+  opacity: 0.5;
+}
+
+.nuvi-resource-empty-state h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--nuvi-text-primary);
+  margin-bottom: var(--nuvi-spacing-sm);
+}
+
+.nuvi-resource-empty-state p {
+  color: var(--nuvi-text-secondary);
+  margin-bottom: var(--nuvi-spacing-lg);
+  max-width: 28rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Bulk Actions Bar */
+.nuvi-bulk-actions-bar {
+  padding: var(--nuvi-spacing-md);
+  background-color: var(--nuvi-primary);
+  color: white;
+  border-radius: var(--nuvi-radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--nuvi-spacing-md);
+}
+
+.nuvi-bulk-actions-bar .nuvi-btn {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.nuvi-bulk-actions-bar .nuvi-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Filter Panel */
+.nuvi-filter-panel {
+  padding: var(--nuvi-spacing-lg);
+  background-color: var(--nuvi-muted-alpha);
+  border: 1px solid var(--nuvi-border);
+  border-radius: var(--nuvi-radius-lg);
+  margin-bottom: var(--nuvi-spacing-md);
+}
+
+.nuvi-filter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--nuvi-spacing-xs);
+  padding: var(--nuvi-spacing-xs) var(--nuvi-spacing-sm);
+  background-color: var(--nuvi-surface);
+  border: 1px solid var(--nuvi-border);
+  border-radius: var(--nuvi-radius-full);
+  font-size: 0.75rem;
+  color: var(--nuvi-text-primary);
+}
+
+.nuvi-filter-tag button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--nuvi-text-secondary);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.nuvi-filter-tag button:hover {
+  color: var(--nuvi-error);
+}
+
+/* View Tabs */
+.nuvi-view-tabs {
+  display: flex;
+  gap: var(--nuvi-spacing-md);
+  border-bottom: 1px solid var(--nuvi-border);
+  margin-bottom: var(--nuvi-spacing-lg);
+}
+
+.nuvi-view-tab {
+  position: relative;
+  padding: var(--nuvi-spacing-sm) 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--nuvi-text-secondary);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.nuvi-view-tab:hover {
+  color: var(--nuvi-text-primary);
+}
+
+.nuvi-view-tab.active {
+  color: var(--nuvi-primary);
+  border-bottom-color: var(--nuvi-primary);
+}
+
+.nuvi-view-tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 var(--nuvi-spacing-xs);
+  margin-left: var(--nuvi-spacing-xs);
+  background-color: var(--nuvi-muted);
+  color: var(--nuvi-text-secondary);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  border-radius: var(--nuvi-radius-full);
+  transition: all 0.15s ease;
+}
+
+.nuvi-view-tab.active .nuvi-view-tab-badge {
+  background-color: var(--nuvi-primary-lighter);
+  color: var(--nuvi-primary);
+}
+
+/* View Mode Toggle */
+.nuvi-view-mode-toggle {
+  display: flex;
+  padding: 2px;
+  background-color: var(--nuvi-muted);
+  border: 1px solid var(--nuvi-border);
+  border-radius: var(--nuvi-radius-md);
+}
+
+.nuvi-view-mode-toggle button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--nuvi-spacing-xs);
+  background: none;
+  border: none;
+  border-radius: calc(var(--nuvi-radius-md) - 2px);
+  color: var(--nuvi-text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.nuvi-view-mode-toggle button:hover {
+  color: var(--nuvi-text-primary);
+}
+
+.nuvi-view-mode-toggle button.active {
+  background-color: var(--nuvi-surface);
+  color: var(--nuvi-primary);
+  box-shadow: var(--nuvi-shadow-xs);
+}
+
+/* Sortable Column Header */
+.nuvi-sortable-header {
+  display: flex;
+  align-items: center;
+  gap: var(--nuvi-spacing-xs);
+  cursor: pointer;
+  user-select: none;
+}
+
+.nuvi-sortable-header:hover {
+  color: var(--nuvi-text-primary);
+}
+
+.nuvi-sortable-header svg {
+  opacity: 0.5;
+  transition: opacity 0.15s ease;
+}
+
+.nuvi-sortable-header:hover svg {
+  opacity: 1;
+}
+
+/* Item Actions Menu */
+.nuvi-item-actions {
+  position: relative;
+}
+
+.nuvi-item-actions-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: var(--nuvi-spacing-xs);
+  min-width: 10rem;
+  background-color: var(--nuvi-surface);
+  border: 1px solid var(--nuvi-border);
+  border-radius: var(--nuvi-radius-md);
+  box-shadow: var(--nuvi-shadow-lg);
+  z-index: 50;
+}
+
+.nuvi-item-actions-menu button {
+  display: flex;
+  align-items: center;
+  gap: var(--nuvi-spacing-sm);
+  width: 100%;
+  padding: var(--nuvi-spacing-sm) var(--nuvi-spacing-md);
+  font-size: 0.875rem;
+  color: var(--nuvi-text-primary);
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.nuvi-item-actions-menu button:hover {
+  background-color: var(--nuvi-muted);
+}
+
+.nuvi-item-actions-menu button.destructive {
+  color: var(--nuvi-error);
+}
+
+.nuvi-item-actions-menu button.destructive:hover {
+  background-color: var(--nuvi-error-light);
+}
+
+/* Loading Skeleton */
+.nuvi-skeleton {
+  animation: nuvi-skeleton-pulse 2s ease-in-out infinite;
+  background: linear-gradient(
+    90deg,
+    var(--nuvi-muted) 0%,
+    var(--nuvi-border) 50%,
+    var(--nuvi-muted) 100%
+  );
+  background-size: 200% 100%;
+  border-radius: var(--nuvi-radius-md);
+}
+
+@keyframes nuvi-skeleton-pulse {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .nuvi-resource-list-controls {
+    flex-direction: column;
+    gap: var(--nuvi-spacing-sm);
+  }
+  
+  .nuvi-resource-list-controls > * {
+    width: 100%;
+  }
+  
+  .nuvi-bulk-actions-bar {
+    flex-direction: column;
+    gap: var(--nuvi-spacing-sm);
+    text-align: center;
+  }
+  
+  .nuvi-filter-panel {
+    padding: var(--nuvi-spacing-md);
+  }
+  
+  .nuvi-resource-list table {
+    font-size: 0.813rem;
+  }
+  
+  .nuvi-resource-list th,
+  .nuvi-resource-list td {
+    padding: var(--nuvi-spacing-xs) var(--nuvi-spacing-sm);
+  }
+}
+
+/* Modal Styles */
+.nuvi-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 1rem;
+}
+
+.nuvi-modal-content {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.nuvi-modal-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nuvi-modal-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.nuvi-modal-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.nuvi-modal-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}

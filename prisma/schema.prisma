@@ -1,0 +1,1238 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Store {
+  id              String          @id @default(cuid())
+  name            String
+  subdomain       String          @unique
+  customDomain    String?         @unique
+  logo            String?
+  description     String?
+  primaryColor    String          @default("#8B9F7E")
+  email           String?
+  phone           String?
+  address         String?
+  facebook        String?
+  instagram       String?
+  twitter         String?
+  youtube         String?
+  metaTitle       String?
+  metaDescription String?
+  keywords        String?
+  bannerImage     String?
+  bannerTitle     String?
+  bannerSubtitle  String?
+  currency        String          @default("USD")
+  themeCode       String          @default("commerce")
+  themeSettings   Json?
+  userId          String
+  status          String          @default("active")
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  appInstalls     AppInstall[]
+  blogs           Blog[]
+  blogPosts       BlogPost[]
+  categories      Category[]
+  customers       Customer[]
+  emailLogs       EmailLog[]
+  menus           Menu[]
+  orders          Order[]
+  pages           Page[]
+  products        Product[]
+  user            User            @relation(fields: [userId], references: [id])
+  storeSettings   StoreSettings?
+  paymentSettings PaymentSettings?
+  templates       StoreTemplate[]
+  searchIndexes   SearchIndex[]
+  searchQueries   SearchQuery[]
+  searchSynonyms  SearchSynonym[]
+  searchBoosts    SearchBoost[]
+  platformTransactions PlatformTransaction[]
+  searchRedirects SearchRedirect[]
+  searchSettings  SearchSettings?
+  googleIntegration GoogleIntegration?
+  translations    Translation[]
+  metafieldDefinitions MetafieldDefinition[]
+  metafields      Metafield[]
+  giftCards       GiftCard[]
+  staffMembers    StaffMember[]
+  subscription    Subscription?
+}
+
+model StaffMember {
+  id              String          @id @default(cuid())
+  storeId         String
+  store           Store           @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  email           String
+  name            String
+  role            String          // admin, manager, staff, viewer, custom
+  department      String?
+  phone           String?
+  status          String          @default("active") // active, inactive, suspended
+  
+  // Two-factor authentication
+  twoFactorEnabled Boolean        @default(false)
+  twoFactorMethod String?         // app, sms, email
+  twoFactorSecret String?
+  
+  // Access and permissions
+  permissions     Json?           // Detailed permissions object
+  accessRestrictions Json?        // IP whitelist, time restrictions, etc.
+  
+  // Activity tracking
+  lastLogin       DateTime?
+  lastActivity    DateTime?
+  invitedBy       String?
+  invitedAt       DateTime?
+  acceptedAt      DateTime?
+  
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  
+  @@unique([storeId, email])
+  @@index([storeId])
+  @@index([email])
+}
+
+model Product {
+  id                            String           @id @default(cuid())
+  name                          String
+  description                   String?
+  productType                   String           @default("physical")
+  isActive                      Boolean          @default(true)
+  storeId                       String
+  categoryId                    String?
+  templateId                    String?
+  metaTitle                     String?
+  metaDescription               String?
+  slug                          String?
+  tags                          Json             @default("[]")
+  images                        Json             @default("[]")
+  requiresShipping              Boolean          @default(true)
+  weight                        Float?
+  weightUnit                    String?
+  dimensions                    Json?
+  trackQuantity                 Boolean          @default(true)
+  continueSellingWhenOutOfStock Boolean          @default(false)
+  createdAt                     DateTime         @default(now())
+  updatedAt                     DateTime         @updatedAt
+  orderLineItems                OrderLineItem[]
+  template                      StoreTemplate?   @relation(fields: [templateId], references: [id])
+  store                         Store            @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  category                      Category?        @relation(fields: [categoryId], references: [id])
+  reviews                       ProductReview[]
+  variants                      ProductVariant[]
+  translations                  ProductTranslation[]
+}
+
+model ProductVariant {
+  id                            String          @id @default(cuid())
+  name                          String
+  sku                           String?         @unique
+  barcode                       String?
+  price                         Float
+  compareAtPrice                Float?
+  cost                          Float?
+  stock                         Int             @default(0)
+  weight                        Float?
+  weightUnit                    String?
+  trackQuantity                 Boolean         @default(true)
+  continueSellingWhenOutOfStock Boolean         @default(false)
+  options                       Json
+  productId                     String
+  createdAt                     DateTime        @default(now())
+  updatedAt                     DateTime        @updatedAt
+  orderLineItems                OrderLineItem[]
+  images                        ProductImage[]
+  product                       Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model ProductImage {
+  id        String         @id @default(cuid())
+  url       String
+  variantId String
+  createdAt DateTime       @default(now())
+  variant   ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+}
+
+model Category {
+  id          String         @id @default(cuid())
+  name        String
+  slug        String
+  description String?
+  image       String?
+  storeId     String
+  templateId  String?
+  type        String         @default("manual")
+  conditions  Json?
+  sortOrder   String         @default("manual")
+  isActive    Boolean        @default(true)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  template    StoreTemplate? @relation(fields: [templateId], references: [id])
+  store       Store          @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  products    Product[]
+  translations CategoryTranslation[]
+
+  @@unique([storeId, slug])
+}
+
+model Menu {
+  id        String     @id @default(cuid())
+  name      String
+  handle    String
+  storeId   String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  store     Store      @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  items     MenuItem[]
+
+  @@unique([storeId, handle])
+}
+
+model MenuItem {
+  id        String     @id @default(cuid())
+  label     String
+  link      String
+  target    String     @default("_self")
+  position  Int
+  parentId  String?
+  menuId    String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  parent    MenuItem?  @relation("MenuItemChildren", fields: [parentId], references: [id])
+  children  MenuItem[] @relation("MenuItemChildren")
+  menu      Menu       @relation(fields: [menuId], references: [id], onDelete: Cascade)
+
+  @@index([menuId, position])
+}
+
+model Order {
+  id                String          @id @default(cuid())
+  orderNumber       String          @unique
+  customerEmail     String
+  customerName      String
+  customerPhone     String?
+  customerId        String?
+  subtotalPrice     Float
+  totalTax          Float           @default(0)
+  totalShipping     Float           @default(0)
+  totalDiscount     Float           @default(0)
+  totalPrice        Float
+  currency          String          @default("USD")
+  status            String          @default("open")
+  financialStatus   String          @default("pending")
+  fulfillmentStatus String?
+  paymentStatus     String          @default("pending")
+  shippingAddress   Json
+  billingAddress    Json
+  shippingLines     Json?
+  tags              Json?
+  note              String?
+  noteAttributes    Json?
+  discountCodes     Json?
+  cancelReason      String?
+  cancelledAt       DateTime?
+  paymentProvider   String?         // 'stripe', 'nuvi', 'paypal', 'manual'
+  storeId           String
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  customer          Customer?       @relation(fields: [customerId], references: [id])
+  store             Store           @relation(fields: [storeId], references: [id])
+  lineItems         OrderLineItem[]
+  platformTransactions PlatformTransaction[]
+  giftCardTransactions GiftCardTransaction[]
+  giftCards         GiftCard[]
+
+  @@index([storeId, createdAt])
+  @@index([storeId, status])
+  @@index([customerEmail])
+}
+
+model OrderLineItem {
+  id               String          @id @default(cuid())
+  orderId          String
+  productId        String?
+  variantId        String?
+  sku              String?
+  title            String
+  variantTitle     String?
+  quantity         Int
+  price            Float
+  compareAtPrice   Float?
+  totalPrice       Float
+  taxable          Boolean         @default(true)
+  requiresShipping Boolean         @default(true)
+  weight           Float?
+  image            String?
+  customAttributes Json?
+  position         Int             @default(1)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  variant          ProductVariant? @relation(fields: [variantId], references: [id])
+  product          Product?        @relation(fields: [productId], references: [id])
+  order            Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId, position])
+}
+
+model Customer {
+  id                    String          @id @default(cuid())
+  email                 String
+  firstName             String
+  lastName              String
+  phone                 String?
+  dateOfBirth           DateTime?
+  gender                String?
+  addresses             Json?
+  note                  String?
+  tags                  Json?
+  acceptsMarketing      Boolean         @default(false)
+  emailMarketingConsent Json?
+  smsMarketingConsent   Json?
+  taxExempt             Boolean         @default(false)
+  taxExemptions         Json?
+  ordersCount           Int             @default(0)
+  totalSpent            Float           @default(0)
+  status                String          @default("active")
+  storeId               String
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+  lastOrderAt           DateTime?
+  customerGroup         String?
+  groupAssignedAt       String?
+  groupAssignedBy       String?
+  groupRemovalReason    String?
+  groupRemovedAt        String?
+  store                 Store           @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  orders                Order[]
+  reviews               ProductReview[]
+
+  @@unique([storeId, email])
+  @@index([storeId, status])
+  @@index([email])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          String    @default("user")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  accounts      Account[]
+  sessions      Session[]
+  store         Store[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model StoreSectionInstance {
+  id          String         @id @default(cuid())
+  templateId  String
+  sectionType String
+  position    Int
+  enabled     Boolean        @default(true)
+  settings    Json
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  blocks      SectionBlock[]
+  template    StoreTemplate  @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  @@index([templateId, position])
+}
+
+model SectionBlock {
+  id        String               @id @default(cuid())
+  sectionId String
+  type      String
+  position  Int
+  enabled   Boolean              @default(true)
+  settings  Json
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
+  section   StoreSectionInstance @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+
+  @@index([sectionId, position])
+}
+
+model StoreTemplate {
+  id               String                 @id @default(cuid())
+  storeId          String
+  templateType     String
+  name             String
+  description      String?
+  isDefault        Boolean                @default(false)
+  enabled          Boolean                @default(true)
+  settings         Json?
+  seoSettings      Json?
+  hasEmptySections Boolean                @default(false)
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+  categories       Category[]
+  pages            Page[]
+  products         Product[]
+  sections         StoreSectionInstance[]
+  store            Store                  @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@unique([storeId, templateType, name])
+  @@index([storeId, templateType])
+  @@index([storeId, isDefault])
+}
+
+model Page {
+  id             String         @id @default(cuid())
+  storeId        String
+  templateId     String?
+  title          String
+  slug           String
+  content        String
+  seoTitle       String?
+  seoDescription String?
+  isPublished    Boolean        @default(false)
+  publishedAt    DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  template       StoreTemplate? @relation(fields: [templateId], references: [id])
+  store          Store          @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  translations   PageTranslation[]
+
+  @@unique([storeId, slug])
+  @@index([storeId, isPublished])
+}
+
+model Blog {
+  id          String     @id @default(cuid())
+  storeId     String
+  title       String
+  slug        String
+  description String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  store       Store      @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  posts       BlogPost[]
+
+  @@unique([storeId, slug])
+  @@index([storeId])
+}
+
+model BlogPost {
+  id             String    @id @default(cuid())
+  blogId         String
+  storeId        String
+  title          String
+  slug           String
+  excerpt        String?
+  content        String
+  featuredImage  String?
+  author         String
+  tags           String?
+  seoTitle       String?
+  seoDescription String?
+  isPublished    Boolean   @default(false)
+  publishedAt    DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  store          Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  blog           Blog      @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  translations   BlogPostTranslation[]
+
+  @@unique([blogId, slug])
+  @@index([storeId, isPublished])
+  @@index([blogId, isPublished])
+}
+
+model App {
+  id          String       @id @default(cuid())
+  code        String       @unique
+  name        String
+  description String?
+  icon        String?
+  category    String
+  developer   String
+  version     String       @default("1.0.0")
+  pricing     Json?
+  features    Json
+  permissions Json
+  webhooks    Json?
+  settings    Json?
+  isActive    Boolean      @default(true)
+  isPublic    Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  installs    AppInstall[]
+}
+
+model AppInstall {
+  id          String          @id @default(cuid())
+  storeId     String
+  appId       String
+  status      String          @default("active")
+  settings    Json?
+  apiKeys     Json?
+  webhookUrls Json?
+  permissions Json?
+  data        Json?
+  installedAt DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  lastUsedAt  DateTime?
+  app         App             @relation(fields: [appId], references: [id])
+  store       Store           @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  imports     ShopifyImport[]
+
+  @@unique([storeId, appId])
+  @@index([storeId, status])
+}
+
+model ShopifyImport {
+  id            String     @id @default(cuid())
+  appInstallId  String
+  storeUrl      String
+  status        String     @default("pending")
+  data          Json?
+  mappingConfig Json?
+  importStats   Json?
+  error         String?
+  startedAt     DateTime   @default(now())
+  completedAt   DateTime?
+  appInstall    AppInstall @relation(fields: [appInstallId], references: [id], onDelete: Cascade)
+
+  @@index([appInstallId, status])
+}
+
+model ProductReview {
+  id               String    @id @default(cuid())
+  productId        String
+  customerId       String?
+  rating           Int
+  title            String
+  content          String
+  verified         Boolean   @default(false)
+  verifiedPurchase Boolean   @default(false)
+  helpful          Int       @default(0)
+  authorName       String?
+  authorEmail      String?
+  status           String    @default("approved")
+  images           Json?
+  attributes       Json?
+  recommendProduct Boolean?
+  helpfulVotes     Json?
+  response         Json?
+  moderationNote   String?
+  moderatedBy      String?
+  moderatedAt      String?
+  submittedAt      String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  customer         Customer? @relation(fields: [customerId], references: [id])
+  product          Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId, rating])
+  @@index([productId, createdAt])
+  @@index([productId, status])
+  @@index([status])
+}
+
+model StoreSettings {
+  id                       String   @id @default(cuid())
+  storeId                  String   @unique
+  timeZone                 String   @default("America/New_York")
+  weekStartsOn             String   @default("monday")
+  weightUnit               String   @default("kg")
+  lengthUnit               String   @default("cm")
+  businessName             String?
+  businessEmail            String?
+  businessPhone            String?
+  businessAddress          String?
+  businessCity             String?
+  businessState            String?
+  businessZip              String?
+  businessCountry          String?
+  businessType             String?
+  taxId                    String?
+  businessHours            Json?
+  facebookUrl              String?
+  instagramUrl             String?
+  twitterUrl               String?
+  linkedinUrl              String?
+  youtubeUrl               String?
+  tiktokUrl                String?
+  metaTitle                String?
+  metaDescription          String?
+  metaKeywords             String?
+  googleAnalyticsId        String?
+  facebookPixelId          String?
+  tiktokPixelId            String?
+  snapchatPixelId          String?
+  hotjarId                 String?
+  clarityId                String?
+  enablePasswordProtection Boolean  @default(false)
+  storePassword            String?
+  enableAgeVerification    Boolean  @default(false)
+  minimumAge               Int      @default(18)
+  enableMaintenanceMode    Boolean  @default(false)
+  maintenanceMessage       String?
+  cookieBannerEnabled      Boolean  @default(true)
+  gdprEnabled              Boolean  @default(false)
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+  emailSettings            Json?
+  notificationSettings     Json?
+  paymentMethods           Json?
+  shippingZones            Json?
+  taxSettings              Json?
+  abandonedCartRecovery    Json?
+  abandonedCarts           Json?
+  activityLogs             Json?
+  apiKeys                  Json?
+  exportJobs               Json?
+  importJobs               Json?
+  inventory                Json?
+  marketingAutomations     Json?
+  marketingCampaigns       Json?
+  mediaLibrary             Json?
+  returnPolicy             Json?
+  returns                  Json?
+  seoSettings              Json?
+  staffMembers             Json?
+  urlRedirects             Json?
+  webhooks                 Json?
+  alertConfigs             Json?
+  alertHistory             Json?
+  customerGroups           Json?
+  discounts                Json?
+  healthCheckConfig        Json?
+  giftCardSettings         Json?    // { enabled, minAmount, maxAmount, defaultAmounts, expirationDays, allowPartialUse }
+  healthHistory            Json?
+  localizationSettings     Json?
+  monitoringConfig         Json?
+  notificationHistory      Json?
+  performanceConfig        Json?
+  performanceHistory       Json?
+  reviewSettings           Json?
+  searchSettings           Json?
+  translations             Json?
+  languageSettings         Json?
+  orderTimelines           Json?
+  checkoutSettings         Json?
+  currency                 Json?    // Currency settings and multi-currency configuration
+  store                    Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+}
+
+// Custom data models
+model MetafieldDefinition {
+  id          String   @id @default(cuid())
+  storeId     String
+  name        String
+  namespace   String
+  key         String
+  type        String   // text, number, date, boolean, json
+  description String?
+  appliesTo   String   // products, customers, orders, collections
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  store       Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  metafields  Metafield[]
+  
+  @@unique([storeId, namespace, key])
+  @@index([storeId])
+}
+
+model Metafield {
+  id           String   @id @default(cuid())
+  storeId      String
+  definitionId String?
+  namespace    String
+  key          String
+  value        String   // Store all values as JSON strings
+  type         String   // single_line_text_field, multi_line_text_field, number_integer, number_decimal, date, boolean, json
+  ownerType    String   // Product, Customer, Order, Collection
+  ownerId      String   // ID of the resource this metafield belongs to
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  store        Store                 @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  definition   MetafieldDefinition?  @relation(fields: [definitionId], references: [id], onDelete: SetNull)
+  
+  @@unique([storeId, namespace, key, ownerType, ownerId])
+  @@index([storeId])
+  @@index([ownerType, ownerId])
+}
+
+model PlatformSettings {
+  id                 String   @id @default(cuid())
+  platformName       String   @default("Nuvi SaaS")
+  defaultEmail       String   @default("noreply@nuvi.com")
+  supportEmail       String   @default("support@nuvi.com")
+  defaultCurrency    String   @default("USD")
+  maintenanceMode    Boolean  @default(false)
+  maintenanceMessage String?  @default("Our platform is currently undergoing scheduled maintenance. We'll be back shortly!")
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  copyrightText      String?  @default("© 2025 Nuvi SaaS. All rights reserved.")
+  facebookPixelId    String?
+  facebookUrl        String?
+  faviconUrl         String?
+  googleAnalyticsId  String?
+  hotjarId           String?
+  instagramUrl       String?
+  linkedinUrl        String?
+  platformLogoUrl    String?
+  smtpEncryption     String?  @default("TLS")
+  smtpHost           String?
+  smtpPassword       String?
+  smtpPort           Int?     @default(587)
+  smtpUsername       String?
+  tiktokPixelId      String?
+  twitterUrl         String?
+  youtubeUrl         String?
+}
+
+model PlatformBlog {
+  id          String             @id @default(cuid())
+  name        String             @unique
+  slug        String             @unique
+  description String?
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  posts       PlatformBlogPost[]
+}
+
+model PlatformBlogPost {
+  id             String       @id @default(cuid())
+  blogId         String
+  title          String
+  slug           String       @unique
+  excerpt        String?
+  content        String
+  featuredImage  String?
+  author         String
+  tags           String?
+  seoTitle       String?
+  seoDescription String?
+  isPublished    Boolean      @default(false)
+  publishedAt    DateTime?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  blog           PlatformBlog @relation(fields: [blogId], references: [id], onDelete: Cascade)
+
+  @@unique([blogId, slug])
+  @@index([blogId, isPublished])
+}
+
+model PricingPlan {
+  id            String   @id @default(cuid())
+  name          String   @unique
+  slug          String   @unique
+  description   String?
+  priceMonthly  Float
+  priceAnnually Float
+  features      Json     @default("[]")
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  subscriptions Subscription[]
+}
+
+model Subscription {
+  id                String       @id @default(cuid())
+  storeId           String       @unique
+  store             Store        @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  planId            String
+  plan              PricingPlan  @relation(fields: [planId], references: [id])
+  
+  status            String       @default("active") // active, paused, cancelled, expired
+  billingCycle      String       @default("monthly") // monthly, annually
+  currentPeriodStart DateTime
+  currentPeriodEnd  DateTime
+  cancelAtPeriodEnd Boolean      @default(false)
+  
+  // Payment information
+  paymentMethod     Json?        // Card details, etc.
+  lastPaymentDate   DateTime?
+  lastPaymentAmount Float?
+  nextPaymentDate   DateTime?
+  nextPaymentAmount Float?
+  
+  // Usage tracking
+  usage             Json?        // Current usage stats
+  usageLimits       Json?        // Plan limits
+  
+  // Billing history
+  invoices          Invoice[]
+  
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  
+  @@index([storeId])
+  @@index([planId])
+}
+
+model Invoice {
+  id              String       @id @default(cuid())
+  subscriptionId  String
+  subscription    Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  
+  invoiceNumber   String       @unique
+  amount          Float
+  currency        String       @default("USD")
+  status          String       @default("pending") // pending, paid, failed, refunded
+  
+  billingPeriodStart DateTime
+  billingPeriodEnd   DateTime
+  dueDate         DateTime
+  paidAt          DateTime?
+  
+  paymentMethod   Json?
+  lineItems       Json?        // Detailed breakdown
+  
+  pdfUrl          String?
+  
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  
+  @@index([subscriptionId])
+  @@index([invoiceNumber])
+}
+
+model EmailLog {
+  id        String   @id @default(cuid())
+  storeId   String
+  to        String
+  subject   String
+  status    String
+  messageId String?
+  provider  String?
+  error     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  store     Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@index([storeId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// Search App Models
+model SearchIndex {
+  id            String   @id @default(cuid())
+  storeId       String
+  entityType    String   // 'product', 'collection', 'page', 'blog_post'
+  entityId      String
+  title         String
+  content       String   // Full text content for searching
+  keywords      String?  // Additional keywords
+  boost         Float    @default(1.0) // Relevance boost factor
+  isActive      Boolean  @default(true)
+  imageUrl      String?
+  price         Float?   // For product sorting
+  popularity    Int      @default(0) // View/click count for relevance
+  metadata      Json?    // Additional searchable fields
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  store         Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@unique([storeId, entityType, entityId])
+  @@index([storeId, isActive])
+  @@index([storeId, entityType])
+  @@index([title])
+  @@index([updatedAt])
+}
+
+model SearchQuery {
+  id              String    @id @default(cuid())
+  storeId         String
+  query           String
+  normalizedQuery String    // Lowercase, trimmed version
+  resultCount     Int       @default(0)
+  clickedResults  Json?     // Array of clicked result IDs
+  searchFilters   Json?     // Applied filters
+  userAgent       String?
+  ipAddress       String?
+  sessionId       String?
+  customerId      String?
+  deviceType      String?   // 'desktop', 'mobile', 'tablet'
+  createdAt       DateTime  @default(now())
+  store           Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@index([storeId, createdAt])
+  @@index([storeId, normalizedQuery])
+  @@index([sessionId])
+}
+
+model SearchSynonym {
+  id           String   @id @default(cuid())
+  storeId      String
+  term         String   // Original term
+  synonyms     Json     // Array of synonyms
+  isActive     Boolean  @default(true)
+  priority     Int      @default(0) // Higher priority synonyms are applied first
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  store        Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@unique([storeId, term])
+  @@index([storeId, isActive])
+}
+
+model SearchBoost {
+  id         String   @id @default(cuid())
+  storeId    String
+  query      String   // Search query to boost for
+  entityType String   // Entity type to boost
+  entityId   String   // Specific entity to boost
+  boost      Float    @default(2.0) // Boost multiplier
+  startDate  DateTime?
+  endDate    DateTime?
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  store      Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@index([storeId, query])
+  @@index([storeId, isActive])
+  @@index([startDate, endDate])
+}
+
+model SearchRedirect {
+  id         String   @id @default(cuid())
+  storeId    String
+  query      String   // Exact match query
+  redirectTo String   // URL to redirect to
+  isActive   Boolean  @default(true)
+  priority   Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  store      Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@unique([storeId, query])
+  @@index([storeId, isActive])
+}
+
+model SearchSettings {
+  id                      String   @id @default(cuid())
+  storeId                 String   @unique
+  enableFuzzySearch       Boolean  @default(true)
+  fuzzyThreshold          Float    @default(0.8) // 0-1 similarity threshold
+  enableSynonyms          Boolean  @default(true)
+  enableAutoComplete      Boolean  @default(true)
+  autoCompleteMinChars    Int      @default(3)
+  autoCompleteMaxResults  Int      @default(10)
+  searchResultsPerPage    Int      @default(24)
+  enableSpellCorrection   Boolean  @default(true)
+  enableSearchHistory     Boolean  @default(true)
+  historyRetentionDays    Int      @default(30)
+  enablePopularSearches   Boolean  @default(true)
+  popularSearchesCount    Int      @default(10)
+  defaultSortOrder        String   @default("relevance") // relevance, price_asc, price_desc, newest
+  enableFacetedSearch     Boolean  @default(true)
+  facets                  Json?    // Configuration for faceted filters
+  filterConfiguration     Json?    // Filter UI configuration and settings
+  stopWords               Json?    // Words to ignore in search
+  boostFields             Json?    // Field-specific boost configuration
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+  store                   Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+}
+
+// Gift Card Models
+model GiftCard {
+  id              String    @id @default(cuid())
+  storeId         String
+  code            String    @unique // e.g., GIFT-XXXX-XXXX-XXXX
+  initialBalance  Float
+  currentBalance  Float
+  currency        String    @default("USD")
+  
+  // Recipient & Sender Info
+  recipientEmail  String?
+  recipientName   String?
+  senderName      String?
+  senderEmail     String?
+  message         String?
+  
+  // Status
+  status          String    @default("active") // active, used, expired, cancelled
+  issuedAt        DateTime  @default(now())
+  activatedAt     DateTime?
+  expiresAt       DateTime?
+  lastUsedAt      DateTime?
+  
+  // Relations
+  store           Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  transactions    GiftCardTransaction[]
+  orderId         String?   // If purchased as part of an order
+  order           Order?    @relation(fields: [orderId], references: [id])
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@index([storeId, status])
+  @@index([code])
+  @@index([expiresAt])
+}
+
+model GiftCardTransaction {
+  id          String    @id @default(cuid())
+  giftCardId  String
+  orderId     String?
+  amount      Float     // Negative for usage, positive for refunds
+  balance     Float     // Balance after transaction
+  type        String    // purchase, redemption, refund, adjustment
+  description String?
+  
+  giftCard    GiftCard  @relation(fields: [giftCardId], references: [id], onDelete: Cascade)
+  order       Order?    @relation(fields: [orderId], references: [id])
+  
+  createdAt   DateTime  @default(now())
+  
+  @@index([giftCardId])
+  @@index([orderId])
+}
+
+model GoogleIntegration {
+  id                    String   @id @default(cuid())
+  storeId               String   @unique
+  // OAuth credentials
+  accessToken           String?
+  refreshToken          String?
+  expiresAt             DateTime?
+  scope                 String?
+  // Service configurations
+  analyticsPropertyId   String?  // GA4 property ID
+  analyticsStreamId     String?  // GA4 data stream ID
+  searchConsoleUrl      String?  // Search Console property URL
+  merchantCenterId      String?  // Merchant Center ID
+  adsAccountId          String?  // Google Ads account ID
+  businessProfileId     String?  // Google Business Profile ID
+  // Sync settings
+  autoSyncProducts      Boolean  @default(true)
+  syncFrequency         String   @default("daily") // daily, weekly, manual
+  lastSyncAt            DateTime?
+  syncStatus            String?  // syncing, completed, failed
+  // Feature toggles
+  enableAnalytics       Boolean  @default(true)
+  enableSearchConsole   Boolean  @default(true)
+  enableMerchantCenter  Boolean  @default(false)
+  enableAds             Boolean  @default(false)
+  enableBusinessProfile Boolean  @default(false)
+  // Metadata
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  store                 Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+}
+
+model PaymentSettings {
+  id                   String      @id @default(cuid())
+  storeId              String      @unique
+  
+  // Stripe Settings
+  stripeEnabled        Boolean     @default(false)
+  stripePublicKey      String?
+  stripeSecretKey      String?     // Encrypted
+  stripeWebhookSecret  String?     // Encrypted
+  stripeTestMode       Boolean     @default(true)
+  
+  // PayPal Settings
+  paypalEnabled        Boolean     @default(false)
+  paypalClientId       String?
+  paypalClientSecret   String?     // Encrypted
+  paypalTestMode       Boolean     @default(true)
+  
+  // General Payment Settings
+  currency             String      @default("USD")
+  captureMethod        String      @default("automatic")
+  statementDescriptor  String?
+  saveCards            Boolean     @default(true)
+  requireCVV           Boolean     @default(true)
+  requirePostalCode    Boolean     @default(false)
+  
+  // Digital Wallets
+  enableApplePay       Boolean     @default(true)
+  enableGooglePay      Boolean     @default(true)
+  
+  // Tax Settings
+  taxEnabled           Boolean     @default(false)
+  taxInclusive         Boolean     @default(false)
+  defaultTaxRate       Float       @default(0)
+  
+  // Test Mode Settings
+  testModeEnabled      Boolean     @default(true)
+  testModeShowBanner   Boolean     @default(true)
+  testModeAllowTestCards Boolean   @default(true)
+  
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
+  
+  // Relations
+  store                Store       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  taxRegions           TaxRegion[]
+}
+
+model TaxRegion {
+  id                 String          @id @default(cuid())
+  paymentSettingsId  String
+  name               String
+  code               String
+  rate               Float
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  
+  paymentSettings    PaymentSettings @relation(fields: [paymentSettingsId], references: [id], onDelete: Cascade)
+  
+  @@index([paymentSettingsId])
+}
+
+model PlatformTransaction {
+  id            String   @id @default(cuid())
+  storeId       String
+  orderId       String?
+  type          String   // 'commission', 'subscription', 'refund', etc.
+  amount        Float
+  currency      String   @default("USD")
+  status        String   @default("pending") // 'pending', 'completed', 'failed'
+  description   String?
+  metadata      Json?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  // Relations
+  store         Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  order         Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  
+  @@index([storeId])
+  @@index([orderId])
+  @@index([createdAt])
+}
+
+// Translation Models
+model ProductTranslation {
+  id              String    @id @default(cuid())
+  productId       String
+  language        String
+  name            String
+  description     String?
+  metaTitle       String?
+  metaDescription String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  product         Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  @@unique([productId, language])
+  @@index([productId])
+  @@index([language])
+}
+
+model CategoryTranslation {
+  id          String    @id @default(cuid())
+  categoryId  String
+  language    String
+  name        String
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  
+  @@unique([categoryId, language])
+  @@index([categoryId])
+  @@index([language])
+}
+
+model PageTranslation {
+  id             String   @id @default(cuid())
+  pageId         String
+  language       String
+  title          String
+  content        String
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  
+  page           Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  
+  @@unique([pageId, language])
+  @@index([pageId])
+  @@index([language])
+}
+
+model BlogPostTranslation {
+  id             String    @id @default(cuid())
+  blogPostId     String
+  language       String
+  title          String
+  excerpt        String?
+  content        String
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  
+  blogPost       BlogPost  @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+  
+  @@unique([blogPostId, language])
+  @@index([blogPostId])
+  @@index([language])
+}
+
+// UI Translations (Theme/Static content)
+model Translation {
+  id        String    @id @default(cuid())
+  storeId   String
+  language  String
+  namespace String
+  key       String
+  value     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  
+  store     Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  
+  @@unique([storeId, language, namespace, key])
+  @@index([storeId, language])
+  @@index([namespace])
+}

@@ -1,0 +1,287 @@
+{
+  "name": "Cotton Yarn",
+  "version": "1.0.0",
+  "description": "A sophisticated theme for yarn and craft stores inspired by Urth Yarns",
+  "author": "Your Store",
+  "preview": "/themes/cotton-yarn/preview.png",
+  "features": [
+    "product-quick-view",
+    "mega-menu",
+    "sticky-header",
+    "product-zoom",
+    "newsletter",
+    "wishlist",
+    "multi-currency",
+    "multi-language"
+  ],
+  "styles": {
+    "colors": {
+      "primary": "#2c3e50",
+      "secondary": "#8b7355",
+      "accent": "#d4a574",
+      "background": "#faf8f5",
+      "surface": "#ffffff",
+      "text": {
+        "primary": "#2c3e50",
+        "secondary": "#6c757d",
+        "muted": "#999999",
+        "inverse": "#ffffff"
+      },
+      "border": "#e5e5e5",
+      "success": "#28a745",
+      "warning": "#ffc107",
+      "error": "#dc3545",
+      "info": "#17a2b8"
+    },
+    "typography": {
+      "fontFamily": {
+        "heading": "'Playfair Display', serif",
+        "body": "'Lato', sans-serif"
+      },
+      "fontSize": {
+        "xs": "0.75rem",
+        "sm": "0.875rem",
+        "base": "1rem",
+        "lg": "1.125rem",
+        "xl": "1.25rem",
+        "2xl": "1.5rem",
+        "3xl": "1.875rem",
+        "4xl": "2.25rem",
+        "5xl": "3rem"
+      },
+      "fontWeight": {
+        "light": "300",
+        "normal": "400",
+        "medium": "500",
+        "semibold": "600",
+        "bold": "700"
+      },
+      "lineHeight": {
+        "tight": "1.25",
+        "normal": "1.5",
+        "relaxed": "1.75",
+        "loose": "2"
+      }
+    },
+    "spacing": {
+      "xs": "0.25rem",
+      "sm": "0.5rem",
+      "md": "1rem",
+      "lg": "1.5rem",
+      "xl": "2rem",
+      "2xl": "3rem",
+      "3xl": "4rem"
+    },
+    "borderRadius": {
+      "none": "0",
+      "sm": "0.125rem",
+      "base": "0.25rem",
+      "md": "0.375rem",
+      "lg": "0.5rem",
+      "xl": "0.75rem",
+      "full": "9999px"
+    },
+    "shadows": {
+      "sm": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+      "base": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+      "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+      "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+      "xl": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+    }
+  },
+  "settings": {
+    "layout": {
+      "containerWidth": "1280px",
+      "sidebarPosition": "right",
+      "headerStyle": "elegant",
+      "footerStyle": "multi-column"
+    },
+    "product": {
+      "imageRatio": "4:5",
+      "showQuickView": true,
+      "showWishlist": true,
+      "showCompare": false,
+      "showReviews": true,
+      "variantStyle": "buttons",
+      "galleryStyle": "thumbnails-bottom"
+    },
+    "cart": {
+      "type": "drawer",
+      "showEstimatedShipping": true,
+      "showProgressBar": true,
+      "freeShippingThreshold": 100
+    },
+    "header": {
+      "sticky": true,
+      "transparentOnHomepage": false,
+      "showSearch": true,
+      "showCurrency": true,
+      "showLanguage": true,
+      "announcementBar": {
+        "enabled": true,
+        "text": "Free shipping on orders over $100",
+        "backgroundColor": "#2c3e50",
+        "textColor": "#ffffff"
+      }
+    },
+    "footer": {
+      "showNewsletter": true,
+      "showSocialLinks": true,
+      "showPaymentIcons": true,
+      "copyrightText": "© 2024 Cotton Yarn. All rights reserved."
+    },
+    "social": {
+      "facebook": "https://facebook.com",
+      "instagram": "https://instagram.com",
+      "pinterest": "https://pinterest.com",
+      "youtube": "https://youtube.com"
+    },
+    "buttons": {
+      "style": "rounded",
+      "hoverEffect": "fade",
+      "primaryStyle": {
+        "background": "#8b7355",
+        "text": "#ffffff",
+        "border": "#8b7355",
+        "hoverBackground": "#2c3e50",
+        "hoverText": "#ffffff",
+        "hoverBorder": "#2c3e50"
+      },
+      "secondaryStyle": {
+        "background": "transparent",
+        "text": "#8b7355",
+        "border": "#8b7355",
+        "hoverBackground": "#8b7355",
+        "hoverText": "#ffffff",
+        "hoverBorder": "#8b7355"
+      }
+    }
+  },
+  "sections": {},
+  "templates": {
+    "homepage": {
+      "sections": [
+        {
+          "type": "announcement-bar",
+          "settings": {
+            "text": "Free shipping on orders over $100 | Shop our new collection",
+            "backgroundColor": "#2c3e50",
+            "textColor": "#ffffff"
+          }
+        },
+        {
+          "type": "header",
+          "settings": {
+            "style": "elegant",
+            "sticky": true
+          }
+        },
+        {
+          "type": "hero",
+          "settings": {
+            "height": "large",
+            "overlay": true,
+            "overlayOpacity": 30
+          }
+        },
+        {
+          "type": "featured-collections",
+          "settings": {
+            "title": "Shop by Category",
+            "layout": "grid",
+            "columns": 4
+          }
+        },
+        {
+          "type": "featured-products",
+          "settings": {
+            "title": "New Arrivals",
+            "layout": "carousel",
+            "productsPerRow": 4
+          }
+        },
+        {
+          "type": "image-with-text",
+          "settings": {
+            "title": "Our Story",
+            "layout": "image-left"
+          }
+        },
+        {
+          "type": "newsletter",
+          "settings": {
+            "title": "Join Our Community",
+            "subtitle": "Get 10% off your first order"
+          }
+        },
+        {
+          "type": "footer",
+          "settings": {
+            "style": "multi-column"
+          }
+        }
+      ]
+    },
+    "product": {
+      "sections": [
+        {
+          "type": "announcement-bar"
+        },
+        {
+          "type": "header"
+        },
+        {
+          "type": "breadcrumbs"
+        },
+        {
+          "type": "product",
+          "settings": {
+            "galleryStyle": "thumbnails-bottom",
+            "showZoom": true,
+            "showShare": true
+          }
+        },
+        {
+          "type": "product-recommendations",
+          "settings": {
+            "title": "You May Also Like"
+          }
+        },
+        {
+          "type": "recently-viewed",
+          "settings": {
+            "title": "Recently Viewed"
+          }
+        },
+        {
+          "type": "footer"
+        }
+      ]
+    },
+    "collection": {
+      "sections": [
+        {
+          "type": "announcement-bar"
+        },
+        {
+          "type": "header"
+        },
+        {
+          "type": "collection-banner"
+        },
+        {
+          "type": "collection-products",
+          "settings": {
+            "layout": "grid",
+            "productsPerRow": 4,
+            "showFilters": true,
+            "showSort": true
+          }
+        },
+        {
+          "type": "footer"
+        }
+      ]
+    }
+  }
+}

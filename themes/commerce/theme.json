@@ -1,0 +1,69 @@
+{
+  "name": "Commerce Pro",
+  "version": "1.0.0",
+  "description": "Professional e-commerce theme with advanced features",
+  "author": "Nuvi",
+  "settings": {
+    "colors": {
+      "primary": "#000000",
+      "secondary": "#666666",
+      "accent": "#0066FF",
+      "background": "#FFFFFF",
+      "text": "#333333",
+      "border": "#E5E5E5",
+      "success": "#10B981",
+      "error": "#EF4444",
+      "warning": "#F59E0B",
+      "info": "#3B82F6"
+    },
+    "typography": {
+      "headingFont": "Inter",
+      "bodyFont": "Inter",
+      "baseFontSize": 16,
+      "headingSizes": {
+        "h1": 48,
+        "h2": 36,
+        "h3": 28,
+        "h4": 24,
+        "h5": 20,
+        "h6": 18
+      }
+    },
+    "layout": {
+      "containerWidth": 1280,
+      "gridColumns": 12,
+      "gridGap": 24,
+      "sectionPadding": {
+        "min": 40,
+        "max": 120,
+        "default": 80,
+        "desktop": 80,
+        "mobile": 40
+      },
+      "elementSpacing": {
+        "min": 8,
+        "max": 80,
+        "default": 24
+      }
+    },
+    "buttons": {
+      "borderRadius": 4,
+      "padding": {
+        "x": 24,
+        "y": 12
+      },
+      "fontSize": 16,
+      "fontWeight": 500
+    },
+    "cards": {
+      "borderRadius": 8,
+      "padding": 24,
+      "shadow": "sm"
+    },
+    "animations": {
+      "enabled": true,
+      "duration": 300,
+      "easing": "ease-in-out"
+    }
+  }
+}

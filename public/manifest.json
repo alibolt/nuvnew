@@ -1,0 +1,18 @@
+{
+  "name": "Nuvi - E-commerce Platform",
+  "short_name": "Nuvi",
+  "description": "Create your own e-commerce store in minutes",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#8B9F7E",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/nuvi-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

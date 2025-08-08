@@ -1,0 +1,21 @@
+{
+  "name": "Cart",
+  "type": "cart",
+  "sections": [
+    {
+      "type": "cart",
+      "settings": {
+        "showRecommendations": true,
+        "showCouponCode": true,
+        "showNotes": true
+      }
+    },
+    {
+      "type": "featured-products",
+      "settings": {
+        "title": "You Might Also Like",
+        "limit": 4
+      }
+    }
+  ]
+}

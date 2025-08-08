@@ -1,0 +1,75 @@
+import { requireAuth } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import { ArrowLeft, ExternalLink } from 'lucide-react';
+import { SettingsNavigationUnified } from './settings-navigation-unified';
+
+export default async function SettingsLayout({
+  children,
+  params
+}: {
+  children: React.ReactNode;
+  params: Promise<{ storeId: string }>;
+}) {
+  const session = await requireAuth();
+  const { storeId } = await params;
+
+  const store = await prisma.store.findFirst({
+    where: {
+      id: storeId,
+      userId: session.user.id
+    }
+  });
+
+  if (!store) {
+    notFound();
+  }
+
+  return (
+    <div className="nuvi-layout nuvi-admin" data-dashboard-layout>
+      {/* Header */}
+      <header className="nuvi-header">
+        <div className="nuvi-header-content">
+          <div className="nuvi-flex nuvi-items-center nuvi-gap-md">
+            <Link
+              href={`/dashboard/stores/${storeId}`}
+              className="nuvi-btn nuvi-btn-ghost nuvi-btn-sm"
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </Link>
+            <div className="nuvi-flex nuvi-items-center nuvi-gap-sm">
+              <div className="h-8 w-8 nuvi-card nuvi-flex nuvi-items-center justify-center">
+                <div className="h-5 w-5 bg-[var(--nuvi-primary)] rounded" />
+              </div>
+              <div>
+                <h1 className="nuvi-text-xl nuvi-font-semibold">Settings</h1>
+                <p className="nuvi-text-sm nuvi-text-muted">{store.name}</p>
+              </div>
+            </div>
+          </div>
+          <Link
+            href={`http://${store.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'localhost:3000'}`}
+            target="_blank"
+            className="nuvi-btn nuvi-btn-ghost nuvi-btn-sm"
+          >
+            <ExternalLink className="h-4 w-4" />
+            View your store
+          </Link>
+        </div>
+      </header>
+
+      <div className="nuvi-flex">
+        {/* Sidebar */}
+        <aside className="nuvi-sidebar">
+          <SettingsNavigationUnified storeId={storeId} />
+        </aside>
+
+        {/* Main content */}
+        <main className="nuvi-main">
+          {children}
+        </main>
+      </div>
+    </div>
+  );
+}

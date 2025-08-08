@@ -1,0 +1,14 @@
+{
+  "name": "Page",
+  "type": "page",
+  "sections": [
+    {
+      "type": "rich-text",
+      "settings": {
+        "content": "<p>Page content goes here</p>",
+        "textAlignment": "left",
+        "containerWidth": "medium"
+      }
+    }
+  ]
+}

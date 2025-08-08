@@ -1,0 +1,49 @@
+/* Toast Notifications */
+.nuvi-toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  min-width: 300px;
+  padding: 16px 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 1000;
+  animation: slideInRight 0.3s ease-out;
+}
+
+.nuvi-toast-success {
+  border-left: 4px solid #22c55e;
+  color: #166534;
+}
+
+.nuvi-toast-error {
+  border-left: 4px solid #ef4444;
+  color: #991b1b;
+}
+
+.nuvi-toast-warning {
+  border-left: 4px solid #f59e0b;
+  color: #92400e;
+}
+
+.nuvi-toast-info {
+  border-left: 4px solid #3b82f6;
+  color: #1e40af;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

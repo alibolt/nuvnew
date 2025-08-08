@@ -1,0 +1,821 @@
+@import "tailwindcss";
+/* @import "tw-animate-css"; */
+/* @import "../lib/design-system/index.css"; */
+@import "./styles/admin-theme.css";
+@import "./styles/toast.css";
+@import "./styles/theme-buttons.css";
+@import "./styles/theme-typography.css";
+
+/* Animation for translation progress bar */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+/* Override Tailwind border radius with theme settings */
+@layer utilities {
+  /* Apply theme border radius to common rounded classes */
+  .rounded-sm,
+  .rounded,
+  .rounded-md,
+  .rounded-lg,
+  .rounded-xl,
+  .rounded-2xl,
+  .rounded-3xl {
+    border-radius: var(--theme-layout-border-radius, 8px) !important;
+  }
+  
+  /* Preserve special cases */
+  .rounded-none {
+    border-radius: 0 !important;
+  }
+  
+  .rounded-full {
+    border-radius: 9999px !important;
+  }
+}
+
+/* Global Theme Styles */
+@layer base {
+  /* Apply theme border radius to all form elements and buttons */
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select,
+  button:not(.rounded-full),
+  .btn:not(.rounded-full) {
+    border-radius: var(--theme-layout-border-radius, 8px) !important;
+  }
+  
+  /* Apply to common UI elements */
+  .card,
+  .panel,
+  .modal,
+  .dropdown,
+  .popover,
+  [role="dialog"],
+  [role="menu"],
+  [role="listbox"] {
+    border-radius: var(--theme-layout-border-radius, 8px) !important;
+  }
+}
+
+/* Theme CSS Variables */
+:root {
+  /* Default theme settings */
+  --theme-layout-container-width: 1280px;
+}
+
+/* Container styles that use theme settings */
+.container {
+  max-width: var(--theme-layout-container-width, 1280px);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Transparent Header Mode */
+body.transparent-header-mode header,
+body.transparent-header-mode .header-section,
+body.transparent-header-mode header[data-transparent="true"],
+header[data-transparent="true"],
+header.transparent-header {
+  background-color: transparent !important;
+  background: transparent !important;
+  border-color: transparent !important;
+  border-bottom-color: transparent !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  position: absolute !important;
+  /* Don't override top value - let inline styles handle announcement bar offset */
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  z-index: 45 !important; /* Just above content but below announcement bar in stacking context */
+}
+
+/* Ensure all nested elements don't have backgrounds */
+body.transparent-header-mode header > div,
+body.transparent-header-mode .header-section > div,
+header.transparent-header > div,
+header[data-transparent="true"] > div {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+/* Ensure hero banner starts at top when header is transparent */
+body.transparent-header-mode .hero-banner-section:first-of-type,
+body.transparent-header-mode section:has(.hero-banner-section):first-of-type {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Adjust page layout when transparent header is active */
+body.transparent-header-mode {
+  padding-top: 0 !important;
+}
+
+body.transparent-header-mode main {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* Page container adjustments for transparent header */
+body.transparent-header-mode .page-container {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* First section after header should not have margin when transparent header is active */
+body.transparent-header-mode .page-container > section:first-child,
+body.transparent-header-mode .page-container > div > section:first-child {
+  margin-top: 0 !important;
+}
+
+/* Ensure sections wrapper doesn't add spacing */
+body.transparent-header-mode .page-container > div {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* Hero section with transparent header */
+body.transparent-header-mode .hero-banner-section[data-transparent-header="true"] {
+  position: relative;
+  z-index: 1;
+}
+
+/* Announcement bar positioning when transparent header is active */
+body.transparent-header-mode .announcement-bar-section,
+body.transparent-header-mode [data-section-type="announcement-bar"] {
+  position: relative;
+  z-index: 40; /* Same level as header but in document flow before it */
+}
+
+/* Ensure announcement bar is not overlapped by header */
+body.transparent-header-mode [data-section-type="announcement-bar"] {
+  position: relative !important;
+  z-index: 40 !important;
+}
+
+/* Remove any gap between sections when transparent header is active */
+body.transparent-header-mode .section-header + .section-hero-banner,
+body.transparent-header-mode .section-header + section,
+body.transparent-header-mode header + .hero-banner-section,
+body.transparent-header-mode header + section {
+  margin-top: 0 !important;
+}
+
+/* Ensure header wrapper doesn't take space when absolute */
+body.transparent-header-mode header[data-transparent="true"] {
+  position: absolute !important;
+  width: 100% !important;
+  left: 0 !important;
+  right: 0 !important;
+}
+
+/* When announcement bar exists, header should respect its height */
+body.transparent-header-mode:has(.announcement-bar-section) header[data-transparent="true"],
+body.transparent-header-mode:has([data-section-type="announcement-bar"]) header[data-transparent="true"] {
+  /* Top position is set via inline styles based on announcement bar height */
+}
+
+/* Hero banner should extend full height including under header and announcement bar */
+body.transparent-header-mode .hero-banner-section[data-transparent-header="true"] {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Ensure proper document flow */
+body.transparent-header-mode {
+  /* Announcement bar stays in normal flow */
+  /* Header is absolute positioned over hero */
+  /* Hero starts from top of viewport */
+}
+
+
+body.transparent-header-mode header *,
+body.transparent-header-mode .header-section *,
+header[data-transparent="true"] *,
+header.transparent-header * {
+  color: var(--header-text-color, #ffffff) !important;
+}
+
+body.transparent-header-mode header .logo img,
+body.transparent-header-mode .header-section .logo img,
+header[data-transparent="true"] .logo img,
+header.transparent-header .logo img {
+  filter: var(--header-logo-filter, none);
+}
+
+/* Override any inline styles on header */
+header[data-transparent="true"] {
+  background-color: transparent !important;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+/* Force transparent even with inline styles */
+header[data-transparent="true"][style*="background"] {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+/* Remove all borders and shadows */
+header[data-transparent="true"].border-b,
+header[data-transparent="true"].shadow-sm {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* When scrolled, remove transparent effect */
+body.transparent-header-mode header.scrolled,
+body.transparent-header-mode .header-section.scrolled,
+header[data-transparent="false"] {
+  background-color: var(--theme-colors-background, #ffffff) !important;
+  background: var(--theme-colors-background, #ffffff) !important;
+  border-color: var(--theme-colors-border, #e5e7eb) !important;
+  backdrop-filter: none;
+  position: sticky !important;
+  top: 0 !important;
+}
+
+body.transparent-header-mode header.scrolled *,
+body.transparent-header-mode .header-section.scrolled * {
+  color: var(--theme-colors-text, #000000) !important;
+}
+
+body.transparent-header-mode header.scrolled .logo img,
+body.transparent-header-mode .header-section.scrolled .logo img {
+  filter: none;
+}
+
+/* View Transitions API - Smooth page transitions for dashboard */
+@supports (view-transition-name: root) {
+  ::view-transition-old(root) {
+    animation: 200ms ease-out both view-fade-out,
+               300ms ease-out both view-slide-to-left;
+  }
+
+  ::view-transition-new(root) {
+    animation: 200ms ease-in both view-fade-in,
+               300ms ease-in both view-slide-from-right;
+  }
+
+  @keyframes view-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes view-fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+  @keyframes view-slide-from-right {
+    from { transform: translateX(30px); }
+    to { transform: translateX(0); }
+  }
+
+  @keyframes view-slide-to-left {
+    from { transform: translateX(0); }
+    to { transform: translateX(-30px); }
+  }
+}
+
+/* Dashboard content specific transitions */
+.dashboard-content {
+  view-transition-name: dashboard-content;
+}
+
+/* Animation Keyframes */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-left {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-right {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scale-up {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Animation Classes with CSS Variables */
+.animate-fade-in {
+  animation: fade-in var(--animation-duration, 500ms) var(--animation-timing, ease-out);
+  animation-delay: var(--animation-delay, 0ms);
+  animation-fill-mode: both;
+}
+
+.animate-slide-up {
+  animation: slide-up var(--animation-duration, 500ms) var(--animation-timing, ease-out);
+  animation-delay: var(--animation-delay, 0ms);
+  animation-fill-mode: both;
+}
+
+.animate-slide-down {
+  animation: slide-down var(--animation-duration, 500ms) var(--animation-timing, ease-out);
+  animation-delay: var(--animation-delay, 0ms);
+  animation-fill-mode: both;
+}
+
+.animate-slide-left {
+  animation: slide-left var(--animation-duration, 500ms) var(--animation-timing, ease-out);
+  animation-delay: var(--animation-delay, 0ms);
+  animation-fill-mode: both;
+}
+
+.animate-slide-right {
+  animation: slide-right var(--animation-duration, 500ms) var(--animation-timing, ease-out);
+  animation-delay: var(--animation-delay, 0ms);
+  animation-fill-mode: both;
+}
+
+.animate-zoom-in {
+  animation: zoom-in var(--animation-duration, 500ms) var(--animation-timing, ease-out);
+  animation-delay: var(--animation-delay, 0ms);
+  animation-fill-mode: both;
+}
+
+.animate-scale-up {
+  animation: scale-up var(--animation-duration, 500ms) var(--animation-timing, ease-out);
+  animation-delay: var(--animation-delay, 0ms);
+  animation-fill-mode: both;
+}
+
+/* Animation Observer Helper */
+.animate-in {
+  opacity: 1 !important;
+}
+
+/* Section rendering is now handled consistently in theme-typography.css */
+
+/* Section highlight effect for Theme Studio */
+.section-highlight {
+  outline: 2px solid #3b82f6;
+  outline-offset: -2px;
+  transition: outline 0.3s ease;
+}
+
+/* Brand Theme Styles */
+.text-charcoal {
+  color: #2B2B2B;
+}
+
+.text-sage {
+  color: #7FA068;
+}
+
+.text-sage-light {
+  color: #9FB88C;
+}
+
+.text-warm-grey {
+  color: #A8A5A0;
+}
+
+.text-terracotta {
+  color: #C65D47;
+}
+
+.text-sky-blue {
+  color: #B8D4E3;
+}
+
+.bg-sage {
+  background-color: #7FA068;
+}
+
+.bg-sage-light {
+  background-color: #9FB88C;
+}
+
+.bg-terracotta {
+  background-color: #C65D47;
+}
+
+.bg-sky-blue {
+  background-color: #B8D4E3;
+}
+
+.bg-charcoal {
+  background-color: #2B2B2B;
+}
+
+.bg-cotton-white {
+  background-color: #FAFAF8;
+}
+
+.border-sage {
+  border-color: #7FA068;
+}
+
+.border-charcoal {
+  border-color: #2B2B2B;
+}
+
+.hover\:border-sage:hover {
+  border-color: #7FA068;
+}
+
+.hover\:bg-sage:hover {
+  background-color: #7FA068;
+}
+
+.hover\:text-sage:hover {
+  color: #7FA068;
+}
+
+.hover\:bg-charcoal:hover {
+  background-color: #2B2B2B;
+}
+
+.hover\:text-charcoal:hover {
+  color: #2B2B2B;
+}
+
+.hover\:text-white:hover {
+  color: white;
+}
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-montserrat);
+  --font-serif: var(--font-playfair);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.625rem;
+  
+  /* Cotton Yarn Brand Colors */
+  --background: #FAFAF8;
+  --foreground: #2B2B2B;
+  --primary: #8B9F7E; /* Sage Green */
+  --primary-foreground: #FFFFFF;
+  --secondary: #D4A5A5; /* Dusty Rose */
+  --secondary-foreground: #2B2B2B;
+  
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.141 0.005 285.823);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.141 0.005 285.823);
+  --muted: oklch(0.967 0.001 286.375);
+  --muted-foreground: oklch(0.552 0.016 285.938);
+  --accent: oklch(0.967 0.001 286.375);
+  --accent-foreground: oklch(0.21 0.006 285.885);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.92 0.004 286.32);
+  --input: oklch(0.92 0.004 286.32);
+  --ring: oklch(0.705 0.015 286.067);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.141 0.005 285.823);
+  --sidebar-primary: oklch(0.21 0.006 285.885);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.967 0.001 286.375);
+  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+  --sidebar-border: oklch(0.92 0.004 286.32);
+  --sidebar-ring: oklch(0.705 0.015 286.067);
+}
+
+.dark {
+  /* Dark theme colors can be defined here later */
+  --background: #2B2B2B;
+  --foreground: #FAFAF8;
+  --primary: #8B9F7E;
+  --primary-foreground: #2B2B2B;
+  --secondary: #D4A5A5;
+  --secondary-foreground: #2B2B2B;
+
+  --card: oklch(0.21 0.006 285.885);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.21 0.006 285.885);
+  --popover-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.274 0.006 286.033);
+  --muted-foreground: oklch(0.705 0.015 286.067);
+  --accent: oklch(0.274 0.006 286.033);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.552 0.016 285.938);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.21 0.006 285.885);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.274 0.006 286.033);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.552 0.016 285.938);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+  }
+  
+  /* Override Tailwind's button reset for nuvi-sub-tabs */
+  .nuvi-sub-tabs button,
+  .nuvi-sub-tabs-list button,
+  .nuvi-sub-tabs .nuvi-tab {
+    display: inline-flex !important;
+    width: auto !important;
+    flex: 0 0 auto !important;
+  }
+  
+  /* Force horizontal layout for sub-tabs */
+  .nuvi-sub-tabs .nuvi-sub-tabs-list {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+  }
+}
+
+.emoji-picker-container .epr-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.emoji-picker-container .epr-body::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+.emoji-picker-container .epr-body::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--muted));
+  border-radius: 20px;
+}
+
+.emoji-picker-container .epr-body::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--muted-foreground) / 0.5);
+}
+
+.emoji-picker-container .epr-category-nav {
+  padding: 8px 0;
+}
+
+.emoji-picker-container .epr-header {
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.emoji-picker-container .epr-emoji-category-label {
+  background-color: hsl(var(--background));
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  padding: 4px 8px;
+}
+
+.emoji-picker-container .epr-search {
+  margin: 8px;
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--input));
+  background-color: hsl(var(--background));
+}
+
+.emoji-picker-container .epr-search input {
+  border-radius: var(--radius);
+  background-color: transparent;
+  color: hsl(var(--foreground));
+}
+
+.emoji-picker-container .epr-emoji-category-content {
+  padding: 4px;
+}
+
+/* Preview Page Container Constraints */
+[data-preview-page="true"] {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Ensure consistent container widths in preview */
+[data-preview-page="true"] .container,
+[data-preview-page="true"] [class*="mx-auto"] {
+  max-width: var(--theme-layout-container-width, 1280px) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Header specific width constraint in preview */
+[data-preview-page="true"] header > div:first-child {
+  max-width: var(--theme-layout-container-width, 1280px) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Selector Mode Styles */
+.selector-mode {
+  cursor: pointer !important;
+}
+
+.selector-mode:hover {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.selector-mode::before {
+  content: 'Click to select section';
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 1000;
+  background: #3b82f6;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: all 0.2s ease;
+  pointer-events: none;
+}
+
+.selector-mode:hover::before {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Disable normal interactions in selector mode - but allow clicks on block wrappers */
+.selector-mode * {
+  pointer-events: none !important;
+}
+
+.selector-mode .block-wrapper {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+/* Visual feedback for blocks in selector mode */
+.selector-mode .block-wrapper:hover {
+  outline: 2px dashed #3b82f6;
+  outline-offset: -2px;
+  background-color: rgba(59, 130, 246, 0.05);
+  border-radius: 4px;
+}
+
+.emoji-picker-container .epr-body {
+  padding: 0;
+}
+
+.emoji-picker-container .epr-skin-tones {
+  border-radius: var(--radius);
+}
+
+.emoji-picker-container button.epr-emoji {
+  border-radius: var(--radius);
+}
+
+.emoji-picker-container button.epr-emoji:hover {
+  background-color: hsl(var(--accent));
+}
+
+.emoji-picker-container .epr-category-nav button {
+  opacity: 0.5;
+}
+
+.emoji-picker-container .epr-category-nav button.active {
+  opacity: 1;
+}
+
+.emoji-picker-container .epr-category-nav button:hover {
+  opacity: 0.8;
+}

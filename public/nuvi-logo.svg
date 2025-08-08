@@ -1,0 +1,18 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="400" fill="#f8fafc"/>
+  
+  <!-- Logo centered and scaled larger -->
+  <g transform="translate(200, 200)">
+    <!-- V11 Three Lines - Different Weights (Centered and larger) -->
+    <line x1="-80" y1="-20" x2="-30" y2="-20" stroke="#8B9F7E" stroke-width="6" stroke-linecap="square"/>
+    <line x1="-80" y1="0" x2="-10" y2="0" stroke="#8B9F7E" stroke-width="18" stroke-linecap="square"/>
+    <line x1="-80" y1="20" x2="-50" y2="20" stroke="#8B9F7E" stroke-width="12" stroke-linecap="square"/>
+    
+    <!-- Architectural guide line -->
+    <line x1="-10" y1="-35" x2="-10" y2="35" stroke="#8B9F7E" stroke-width="3" opacity="0.3"/>
+    
+    <!-- Text -->
+    <text x="15" y="12" font-family="Inter, system-ui, sans-serif" font-size="80" font-weight="300" fill="#4b5563">nuvi</text>
+  </g>
+</svg>

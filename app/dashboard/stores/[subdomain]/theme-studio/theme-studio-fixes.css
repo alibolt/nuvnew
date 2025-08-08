@@ -1,0 +1,269 @@
+/* Theme Studio CSS Fixes */
+/* Import design system z-index values */
+@import '../../../../../lib/design-system/index.css';
+
+/* Right Sidebar Z-Index Fix */
+.theme-studio-right-sidebar {
+  position: relative;
+  z-index: var(--z-modal);
+  transition: width 0.3s ease-in-out;
+}
+
+/* Wider sidebar when image picker is open */
+.theme-studio-right-sidebar[data-image-picker-open="true"] {
+  width: 600px !important;
+}
+
+/* Image picker panel styles */
+.theme-studio-right-sidebar [role="tabpanel"] {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Ensure grid wraps properly */
+.theme-studio-right-sidebar .grid {
+  grid-auto-rows: max-content;
+}
+
+/* Image picker specific styles */
+.theme-studio-right-sidebar .grid-cols-5 {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  grid-auto-rows: min-content;
+  align-content: start;
+}
+
+/* Ensure Select Image button is always visible */
+.theme-studio-right-sidebar .border-t {
+  position: sticky;
+  bottom: 0;
+  background: white;
+  z-index: 10;
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Force proper height calculation for the image picker panel */
+.theme-studio-right-sidebar > div[style*="position: absolute"] > div > div {
+  height: 100%;
+  max-height: 100vh;
+}
+
+/* Search dropdown styles */
+.theme-studio-right-sidebar .relative > .absolute.shadow-lg {
+  z-index: 100;
+  max-width: calc(100% - 2px);
+}
+
+/* Ensure image picker panel fills sidebar */
+.theme-studio-right-sidebar > div[style*="position: absolute"] {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Fix tab content height */
+.theme-studio-right-sidebar [role="tabpanel"][data-state="active"] {
+  display: flex !important;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Fix tabs container */
+.theme-studio-right-sidebar [data-radix-collection-item] {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ensure media grid container has proper height and scroll */
+.theme-studio-right-sidebar [role="tabpanel"] > div {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.theme-studio-right-sidebar .overflow-y-auto {
+  flex: 1;
+  overflow-y: auto !important;
+  overflow-x: hidden;
+  min-height: 0;
+  max-height: 100%;
+}
+
+/* Fix for image picker panel specific scrolling */
+.theme-studio-right-sidebar > div[style*="position: absolute"] .overflow-y-auto {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ensure the grid container doesn't overflow */
+.theme-studio-right-sidebar .grid {
+  max-height: max-content;
+}
+
+/* Image picker panel absolute positioning fix */
+.theme-studio-right-sidebar > div[style*="position: absolute"] {
+  display: flex;
+  flex-direction: column;
+}
+
+.theme-studio-right-sidebar > div[style*="position: absolute"] > div {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Image preview styles in sidebar */
+.section-inspector-simplified .nuvi-aspect-\[16\/9\] {
+  padding-bottom: 56.25%;
+  position: relative;
+}
+
+.section-inspector-simplified .nuvi-aspect-\[16\/9\] > img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Nuvi utility classes for image preview */
+.nuvi-w-full { width: 100% !important; }
+.nuvi-h-full { height: 100% !important; }
+.nuvi-object-contain { object-fit: contain !important; }
+.nuvi-relative { position: relative !important; }
+.nuvi-absolute { position: absolute !important; }
+.nuvi-overflow-hidden { overflow: hidden !important; }
+.nuvi-rounded-md { border-radius: 0.375rem !important; }
+.nuvi-border { border-width: 1px !important; }
+.nuvi-border-border { border-color: var(--border) !important; }
+.nuvi-bg-gray-50 { background-color: rgb(249 250 251) !important; }
+.nuvi-top-2 { top: 0.5rem !important; }
+.nuvi-right-2 { right: 0.5rem !important; }
+.nuvi-p-1\.5 { padding: 0.375rem !important; }
+.nuvi-shadow-md { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important; }
+.nuvi-bg-white { background-color: white !important; }
+.nuvi-text-gray-600 { color: rgb(75 85 99) !important; }
+.nuvi-text-gray-400 { color: rgb(156 163 175) !important; }
+.hover\:nuvi-bg-gray-50:hover { background-color: rgb(249 250 251) !important; }
+.nuvi-transition-colors { transition-property: color, background-color, border-color !important; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+.nuvi-w-4 { width: 1rem !important; }
+.nuvi-h-4 { height: 1rem !important; }
+.nuvi-w-8 { width: 2rem !important; }
+.nuvi-h-8 { height: 2rem !important; }
+.nuvi-mb-2 { margin-bottom: 0.5rem !important; }
+.nuvi-text-xs { font-size: 0.75rem !important; line-height: 1rem !important; }
+.nuvi-flex { display: flex !important; }
+.nuvi-hidden { display: none !important; }
+.nuvi-flex-col { flex-direction: column !important; }
+.nuvi-items-center { align-items: center !important; }
+.nuvi-justify-center { justify-content: center !important; }
+
+/* Remove problematic universal relative positioning */
+/* .theme-studio-right-sidebar * {
+  position: relative;
+} */
+
+/* Form Input Focus Fix */
+.theme-studio-input:focus {
+  z-index: var(--z-dropdown);
+  position: relative;
+}
+
+/* Dropdown and Select Fix */
+.theme-studio-select:focus {
+  z-index: var(--z-sticky);
+  position: relative;
+}
+
+/* Color Picker Fix */
+.theme-studio-color-picker:focus {
+  z-index: var(--z-fixed);
+  position: relative;
+}
+
+/* Group Container Fix */
+.theme-studio-group {
+  position: relative;
+  z-index: var(--z-base);
+}
+
+.theme-studio-group.expanded {
+  z-index: calc(var(--z-base) + 1);
+}
+
+/* Scrollbar Style */
+.theme-studio-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+.theme-studio-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.theme-studio-scrollbar::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.theme-studio-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 3px;
+}
+
+.theme-studio-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
+}
+
+/* Block Selection Highlight */
+.theme-studio-block-selected {
+  background-color: #dbeafe !important;
+  border-color: #3b82f6 !important;
+}
+
+/* Prevent Text Selection on Drag */
+.theme-studio-no-select {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Preview Frame Improvements */
+.theme-studio-preview-frame {
+  border: none;
+  background: white;
+  overflow: hidden;
+}
+
+/* Section Inspector Improvements */
+.section-inspector {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.section-inspector .form-container {
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+/* Animation Improvements */
+.theme-studio-smooth-transition {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .theme-studio-right-sidebar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    z-index: var(--z-maximum);
+    background: white;
+  }
+}

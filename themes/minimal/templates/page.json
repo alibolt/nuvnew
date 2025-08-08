@@ -1,0 +1,25 @@
+{
+  "name": "Page",
+  "type": "page",
+  "sections": [
+    {
+      "id": "header",
+      "type": "header",
+      "settings": {}
+    },
+    {
+      "id": "page-content",
+      "type": "page-content",
+      "settings": {
+        "showTitle": true,
+        "containerWidth": "narrow"
+      }
+    },
+    {
+      "id": "footer",
+      "type": "footer",
+      "settings": {}
+    }
+  ],
+  "settings_schema": []
+}

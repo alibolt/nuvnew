@@ -1,0 +1,1 @@
+// AI Chat component has been removed as requested

@@ -1,0 +1,23 @@
+{
+  "name": "Search",
+  "type": "search",
+  "sections": [
+    {
+      "type": "hero-banner",
+      "settings": {
+        "title": "Search Results",
+        "height": "small",
+        "backgroundType": "solid",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "type": "featured-products",
+      "settings": {
+        "columns": 4,
+        "showFilters": true,
+        "showSort": true
+      }
+    }
+  ]
+}

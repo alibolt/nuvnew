@@ -1,0 +1,95 @@
+{
+  "name": "Product",
+  "type": "product",
+  "sections": [
+    {
+      "id": "header",
+      "type": "header",
+      "settings": {}
+    },
+    {
+      "id": "product-main",
+      "type": "product-main",
+      "settings": {
+        "layout": "default",
+        "galleryPosition": "left",
+        "gallerySettings": {
+          "thumbnailPosition": "left",
+          "zoomEnabled": true,
+          "autoPlay": false
+        },
+        "infoSettings": {
+          "showSku": true,
+          "showVendor": true,
+          "showTags": false,
+          "variantStyle": "dropdown"
+        }
+      }
+    },
+    {
+      "id": "product-description",
+      "type": "product-description",
+      "settings": {
+        "showDescription": true,
+        "showSpecifications": true,
+        "showShipping": true,
+        "showReturns": true,
+        "tabStyle": "tabs"
+      }
+    },
+    {
+      "id": "product-reviews",
+      "type": "product-reviews",
+      "settings": {
+        "showReviews": true,
+        "showReviewForm": true,
+        "reviewsPerPage": 10,
+        "sortBy": "newest"
+      }
+    },
+    {
+      "id": "related-products",
+      "type": "related-products",
+      "settings": {
+        "title": "You may also like",
+        "showRating": true,
+        "showAddToCart": false,
+        "productsPerRow": 4,
+        "maxProducts": 8
+      }
+    },
+    {
+      "id": "recently-viewed",
+      "type": "recently-viewed",
+      "settings": {
+        "title": "Recently Viewed",
+        "maxProducts": 6,
+        "productsPerRow": 6
+      }
+    },
+    {
+      "id": "footer",
+      "type": "footer",
+      "settings": {}
+    }
+  ],
+  "settings_schema": [
+    {
+      "name": "product_layout",
+      "label": "Product Layout",
+      "settings": [
+        {
+          "type": "select",
+          "id": "gallery_layout",
+          "label": "Gallery Layout",
+          "options": [
+            { "value": "default", "label": "Default" },
+            { "value": "sticky-gallery", "label": "Sticky Gallery" },
+            { "value": "wide", "label": "Wide Layout" }
+          ],
+          "default": "default"
+        }
+      ]
+    }
+  ]
+}

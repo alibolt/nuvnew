@@ -1,0 +1,24 @@
+{
+  "name": "Collection",
+  "type": "collection",
+  "sections": [
+    {
+      "type": "hero-banner",
+      "settings": {
+        "height": "small",
+        "contentAlignment": "center",
+        "backgroundType": "solid",
+        "backgroundColor": "#F5F5F5"
+      }
+    },
+    {
+      "type": "featured-products",
+      "settings": {
+        "title": "",
+        "columns": 4,
+        "showFilters": true,
+        "showSort": true
+      }
+    }
+  ]
+}
