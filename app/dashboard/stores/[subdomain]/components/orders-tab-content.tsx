@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { 
   ShoppingCart, Plus, Search, Filter, Eye, Edit, MoreVertical, 
@@ -35,6 +35,7 @@ export function OrdersTabContent({ store }: OrdersTabContentProps) {
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterPayment, setFilterPayment] = useState('all');
   const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
+  const [expandedRows, setExpandedRows] = useState<string[]>([]);
 
   // Fetch orders from API
   useEffect(() => {
@@ -108,6 +109,15 @@ export function OrdersTabContent({ store }: OrdersTabContentProps) {
       setSelectedOrders(selectedOrders.filter(id => id !== orderId));
     } else {
       setSelectedOrders([...selectedOrders, orderId]);
+    }
+  };
+
+  // Handle expand row
+  const handleExpandRow = (orderId: string) => {
+    if (expandedRows.includes(orderId)) {
+      setExpandedRows(expandedRows.filter(id => id !== orderId));
+    } else {
+      setExpandedRows([...expandedRows, orderId]);
     }
   };
 
@@ -349,30 +359,30 @@ export function OrdersTabContent({ store }: OrdersTabContentProps) {
 
               {/* Orders Table */}
               <div className="nuvi-overflow-x-auto">
-                <table className="nuvi-w-full">
+                <table className="nuvi-table" style={{ width: '100%' }}>
                   <thead>
-                    <tr className="nuvi-border-b">
-                      <th className="nuvi-text-left nuvi-py-md nuvi-px-md nuvi-font-medium" style={{ width: '40px' }}>
+                    <tr style={{ fontSize: '12px' }}>
+                      <th style={{ width: '40px', padding: '6px 12px' }}></th>
+                      <th style={{ width: '40px', padding: '6px 12px' }}>
                         <input
                           type="checkbox"
                           checked={selectedOrders.length === filteredOrders.length && filteredOrders.length > 0}
                           onChange={handleSelectAll}
-                          className="nuvi-checkbox"
+                          className="nuvi-checkbox-custom"
                         />
                       </th>
-                      <th className="nuvi-text-left nuvi-py-md nuvi-px-md nuvi-font-medium">Order</th>
-                      <th className="nuvi-text-left nuvi-py-md nuvi-px-md nuvi-font-medium">Date</th>
-                      <th className="nuvi-text-left nuvi-py-md nuvi-px-md nuvi-font-medium">Customer</th>
-                      <th className="nuvi-text-left nuvi-py-md nuvi-px-md nuvi-font-medium">Total</th>
-                      <th className="nuvi-text-left nuvi-py-md nuvi-px-md nuvi-font-medium">Payment</th>
-                      <th className="nuvi-text-left nuvi-py-md nuvi-px-md nuvi-font-medium">Status</th>
-                      <th className="nuvi-text-right nuvi-py-md nuvi-px-md nuvi-font-medium">Actions</th>
+                      <th style={{ textAlign: 'left', padding: '6px 12px', fontWeight: '600' }}>Order ID</th>
+                      <th style={{ textAlign: 'left', padding: '6px 12px', fontWeight: '600' }}>Customer</th>
+                      <th style={{ textAlign: 'left', padding: '6px 12px', fontWeight: '600' }}>Date</th>
+                      <th style={{ textAlign: 'left', padding: '6px 12px', fontWeight: '600' }}>Total</th>
+                      <th style={{ textAlign: 'left', padding: '6px 12px', fontWeight: '600' }}>Payment</th>
+                      <th style={{ textAlign: 'left', padding: '6px 12px', fontWeight: '600' }}>Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredOrders.length === 0 ? (
                       <tr>
-                        <td colSpan={8} className="nuvi-py-xl nuvi-text-center nuvi-text-muted">
+                        <td colSpan={8} style={{ padding: '24px', textAlign: 'center', color: '#6B7280', fontSize: '13px' }}>
                           {searchTerm || filterStatus !== 'all' || filterPayment !== 'all' 
                             ? 'No orders found matching your filters' 
                             : 'No orders yet'}
@@ -380,65 +390,99 @@ export function OrdersTabContent({ store }: OrdersTabContentProps) {
                       </tr>
                     ) : (
                       filteredOrders.map((order) => (
-                        <tr key={order.id} className="nuvi-border-b">
-                          <td className="nuvi-py-md nuvi-px-md">
-                            <input
-                              type="checkbox"
-                              checked={selectedOrders.includes(order.id)}
-                              onChange={() => handleSelectOrder(order.id)}
-                              className="nuvi-checkbox"
-                            />
-                          </td>
-                          <td className="nuvi-py-md nuvi-px-md">
-                            <p className="nuvi-font-medium">#{order.orderNumber}</p>
-                          </td>
-                          <td className="nuvi-py-md nuvi-px-md">
-                            <span className="nuvi-text-sm nuvi-text-muted">
-                              {new Date(order.createdAt).toLocaleDateString()}
-                            </span>
-                          </td>
-                          <td className="nuvi-py-md nuvi-px-md">
-                            <div>
-                              <p className="nuvi-font-medium">{order.customerName || 'Guest'}</p>
-                              <p className="nuvi-text-sm nuvi-text-muted">{order.customerEmail}</p>
-                            </div>
-                          </td>
-                          <td className="nuvi-py-md nuvi-px-md">
-                            <span className="nuvi-font-medium">{formatCurrency(order.totalPrice)}</span>
-                          </td>
-                          <td className="nuvi-py-md nuvi-px-md">
-                            <span className={`nuvi-badge ${
-                              order.paymentStatus === 'paid' ? 'nuvi-badge-success' : 
-                              order.paymentStatus === 'failed' ? 'nuvi-badge-destructive' : 'nuvi-badge-secondary'
-                            }`}>
-                              {order.paymentStatus || 'pending'}
-                            </span>
-                          </td>
-                          <td className="nuvi-py-md nuvi-px-md">
-                            <span className={`nuvi-badge ${getStatusBadgeClass(order.status)}`}>
-                              {order.status}
-                            </span>
-                          </td>
-                          <td className="nuvi-py-md nuvi-px-md nuvi-text-right">
-                            <div className="nuvi-flex nuvi-items-center nuvi-gap-sm nuvi-justify-end">
-                              <button 
-                                className="nuvi-btn nuvi-btn-sm nuvi-btn-ghost"
-                                onClick={() => router.push(`/dashboard/stores/${store.subdomain}/orders/${order.id}`)}
-                              >
-                                <Eye className="h-4 w-4" />
-                              </button>
-                              <button 
-                                className="nuvi-btn nuvi-btn-sm nuvi-btn-ghost"
-                                onClick={() => router.push(`/dashboard/stores/${store.subdomain}/orders/${order.id}/edit`)}
-                              >
-                                <Edit className="h-4 w-4" />
-                              </button>
-                              <button className="nuvi-btn nuvi-btn-sm nuvi-btn-ghost">
-                                <MoreVertical className="h-4 w-4" />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
+                        <React.Fragment key={order.id}>
+                          <tr 
+                            style={{ fontSize: '13px', cursor: 'pointer' }} 
+                            onClick={() => handleExpandRow(order.id)}
+                          >
+                            <td style={{ padding: '8px 12px' }}>
+                              <ChevronRight 
+                                size={14} 
+                                style={{
+                                  transform: expandedRows.includes(order.id) ? 'rotate(90deg)' : 'rotate(0deg)',
+                                  transition: 'transform 0.2s'
+                                }}
+                              />
+                            </td>
+                            <td style={{ padding: '8px 12px' }} onClick={(e) => e.stopPropagation()}>
+                              <input
+                                type="checkbox"
+                                checked={selectedOrders.includes(order.id)}
+                                onChange={() => handleSelectOrder(order.id)}
+                                className="nuvi-checkbox-custom"
+                              />
+                            </td>
+                            <td style={{ padding: '8px 12px', fontWeight: '500' }}>#{order.orderNumber}</td>
+                            <td style={{ padding: '8px 12px' }}>
+                              <div>
+                                <div>{order.customerName || 'Guest'}</div>
+                                <div style={{ fontSize: '11px', color: '#6B7280' }}>{order.customerEmail}</div>
+                              </div>
+                            </td>
+                            <td style={{ padding: '8px 12px' }}>{new Date(order.createdAt).toLocaleDateString()}</td>
+                            <td style={{ padding: '8px 12px', fontWeight: '500' }}>{formatCurrency(order.totalPrice)}</td>
+                            <td style={{ padding: '8px 12px' }}>
+                              <span className={`nuvi-badge nuvi-badge-sm ${
+                                order.paymentStatus === 'paid' ? 'nuvi-badge-success' : 
+                                order.paymentStatus === 'failed' ? 'nuvi-badge-destructive' : 'nuvi-badge-secondary'
+                              }`}>
+                                {order.paymentStatus || 'pending'}
+                              </span>
+                            </td>
+                            <td style={{ padding: '8px 12px' }}>
+                              <span className={`nuvi-badge nuvi-badge-sm ${getStatusBadgeClass(order.status)}`}>
+                                {order.status}
+                              </span>
+                            </td>
+                          </tr>
+                          {expandedRows.includes(order.id) && (
+                            <tr>
+                              <td colSpan={8} style={{ padding: '0' }}>
+                                <div style={{ 
+                                  padding: '16px 24px', 
+                                  backgroundColor: '#F9FAFB',
+                                  borderTop: '1px solid #E5E7EB',
+                                  borderBottom: '1px solid #E5E7EB'
+                                }}>
+                                  <h4 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '12px' }}>Order Details</h4>
+                                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    {order.items?.map((item: any, index: number) => (
+                                      <div key={index} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+                                        <span>{item.productTitle || item.title} × {item.quantity}</span>
+                                        <span style={{ fontWeight: '500' }}>{formatCurrency(item.price * item.quantity)}</span>
+                                      </div>
+                                    ))}
+                                    {(!order.items || order.items.length === 0) && (
+                                      <div style={{ fontSize: '12px', color: '#6B7280' }}>No items data available</div>
+                                    )}
+                                    <div style={{ 
+                                      display: 'flex', 
+                                      justifyContent: 'space-between', 
+                                      fontSize: '12px',
+                                      paddingTop: '8px',
+                                      borderTop: '1px solid #E5E7EB',
+                                      marginTop: '8px',
+                                      fontWeight: '600'
+                                    }}>
+                                      <span>Total</span>
+                                      <span>{formatCurrency(order.totalPrice)}</span>
+                                    </div>
+                                    <div style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid #E5E7EB' }}>
+                                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                                        <button 
+                                          className="nuvi-btn nuvi-btn-sm nuvi-btn-secondary"
+                                          onClick={() => router.push(`/dashboard/stores/${store.subdomain}/orders/${order.id}`)}
+                                        >
+                                          View Details
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </React.Fragment>
                       ))
                     )}
                   </tbody>

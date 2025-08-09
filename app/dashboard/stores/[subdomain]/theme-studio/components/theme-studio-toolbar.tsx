@@ -25,6 +25,7 @@ interface ThemeStudioToolbarProps {
   selectedPage?: string;
   showPageSelector?: boolean;
   pages?: any[];
+  themeCode?: string;
   onSave: () => void;
   onPublish: () => void;
   onUndo: () => void;
@@ -53,6 +54,7 @@ export function ThemeStudioToolbar({
   selectedPage = 'homepage',
   showPageSelector = false,
   pages = [],
+  themeCode = 'base',
   onSave,
   onPublish,
   onUndo,
@@ -88,6 +90,11 @@ export function ThemeStudioToolbar({
         <div className="h-6 w-px bg-gray-300" />
         
         <h1 className="text-lg font-semibold text-gray-900">Theme Studio</h1>
+        
+        {/* Active Theme Badge */}
+        <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded">
+          {themeCode === 'skateshop' ? 'Skateshop' : 'Base Theme'}
+        </span>
         
         {/* Page Selector */}
         {onTogglePageSelector && (

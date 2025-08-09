@@ -23,10 +23,13 @@ export interface ThemeModule {
   initTheme: () => void;
 }
 
+// Import client-safe theme loader
+import { clientThemeLoader } from '@/lib/theme-registry/client-theme-loader';
+
 // Cache loaded themes to avoid re-importing
 const themeCache = new Map<string, ThemeModule>();
 
-// Load theme module
+// Load theme module using dynamic loader
 export const loadTheme = cache(async (themeCode: string): Promise<ThemeModule> => {
   // Check cache first
   if (themeCache.has(themeCode)) {
@@ -34,40 +37,69 @@ export const loadTheme = cache(async (themeCode: string): Promise<ThemeModule> =
   }
 
   try {
-    // Dynamic import of theme
-    const theme = await import(`@/themes/${themeCode}`);
+    // Use client-safe theme loader
+    const themeModule = await clientThemeLoader.loadTheme(themeCode);
     
-    // Validate theme structure
-    if (!theme.sections || !theme.blocks || !theme.manifest) {
-      throw new Error(`Invalid theme structure for ${themeCode}`);
+    if (!themeModule) {
+      // Fallback to direct import for backwards compatibility
+      const theme = await import(`@/themes/${themeCode}`);
+      const module = theme.theme || theme.default || theme;
+      
+      if (!module.sections || !module.blocks) {
+        throw new Error(`Invalid theme structure for ${themeCode}`);
+      }
+      
+      themeCache.set(themeCode, module);
+      return module;
     }
     
     // Cache the loaded theme
-    themeCache.set(themeCode, theme);
+    themeCache.set(themeCode, themeModule);
     
-    return theme;
+    return themeModule;
   } catch (error) {
     console.error(`Failed to load theme ${themeCode}:`, error);
+    // Try to fallback to base theme
+    if (themeCode !== 'base') {
+      console.log(`Falling back to base theme`);
+      return loadTheme('base');
+    }
     throw new Error(`Theme ${themeCode} not found or invalid`);
   }
 });
 
 // Load a specific section from theme
 export async function loadThemeSection(themeCode: string, sectionType: string) {
-  const theme = await loadTheme(themeCode);
-  const sectionLoader = theme.sections[sectionType];
-  
-  if (!sectionLoader) {
-    console.warn(`Section ${sectionType} not found in theme ${themeCode}`);
-    return null;
-  }
-  
   try {
+    // Try using client-safe loader first
+    const section = await clientThemeLoader.loadSection(themeCode, sectionType);
+    if (section) {
+      return section;
+    }
+    
+    // Fallback to old method
+    const theme = await loadTheme(themeCode);
+    const sectionLoader = theme.sections[sectionType];
+    
+    if (!sectionLoader) {
+      console.warn(`Section ${sectionType} not found in theme ${themeCode}`);
+      // Try fallback to base theme
+      if (themeCode !== 'base') {
+        console.log(`Trying to load section from base theme`);
+        return loadThemeSection('base', sectionType);
+      }
+      return null;
+    }
+    
     const sectionModule = await sectionLoader();
     // Always use default export
     return sectionModule.default;
   } catch (error) {
     console.error(`Failed to load section ${sectionType} from theme ${themeCode}:`, error);
+    // Try fallback to base theme
+    if (themeCode !== 'base') {
+      return loadThemeSection('base', sectionType);
+    }
     return null;
   }
 }

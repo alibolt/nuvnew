@@ -1,0 +1,195 @@
+{
+  "name": "Skateshop",
+  "version": "1.0.0",
+  "author": "Skateshop Team",
+  "description": "Professional skateboard shop theme with authentic design from the Skateshop repository",
+  "category": "Sports",
+  "framework": "nextjs",
+  "engine": "15.0.0",
+  "settings": {
+    "colors": {
+      "primary": "#000000",
+      "secondary": "#DC2626",
+      "background": "#FFFFFF",
+      "foreground": "#0A0A0A",
+      "muted": "#737373",
+      "muted-foreground": "#525252",
+      "border": "#E5E5E5",
+      "accent": "#FBBF24",
+      "accent-foreground": "#000000",
+      "destructive": "#EF4444",
+      "destructive-foreground": "#FFFFFF",
+      "success": "#10B981",
+      "warning": "#F59E0B",
+      "info": "#3B82F6",
+      "card": "#FFFFFF",
+      "card-foreground": "#0A0A0A",
+      "popover": "#FFFFFF",
+      "popover-foreground": "#0A0A0A",
+      "input": "#E5E5E5",
+      "ring": "#000000"
+    },
+    "typography": {
+      "fontFamily": {
+        "heading": "Inter",
+        "body": "Inter",
+        "mono": "JetBrains Mono"
+      },
+      "fontSize": {
+        "base": 14,
+        "scale": 1.333
+      },
+      "fontWeight": {
+        "normal": 400,
+        "medium": 500,
+        "semibold": 600,
+        "bold": 700,
+        "black": 900
+      },
+      "lineHeight": {
+        "tight": 1.1,
+        "normal": 1.5,
+        "relaxed": 1.75
+      },
+      "letterSpacing": {
+        "tight": "-0.02em",
+        "normal": "0",
+        "wide": "0.02em"
+      }
+    },
+    "spacing": {
+      "xs": "0.25rem",
+      "sm": "0.5rem",
+      "md": "1rem",
+      "lg": "1.5rem",
+      "xl": "2rem",
+      "2xl": "3rem",
+      "3xl": "4rem",
+      "4xl": "6rem"
+    },
+    "borderRadius": {
+      "none": "0",
+      "sm": "0.125rem",
+      "md": "0.375rem",
+      "lg": "0.5rem",
+      "xl": "0.75rem",
+      "2xl": "1rem",
+      "full": "9999px"
+    },
+    "shadows": {
+      "sm": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+      "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+      "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+      "xl": "0 20px 25px -5px rgba(0, 0, 0, 0.1)",
+      "2xl": "0 25px 50px -12px rgba(0, 0, 0, 0.25)"
+    },
+    "animation": {
+      "duration": {
+        "instant": "0ms",
+        "fast": "150ms",
+        "normal": "300ms",
+        "slow": "500ms",
+        "slower": "700ms"
+      },
+      "easing": {
+        "linear": "linear",
+        "in": "cubic-bezier(0.4, 0, 1, 1)",
+        "out": "cubic-bezier(0, 0, 0.2, 1)",
+        "inOut": "cubic-bezier(0.4, 0, 0.2, 1)"
+      }
+    },
+    "layout": {
+      "containerWidth": "1280px",
+      "sidebarWidth": "320px",
+      "headerHeight": "60px"
+    },
+    "breakpoints": {
+      "xs": "475px",
+      "sm": "640px",
+      "md": "768px",
+      "lg": "1024px",
+      "xl": "1280px",
+      "2xl": "1536px"
+    }
+  },
+  "features": {
+    "search": true,
+    "quickView": true,
+    "wishlist": false,
+    "compare": false,
+    "reviews": true,
+    "relatedProducts": true,
+    "recentlyViewed": true,
+    "newsletter": true,
+    "socialSharing": true,
+    "sizeChart": true,
+    "productVideos": true,
+    "productZoom": true,
+    "infiniteScroll": true,
+    "lazyLoading": true,
+    "stickyHeader": false,
+    "megaMenu": false,
+    "currencySelector": false,
+    "languageSelector": false,
+    "darkMode": true,
+    "deckSizeGuide": true,
+    "brandShowcase": true,
+    "proModels": true,
+    "trickTips": true,
+    "skateSpots": false
+  },
+  "skateshop": {
+    "categories": [
+      { "id": "decks", "name": "Decks", "slug": "decks" },
+      { "id": "wheels", "name": "Wheels", "slug": "wheels" },
+      { "id": "trucks", "name": "Trucks", "slug": "trucks" },
+      { "id": "bearings", "name": "Bearings", "slug": "bearings" },
+      { "id": "hardware", "name": "Hardware", "slug": "hardware" },
+      { "id": "grip-tape", "name": "Grip Tape", "slug": "grip-tape" },
+      { "id": "apparel", "name": "Apparel", "slug": "apparel" },
+      { "id": "shoes", "name": "Shoes", "slug": "shoes" },
+      { "id": "accessories", "name": "Accessories", "slug": "accessories" },
+      { "id": "completes", "name": "Complete Skateboards", "slug": "completes" }
+    ],
+    "brands": [
+      "Element", "Santa Cruz", "Powell Peralta", "Zero", "Baker",
+      "Girl", "Chocolate", "Flip", "Real", "Anti Hero",
+      "Independent", "Thunder", "Venture", "Ace",
+      "Spitfire", "Bones", "Ricta", "OJ Wheels",
+      "Bones Bearings", "Reds", "Super Swiss"
+    ],
+    "deckSizes": [
+      { "size": "7.5", "label": "7.5\"", "recommended": "Youth" },
+      { "size": "7.75", "label": "7.75\"", "recommended": "Small/Youth" },
+      { "size": "8.0", "label": "8.0\"", "recommended": "Street" },
+      { "size": "8.25", "label": "8.25\"", "recommended": "Street/Park" },
+      { "size": "8.5", "label": "8.5\"", "recommended": "Park/Vert" },
+      { "size": "8.75", "label": "8.75\"", "recommended": "Vert/Bowl" },
+      { "size": "9.0", "label": "9.0\"+", "recommended": "Old School/Cruiser" }
+    ]
+  },
+  "pages": {
+    "home": {
+      "sections": ["header", "hero-skateshop", "categories", "product-grid", "features", "testimonials", "newsletter", "footer"]
+    },
+    "collection": {
+      "sections": ["header", "collection-banner", "filters", "product-grid", "footer"]
+    },
+    "product": {
+      "sections": ["header", "product-gallery", "product-info", "product-recommendations", "recently-viewed", "footer"]
+    },
+    "cart": {
+      "sections": ["header", "cart-items", "cart-summary", "cart-recommendations", "footer"]
+    },
+    "search": {
+      "sections": ["header", "search-bar", "search-results", "footer"]
+    }
+  },
+  "assets": {
+    "logo": "/themes/skateshop/assets/logo.svg",
+    "favicon": "/themes/skateshop/assets/favicon.ico",
+    "placeholder": "/themes/skateshop/assets/placeholder.jpg"
+  },
+  "locales": ["en"],
+  "currency": "USD"
+}

@@ -1,0 +1,11 @@
+{
+  "id": "backup-2025-08-08T22-51-39-587Z",
+  "themeCode": "skateshop",
+  "createdAt": "2025-08-08T22:51:39.603Z",
+  "store": {
+    "id": "cme3e0qz80001e9a5qj3c9fg2",
+    "subdomain": "test-store",
+    "name": "test"
+  },
+  "description": "Manual backup"
+}

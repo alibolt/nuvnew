@@ -1,0 +1,13 @@
+{
+  "skateboard-products": [
+    "deck-1.jpg",
+    "deck-2.jpg", 
+    "wheels-1.jpg",
+    "wheels-2.jpg",
+    "trucks-1.jpg",
+    "trucks-2.jpg",
+    "bearings-1.jpg",
+    "bearings-2.jpg"
+  ],
+  "placeholder": "https://via.placeholder.com/800x800/f3f4f6/9ca3af?text=Product+Image"
+}

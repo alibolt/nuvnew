@@ -1,0 +1,306 @@
+{
+  "name": "Skateshop Theme Settings",
+  "version": "1.0.0",
+  "sections": [
+    {
+      "id": "colors",
+      "name": "Colors",
+      "icon": "Palette",
+      "settings": [
+        {
+          "id": "primary_color",
+          "type": "color",
+          "label": "Primary Color",
+          "default": "#000000",
+          "description": "Main brand color - Skateshop black"
+        },
+        {
+          "id": "secondary_color",
+          "type": "color",
+          "label": "Secondary Color",
+          "default": "#DC2626",
+          "description": "Accent color - Skateboard red"
+        },
+        {
+          "id": "background_color",
+          "type": "color",
+          "label": "Background Color",
+          "default": "#FFFFFF",
+          "description": "Main background color"
+        },
+        {
+          "id": "text_color",
+          "type": "color",
+          "label": "Text Color",
+          "default": "#0A0A0A",
+          "description": "Primary text color"
+        },
+        {
+          "id": "muted_color",
+          "type": "color",
+          "label": "Muted Color",
+          "default": "#737373",
+          "description": "Muted text and borders"
+        },
+        {
+          "id": "border_color",
+          "type": "color",
+          "label": "Border Color",
+          "default": "#E5E5E5",
+          "description": "Default border color"
+        },
+        {
+          "id": "accent_color",
+          "type": "color",
+          "label": "Accent Color",
+          "default": "#FBBF24",
+          "description": "Highlight and badge color"
+        }
+      ]
+    },
+    {
+      "id": "typography",
+      "name": "Typography",
+      "icon": "Type",
+      "settings": [
+        {
+          "id": "font_family_heading",
+          "type": "select",
+          "label": "Heading Font",
+          "default": "Inter",
+          "options": [
+            { "value": "Inter", "label": "Inter" },
+            { "value": "Bebas Neue", "label": "Bebas Neue" },
+            { "value": "Oswald", "label": "Oswald" },
+            { "value": "Anton", "label": "Anton" },
+            { "value": "Russo One", "label": "Russo One" },
+            { "value": "Archivo Black", "label": "Archivo Black" }
+          ],
+          "description": "Font for headings - bold and impactful"
+        },
+        {
+          "id": "font_family_body",
+          "type": "select",
+          "label": "Body Font",
+          "default": "Inter",
+          "options": [
+            { "value": "Inter", "label": "Inter" },
+            { "value": "Roboto", "label": "Roboto" },
+            { "value": "Work Sans", "label": "Work Sans" },
+            { "value": "Source Sans Pro", "label": "Source Sans Pro" },
+            { "value": "Barlow", "label": "Barlow" }
+          ],
+          "description": "Font for body text"
+        },
+        {
+          "id": "font_size_base",
+          "type": "range",
+          "label": "Base Font Size",
+          "default": 14,
+          "min": 12,
+          "max": 18,
+          "unit": "px",
+          "description": "Base font size for clean look"
+        },
+        {
+          "id": "heading_style",
+          "type": "select",
+          "label": "Heading Style",
+          "default": "bold",
+          "options": [
+            { "value": "normal", "label": "Normal" },
+            { "value": "bold", "label": "Bold" },
+            { "value": "black", "label": "Black" },
+            { "value": "uppercase", "label": "Uppercase" }
+          ],
+          "description": "Heading text style"
+        },
+        {
+          "id": "button_style",
+          "type": "select",
+          "label": "Button Style",
+          "default": "sharp",
+          "options": [
+            { "value": "rounded", "label": "Rounded" },
+            { "value": "sharp", "label": "Sharp" },
+            { "value": "pill", "label": "Pill" }
+          ],
+          "description": "Button corner style"
+        }
+      ]
+    },
+    {
+      "id": "layout",
+      "name": "Layout",
+      "icon": "Layout",
+      "settings": [
+        {
+          "id": "container_width",
+          "type": "select",
+          "label": "Container Width",
+          "default": "1280",
+          "options": [
+            { "value": "1024", "label": "Small (1024px)" },
+            { "value": "1280", "label": "Medium (1280px)" },
+            { "value": "1440", "label": "Large (1440px)" },
+            { "value": "full", "label": "Full Width" }
+          ],
+          "description": "Maximum width of content container"
+        },
+        {
+          "id": "grid_style",
+          "type": "select",
+          "label": "Product Grid Style",
+          "default": "minimal",
+          "options": [
+            { "value": "minimal", "label": "Minimal" },
+            { "value": "bordered", "label": "Bordered" },
+            { "value": "shadowed", "label": "Shadowed" }
+          ],
+          "description": "Product grid card style"
+        },
+        {
+          "id": "section_spacing",
+          "type": "select",
+          "label": "Section Spacing",
+          "default": "medium",
+          "options": [
+            { "value": "small", "label": "Tight" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "large", "label": "Spacious" }
+          ],
+          "description": "Spacing between sections"
+        },
+        {
+          "id": "animation_style",
+          "type": "select",
+          "label": "Animation Style",
+          "default": "subtle",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "subtle", "label": "Subtle" },
+            { "value": "smooth", "label": "Smooth" },
+            { "value": "energetic", "label": "Energetic" }
+          ],
+          "description": "Page animation style"
+        }
+      ]
+    },
+    {
+      "id": "product",
+      "name": "Product",
+      "icon": "ShoppingBag",
+      "settings": [
+        {
+          "id": "product_card_style",
+          "type": "select",
+          "label": "Product Card Style",
+          "default": "clean",
+          "options": [
+            { "value": "clean", "label": "Clean" },
+            { "value": "detailed", "label": "Detailed" },
+            { "value": "compact", "label": "Compact" }
+          ],
+          "description": "Product card display style"
+        },
+        {
+          "id": "show_brand",
+          "type": "checkbox",
+          "label": "Show Brand",
+          "default": true,
+          "description": "Display skateboard brand on cards"
+        },
+        {
+          "id": "show_size",
+          "type": "checkbox",
+          "label": "Show Size Options",
+          "default": true,
+          "description": "Display deck sizes on cards"
+        },
+        {
+          "id": "image_hover_effect",
+          "type": "select",
+          "label": "Image Hover Effect",
+          "default": "zoom",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "zoom", "label": "Zoom" },
+            { "value": "flip", "label": "Flip to Alt Image" },
+            { "value": "slide", "label": "Slide Images" }
+          ],
+          "description": "Product image hover effect"
+        }
+      ]
+    },
+    {
+      "id": "skateshop_features",
+      "name": "Skateshop Features",
+      "icon": "Star",
+      "settings": [
+        {
+          "id": "show_deck_size_guide",
+          "type": "checkbox",
+          "label": "Show Deck Size Guide",
+          "default": true,
+          "description": "Display skateboard deck size guide"
+        },
+        {
+          "id": "show_brand_logos",
+          "type": "checkbox",
+          "label": "Show Brand Logos",
+          "default": true,
+          "description": "Display skateboard brand logos"
+        },
+        {
+          "id": "enable_product_videos",
+          "type": "checkbox",
+          "label": "Enable Product Videos",
+          "default": true,
+          "description": "Show skateboard trick videos"
+        },
+        {
+          "id": "show_pro_model_badge",
+          "type": "checkbox",
+          "label": "Show Pro Model Badge",
+          "default": true,
+          "description": "Highlight pro skater models"
+        },
+        {
+          "id": "enable_size_calculator",
+          "type": "checkbox",
+          "label": "Enable Size Calculator",
+          "default": true,
+          "description": "Help customers choose right deck size"
+        }
+      ]
+    },
+    {
+      "id": "social",
+      "name": "Social",
+      "icon": "Share",
+      "settings": [
+        {
+          "id": "instagram_feed",
+          "type": "checkbox",
+          "label": "Show Instagram Feed",
+          "default": true,
+          "description": "Display skateboarding Instagram feed"
+        },
+        {
+          "id": "youtube_channel",
+          "type": "text",
+          "label": "YouTube Channel",
+          "default": "",
+          "description": "Skateboard videos channel URL"
+        },
+        {
+          "id": "tiktok_handle",
+          "type": "text",
+          "label": "TikTok Handle",
+          "default": "",
+          "description": "TikTok account for skate clips"
+        }
+      ]
+    }
+  ]
+}

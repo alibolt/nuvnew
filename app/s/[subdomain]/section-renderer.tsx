@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import type { Store, Product } from '@prisma/client';
 import { loadThemeSection } from '@/lib/services/theme-loader';
 import { Loader2 } from 'lucide-react';
+import { SectionErrorBoundary } from '@/components/theme/section-error-boundary';
 
 interface SectionRendererProps {
   section: {
@@ -93,7 +94,7 @@ DynamicSection.displayName = 'DynamicSection';
 export const SectionRenderer = memo(function SectionRenderer({
   section,
   store,
-  themeCode = 'commerce',
+  themeCode = 'base',
   isPreview = false,
   pageData,
   onBlockClick,
@@ -167,17 +168,22 @@ export const SectionRenderer = memo(function SectionRenderer({
   // In preview mode, don't wrap with section element to avoid double wrapping
   if (isPreview) {
     return (
-      <Suspense fallback={
-        <div className="flex items-center justify-center p-12">
-          <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
-        </div>
-      }>
-        <DynamicSection
-          themeCode={themeCode}
-          sectionType={section.sectionType}
-          {...sectionProps}
-        />
-      </Suspense>
+      <SectionErrorBoundary
+        sectionType={section.sectionType}
+        themeId={themeCode || 'unknown'}
+      >
+        <Suspense fallback={
+          <div className="flex items-center justify-center p-12">
+            <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+          </div>
+        }>
+          <DynamicSection
+            themeCode={themeCode}
+            sectionType={section.sectionType}
+            {...sectionProps}
+          />
+        </Suspense>
+      </SectionErrorBoundary>
     );
   }
 
@@ -190,17 +196,22 @@ export const SectionRenderer = memo(function SectionRenderer({
       data-section-id={section.id}
       data-section-type={section.sectionType}
     >
-      <Suspense fallback={
-        <div className="flex items-center justify-center p-12">
-          <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
-        </div>
-      }>
-        <DynamicSection
-          themeCode={themeCode}
-          sectionType={section.sectionType}
-          {...sectionProps}
-        />
-      </Suspense>
+      <SectionErrorBoundary
+        sectionType={section.sectionType}
+        themeId={themeCode || 'unknown'}
+      >
+        <Suspense fallback={
+          <div className="flex items-center justify-center p-12">
+            <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+          </div>
+        }>
+          <DynamicSection
+            themeCode={themeCode}
+            sectionType={section.sectionType}
+            {...sectionProps}
+          />
+        </Suspense>
+      </SectionErrorBoundary>
     </section>
   );
 });

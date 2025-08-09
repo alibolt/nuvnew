@@ -66,25 +66,28 @@ export class HybridTemplateLoader {
     }
 
     try {
+      // Use the theme code directly (no mapping)
+      const actualThemeCode = themeCode;
+      
       // First try public/themes directory
-      const publicThemePath = path.join(process.cwd(), 'public', 'themes', themeCode, 'templates', `${templateType}.json`);
+      const publicThemePath = path.join(process.cwd(), 'public', 'themes', actualThemeCode, 'templates', `${templateType}.json`);
       logger.debug(`Checking public theme path: ${publicThemePath}`);
       
       try {
         const fileContent = await fs.readFile(publicThemePath, 'utf-8');
         const definition = JSON.parse(fileContent) as TemplateDefinition;
         this.templateCache.set(cacheKey, definition);
-        logger.debug(`Loaded template from public/themes: ${themeCode}/${templateType}`);
+        logger.debug(`Loaded template from public/themes: ${actualThemeCode}/${templateType}`);
         return definition;
       } catch (publicError) {
         // If not found in public, try themes directory
-        const themePath = path.join(this.themesDir, themeCode, 'templates', `${templateType}.json`);
+        const themePath = path.join(this.themesDir, actualThemeCode, 'templates', `${templateType}.json`);
         logger.debug(`Checking themes path: ${themePath}`);
         
         const fileContent = await fs.readFile(themePath, 'utf-8');
         const definition = JSON.parse(fileContent) as TemplateDefinition;
         this.templateCache.set(cacheKey, definition);
-        logger.debug(`Loaded template from themes: ${themeCode}/${templateType}`);
+        logger.debug(`Loaded template from themes: ${actualThemeCode}/${templateType}`);
         return definition;
       }
     } catch (error) {

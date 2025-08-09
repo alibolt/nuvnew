@@ -6,7 +6,8 @@ import {
   Users, Plus, Search, Filter, Eye, Edit, MoreVertical, 
   ArrowLeft, Download, Upload, AlertCircle, CheckCircle, 
   Clock, Mail, ShoppingBag, UserCheck, UserX,
-  ChevronLeft, ChevronRight, Trash2, Ban, Check
+  ChevronLeft, ChevronRight, Trash2, Ban, Check,
+  SortAsc, MoreHorizontal
 } from 'lucide-react';
 import { CustomerFormPanel } from './customer-form-panel';
 
@@ -261,26 +262,6 @@ function CustomersListPanel({ store, onAddCustomer, onEditCustomer, refreshKey }
 
   return (
     <>
-      {/* Customers Header - Products tarzında */}
-      <div className="nuvi-flex nuvi-justify-between nuvi-items-center nuvi-mb-lg">
-        <div>
-          <h2 className="nuvi-text-2xl nuvi-font-bold">Customers</h2>
-          <p className="nuvi-text-secondary nuvi-text-sm">Manage your customer relationships</p>
-        </div>
-        <div className="nuvi-flex nuvi-gap-sm">
-          <button className="nuvi-btn nuvi-btn-secondary">
-            <Download className="h-4 w-4" />
-            Export
-          </button>
-          <button 
-            onClick={onAddCustomer}
-            className="nuvi-btn nuvi-btn-primary"
-          >
-            <Plus className="h-4 w-4" />
-            Add Customer
-          </button>
-        </div>
-      </div>
 
       {/* Customer Stats - Products tarzında */}
       <div className="nuvi-grid nuvi-grid-cols-1 nuvi-md:grid-cols-4 nuvi-gap-md nuvi-mb-lg">
@@ -335,10 +316,58 @@ function CustomersListPanel({ store, onAddCustomer, onEditCustomer, refreshKey }
         </div>
       </div>
 
-      {/* Customers Table - Products tarzında */}
+      {/* Customers Table - Data Table with Filters */}
       <div className="nuvi-card">
-        <div className="nuvi-card-content">
-          {isLoading ? (
+        {/* Filter Bar */}
+        <div style={{ 
+          padding: '12px 16px', 
+          borderBottom: '1px solid #E5E7EB',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ position: 'relative' }}>
+              <Search size={14} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#9CA3AF' }} />
+              <input 
+                type="text"
+                placeholder="Search customers..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{
+                  padding: '6px 8px 6px 32px',
+                  border: '1px solid #E5E7EB',
+                  borderRadius: '6px',
+                  fontSize: '13px',
+                  width: '200px'
+                }}
+              />
+            </div>
+            <button className="nuvi-btn nuvi-btn-ghost nuvi-btn-xs">
+              <Filter size={12} style={{ marginRight: '4px' }} />
+              Filters
+            </button>
+            <button className="nuvi-btn nuvi-btn-ghost nuvi-btn-xs">
+              <SortAsc size={12} style={{ marginRight: '4px' }} />
+              Sort
+            </button>
+          </div>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button className="nuvi-btn nuvi-btn-xs nuvi-btn-secondary">
+              <Download size={12} style={{ marginRight: '4px' }} />
+              Export
+            </button>
+            <button 
+              onClick={onAddCustomer}
+              className="nuvi-btn nuvi-btn-xs nuvi-btn-primary"
+            >
+              <Plus size={12} style={{ marginRight: '4px' }} />
+              Add Customer
+            </button>
+          </div>
+        </div>
+        
+        {isLoading ? (
             <div className="nuvi-text-center nuvi-py-xl">
               <div className="nuvi-btn-loading nuvi-mx-auto nuvi-mb-md" />
               <p className="nuvi-text-muted">Loading customers...</p>
@@ -357,110 +386,24 @@ function CustomersListPanel({ store, onAddCustomer, onEditCustomer, refreshKey }
               </button>
             </div>
           ) : (
-            <div>
-              {/* Search and Filter - Products tarzında */}
-              <div className="nuvi-flex nuvi-gap-md nuvi-mb-md">
-                <div className="nuvi-flex-1">
-                  <div className="nuvi-relative">
-                    <Search className="nuvi-absolute nuvi-left-3 nuvi-top-1/2 -nuvi-translate-y-1/2 h-4 w-4 nuvi-text-gray-400" />
-                    <input
-                      type="text"
-                      placeholder="Search customers..."
-                      className="nuvi-input nuvi-pl-10"
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <select 
-                  className="nuvi-input" 
-                  style={{ width: '150px' }}
-                  value={filterStatus}
-                  onChange={(e) => setFilterStatus(e.target.value)}
-                >
-                  <option value="all">All Status</option>
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                </select>
-                <select 
-                  className="nuvi-input" 
-                  style={{ width: '150px' }}
-                  value={filterSubscription}
-                  onChange={(e) => setFilterSubscription(e.target.value)}
-                >
-                  <option value="all">All Subscriptions</option>
-                  <option value="subscribed">Subscribed</option>
-                  <option value="unsubscribed">Not Subscribed</option>
-                </select>
-              </div>
-
-              {/* Bulk Actions Bar */}
-              {selectedCustomers.length > 0 && (
-                <div className="nuvi-mb-md nuvi-p-md nuvi-bg-primary/10 nuvi-rounded-lg nuvi-flex nuvi-items-center nuvi-justify-between">
-                  <span className="nuvi-text-sm nuvi-font-medium">
-                    {selectedCustomers.length} customer{selectedCustomers.length > 1 ? 's' : ''} selected
-                  </span>
-                  <div className="nuvi-flex nuvi-items-center nuvi-gap-sm">
-                    <button
-                      onClick={() => handleBulkStatusChange('active')}
-                      className="nuvi-btn nuvi-btn-sm nuvi-btn-secondary"
-                    >
-                      <Check className="h-4 w-4" />
-                      Activate
-                    </button>
-                    <button
-                      onClick={() => handleBulkStatusChange('inactive')}
-                      className="nuvi-btn nuvi-btn-sm nuvi-btn-secondary"
-                    >
-                      <UserX className="h-4 w-4" />
-                      Deactivate
-                    </button>
-                    <button
-                      onClick={() => handleBulkStatusChange('banned')}
-                      className="nuvi-btn nuvi-btn-sm nuvi-btn-secondary"
-                    >
-                      <Ban className="h-4 w-4" />
-                      Ban
-                    </button>
-                    <button
-                      onClick={handleBulkDelete}
-                      className="nuvi-btn nuvi-btn-sm nuvi-btn-destructive"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              )}
-
+            <>
               {/* Customers Table */}
-              <div className="nuvi-overflow-x-auto">
-                <table className="nuvi-w-full">
-                  <thead>
-                    <tr className="nuvi-border-b">
-                      <th className="nuvi-text-left nuvi-py-md nuvi-px-md nuvi-font-medium" style={{ width: '40px' }}>
-                        <input
-                          type="checkbox"
-                          checked={selectedCustomers.length === filteredCustomers.length && filteredCustomers.length > 0}
-                          onChange={handleSelectAll}
-                          className="nuvi-checkbox"
-                        />
-                      </th>
-                      <th className="nuvi-text-left nuvi-py-md nuvi-px-md nuvi-font-medium">Customer</th>
-                      <th className="nuvi-text-left nuvi-py-md nuvi-px-md nuvi-font-medium">Orders</th>
-                      <th className="nuvi-text-left nuvi-py-md nuvi-px-md nuvi-font-medium">Total Spent</th>
-                      <th className="nuvi-text-left nuvi-py-md nuvi-px-md nuvi-font-medium">Subscription</th>
-                      <th className="nuvi-text-left nuvi-py-md nuvi-px-md nuvi-font-medium">Status</th>
-                      <th className="nuvi-text-right nuvi-py-md nuvi-px-md nuvi-font-medium">Actions</th>
-                    </tr>
-                  </thead>
+              <table className="nuvi-table" style={{ width: '100%' }}>
+                <thead>
+                  <tr style={{ fontSize: '12px' }}>
+                    <th style={{ textAlign: 'left', padding: '6px 12px', fontWeight: '600' }}>Name</th>
+                    <th style={{ textAlign: 'left', padding: '6px 12px', fontWeight: '600' }}>Email</th>
+                    <th style={{ textAlign: 'left', padding: '6px 12px', fontWeight: '600' }}>Orders</th>
+                    <th style={{ textAlign: 'left', padding: '6px 12px', fontWeight: '600' }}>Total Spent</th>
+                    <th style={{ textAlign: 'left', padding: '6px 12px', fontWeight: '600' }}>Last Order</th>
+                    <th style={{ textAlign: 'right', padding: '6px 12px', fontWeight: '600' }}>Actions</th>
+                  </tr>
+                </thead>
                   <tbody>
                     {filteredCustomers.length === 0 ? (
                       <tr>
-                        <td colSpan={7} className="nuvi-py-xl nuvi-text-center nuvi-text-muted">
-                          {searchTerm || filterStatus !== 'all' || filterSubscription !== 'all' 
-                            ? 'No customers found matching your filters' 
-                            : 'No customers yet'}
+                        <td colSpan={6} style={{ padding: '24px', textAlign: 'center', color: '#6B7280' }}>
+                          {searchTerm ? 'No customers found matching your search' : 'No customers yet'}
                         </td>
                       </tr>
                     ) : (
@@ -468,70 +411,38 @@ function CustomersListPanel({ store, onAddCustomer, onEditCustomer, refreshKey }
                         const fullName = [customer.firstName, customer.lastName].filter(Boolean).join(' ') || 'No name';
                         
                         return (
-                          <tr key={customer.id} className="nuvi-border-b">
-                            <td className="nuvi-py-md nuvi-px-md">
-                              <input
-                                type="checkbox"
-                                checked={selectedCustomers.includes(customer.id)}
-                                onChange={() => handleSelectCustomer(customer.id)}
-                                className="nuvi-checkbox"
-                              />
-                            </td>
-                            <td className="nuvi-py-md nuvi-px-md">
-                              <div className="nuvi-flex nuvi-items-center nuvi-gap-md">
-                                <div className="nuvi-w-12 nuvi-h-12 nuvi-bg-primary/10 nuvi-rounded-full nuvi-flex nuvi-items-center nuvi-justify-center">
-                                  <span className="nuvi-text-sm nuvi-font-medium nuvi-text-primary">
-                                    {fullName.charAt(0).toUpperCase()}
-                                  </span>
+                          <tr key={customer.id} style={{ fontSize: '13px' }}>
+                            <td style={{ padding: '8px 12px' }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <div style={{
+                                  width: '32px',
+                                  height: '32px',
+                                  borderRadius: '50%',
+                                  backgroundColor: '#E5E7EB',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  fontSize: '12px',
+                                  fontWeight: '600'
+                                }}>
+                                  {fullName.split(' ').map(n => n[0]).join('').toUpperCase()}
                                 </div>
-                                <div>
-                                  <p className="nuvi-font-medium">{fullName}</p>
-                                  <p className="nuvi-text-sm nuvi-text-muted">{customer.email}</p>
-                                </div>
+                                <span style={{ fontWeight: '500' }}>{fullName}</span>
                               </div>
                             </td>
-                            <td className="nuvi-py-md nuvi-px-md">
-                              <span className="nuvi-text-sm">{customer._count?.orders || 0} orders</span>
+                            <td style={{ padding: '8px 12px' }}>{customer.email}</td>
+                            <td style={{ padding: '8px 12px' }}>{customer._count?.orders || 0}</td>
+                            <td style={{ padding: '8px 12px', fontWeight: '500' }}>{formatCurrency(customer.totalSpent || 0)}</td>
+                            <td style={{ padding: '8px 12px', color: '#6B7280', fontSize: '12px' }}>
+                              {customer.lastOrderDate ? new Date(customer.lastOrderDate).toLocaleDateString() : 'Never'}
                             </td>
-                            <td className="nuvi-py-md nuvi-px-md">
-                              <span className="nuvi-font-medium">{formatCurrency(customer.totalSpent || 0)}</span>
-                            </td>
-                            <td className="nuvi-py-md nuvi-px-md">
-                              <span className={`nuvi-badge ${
-                                customer.acceptsMarketing ? 'nuvi-badge-success' : 'nuvi-badge-secondary'
-                              }`}>
-                                {customer.acceptsMarketing ? 'Subscribed' : 'Not subscribed'}
-                              </span>
-                            </td>
-                            <td className="nuvi-py-md nuvi-px-md">
-                              <span className={`nuvi-badge ${
-                                customer.status === 'active' ? 'nuvi-badge-success' : 
-                                customer.status === 'banned' ? 'nuvi-badge-destructive' : 'nuvi-badge-secondary'
-                              }`}>
-                                {customer.status}
-                              </span>
-                            </td>
-                            <td className="nuvi-py-md nuvi-px-md nuvi-text-right">
-                              <div className="nuvi-flex nuvi-items-center nuvi-gap-sm nuvi-justify-end">
-                                <button 
-                                  className="nuvi-btn nuvi-btn-sm nuvi-btn-ghost"
-                                  onClick={() => router.push(`/dashboard/stores/${store.subdomain}/customers/${customer.id}`)}
-                                >
-                                  <Eye className="h-4 w-4" />
-                                </button>
-                                <button 
-                                  onClick={() => onEditCustomer(customer.id)}
-                                  className="nuvi-btn nuvi-btn-sm nuvi-btn-ghost"
-                                >
-                                  <Edit className="h-4 w-4" />
-                                </button>
-                                <button 
-                                  onClick={() => handleDelete(customer.id)}
-                                  className="nuvi-btn nuvi-btn-sm nuvi-btn-ghost"
-                                >
-                                  <MoreVertical className="h-4 w-4" />
-                                </button>
-                              </div>
+                            <td style={{ padding: '8px 12px', textAlign: 'right' }}>
+                              <button 
+                                className="nuvi-btn nuvi-btn-ghost nuvi-btn-xs"
+                                onClick={() => onEditCustomer(customer.id)}
+                              >
+                                <MoreHorizontal size={14} />
+                              </button>
                             </td>
                           </tr>
                         );
@@ -539,62 +450,50 @@ function CustomersListPanel({ store, onAddCustomer, onEditCustomer, refreshKey }
                     )}
                   </tbody>
                 </table>
-              </div>
-
-              {/* Pagination */}
-              {pagination && pagination.pages > 1 && (
-                <div className="nuvi-mt-lg nuvi-flex nuvi-items-center nuvi-justify-between nuvi-border-t nuvi-pt-md">
-                  <div className="nuvi-text-sm nuvi-text-muted">
-                    Showing {((currentPage - 1) * pagination.limit) + 1} to {Math.min(currentPage * pagination.limit, pagination.total)} of {pagination.total} customers
-                  </div>
-                  
-                  <div className="nuvi-flex nuvi-items-center nuvi-gap-sm">
-                    <button
-                      onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                      disabled={currentPage === 1}
-                      className="nuvi-btn nuvi-btn-sm nuvi-btn-ghost disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <ChevronLeft className="h-4 w-4" />
-                      Previous
-                    </button>
-
-                    <div className="nuvi-flex nuvi-items-center nuvi-gap-xs">
-                      {Array.from({ length: Math.min(5, pagination.pages) }, (_, i) => {
-                        const startPage = Math.max(1, currentPage - 2);
-                        const page = startPage + i;
-                        
-                        if (page > pagination.pages) return null;
-                        
-                        return (
-                          <button
-                            key={page}
-                            onClick={() => setCurrentPage(page)}
-                            className={`nuvi-btn nuvi-btn-sm ${
-                              page === currentPage 
-                                ? 'nuvi-btn-primary' 
-                                : 'nuvi-btn-ghost'
-                            }`}
-                          >
-                            {page}
-                          </button>
-                        );
-                      })}
-                    </div>
-
-                    <button
-                      onClick={() => setCurrentPage(prev => Math.min(pagination.pages, prev + 1))}
-                      disabled={currentPage === pagination.pages}
-                      className="nuvi-btn nuvi-btn-sm nuvi-btn-ghost disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      Next
-                      <ChevronRight className="h-4 w-4" />
-                    </button>
-                  </div>
+              
+              {/* Pagination Footer */}
+              <div style={{
+                padding: '12px 16px',
+                borderTop: '1px solid #E5E7EB',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                fontSize: '13px'
+              }}>
+                <span style={{ color: '#6B7280' }}>
+                  Showing {filteredCustomers.length > 0 ? '1' : '0'}-{filteredCustomers.length} of {customers.length} results
+                </span>
+                <div style={{ display: 'flex', gap: '4px' }}>
+                  <button 
+                    className="nuvi-btn nuvi-btn-ghost nuvi-btn-xs" 
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  >
+                    <ChevronLeft size={14} />
+                  </button>
+                  {Array.from({ length: Math.min(5, Math.ceil(customers.length / 50)) }, (_, i) => {
+                    const page = i + 1;
+                    return (
+                      <button 
+                        key={page}
+                        className={`nuvi-btn nuvi-btn-ghost nuvi-btn-xs ${currentPage === page ? 'nuvi-btn-active' : ''}`}
+                        onClick={() => setCurrentPage(page)}
+                      >
+                        {page}
+                      </button>
+                    );
+                  })}
+                  <button 
+                    className="nuvi-btn nuvi-btn-ghost nuvi-btn-xs"
+                    disabled={currentPage >= Math.ceil(customers.length / 50)}
+                    onClick={() => setCurrentPage(prev => prev + 1)}
+                  >
+                    <ChevronRight size={14} />
+                  </button>
                 </div>
-              )}
-            </div>
+              </div>
+            </>
           )}
-        </div>
       </div>
     </>
   );

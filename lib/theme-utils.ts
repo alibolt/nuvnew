@@ -134,13 +134,13 @@ export async function loadThemeConfig(themeName: string): Promise<any> {
     // Try to fetch from public directory first
     const response = await fetch(`/themes/${themeName}/theme.json`);
     if (!response.ok) {
-      // If not found in public, return the default commerce theme config
-      if (themeName === 'commerce') {
-        // Import the theme config directly
-        const { default: themeConfig } = await import('@/themes/commerce/theme.json');
+      // If not found in public, try to import from themes directory
+      if (themeName === 'base') {
+        // Import the base theme config directly
+        const { default: themeConfig } = await import('@/themes/base/manifest.json');
         console.log('[ThemeUtils] Loaded theme config from import:', {
-          sectionPaddingMin: themeConfig.settings?.layout?.sectionPadding?.min,
-          elementSpacingMin: themeConfig.settings?.layout?.elementSpacing?.min
+          themeName: themeConfig.name,
+          version: themeConfig.version
         });
         return themeConfig;
       }
@@ -155,9 +155,9 @@ export async function loadThemeConfig(themeName: string): Promise<any> {
   } catch (error) {
     console.error('[ThemeUtils] Failed to load theme config:', error);
     // Return a minimal default config as fallback
-    if (themeName === 'commerce') {
+    if (themeName === 'base') {
       return {
-        name: 'Commerce Pro',
+        name: 'Base Theme',
         version: '1.0.0',
         settings: {
           colors: {
@@ -298,10 +298,36 @@ export async function loadThemeSettings(
   savedValues: Record<string, any>;
 }> {
   try {
-    // Load theme configuration
-    const themeConfig = await loadThemeConfig(themeName);
+    // First try to load theme-settings.json for detailed settings
+    let themeSettings = null;
+    try {
+      const settingsResponse = await fetch(`/themes/${themeName}/theme-settings.json`);
+      if (settingsResponse.ok) {
+        const settingsConfig = await settingsResponse.json();
+        // Convert theme-settings.json format to expected format
+        themeSettings = {};
+        if (settingsConfig.sections) {
+          settingsConfig.sections.forEach((section: any) => {
+            themeSettings[section.id] = {};
+            section.settings.forEach((setting: any) => {
+              themeSettings[section.id][setting.id] = setting;
+            });
+          });
+        }
+      }
+    } catch (e) {
+      console.log('[ThemeUtils] Could not load theme-settings.json, falling back to theme.json');
+    }
     
-    if (!themeConfig.settings) {
+    // If no theme-settings.json, try theme.json
+    if (!themeSettings) {
+      const themeConfig = await loadThemeConfig(themeName);
+      if (themeConfig.settings) {
+        themeSettings = themeConfig.settings;
+      }
+    }
+    
+    if (!themeSettings) {
       return {
         themeSettings: null,
         currentValues: {},
@@ -314,15 +340,15 @@ export async function loadThemeSettings(
     
     if (savedSettings) {
       return {
-        themeSettings: themeConfig.settings,
+        themeSettings: themeSettings,
         currentValues: savedSettings,
         savedValues: savedSettings
       };
     } else {
       // Use defaults
-      const defaults = extractDefaultValues(themeConfig.settings);
+      const defaults = extractDefaultValues(themeSettings);
       return {
-        themeSettings: themeConfig.settings,
+        themeSettings: themeSettings,
         currentValues: defaults,
         savedValues: defaults
       };

@@ -2197,6 +2197,24 @@ export function ThemeStudioNext({ store }: ThemeStudioNextProps) {
         }
       }
 
+      // Update store's theme code
+      try {
+        const response = await fetch(`/api/stores/${store.subdomain}/theme`, {
+          credentials: 'include',
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            themeCode: store.themeCode
+          }),
+        });
+        
+        if (!response.ok) {
+          console.error('Failed to update store theme:', await response.text());
+        }
+      } catch (error) {
+        console.error('Failed to update store theme:', error);
+      }
+
       state.setIsDraft(false);
       state.updateLastSaved();
       clearHistoryRef.current(sectionsRef.current, 'Published changes');
@@ -2459,6 +2477,7 @@ export function ThemeStudioNext({ store }: ThemeStudioNextProps) {
       {/* Toolbar */}
       <ThemeStudioToolbar
         subdomain={store.subdomain}
+        themeCode={store.themeCode}
         saving={state.saving}
         isPublishing={state.isPublishing}
         hasChanges={hasChanges}

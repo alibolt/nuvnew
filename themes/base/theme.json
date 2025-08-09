@@ -1,0 +1,132 @@
+{
+  "name": "Base Theme",
+  "version": "1.0.0",
+  "author": "Nuvi Team",
+  "description": "A clean and modern e-commerce theme with essential features for any online store",
+  "category": "General",
+  "framework": "nextjs",
+  "engine": "15.0.0",
+  "settings": {
+    "colors": {
+      "primary": "#3B82F6",
+      "secondary": "#10B981",
+      "background": "#FFFFFF",
+      "foreground": "#1F2937",
+      "muted": "#9CA3AF",
+      "border": "#E5E7EB",
+      "error": "#EF4444",
+      "success": "#10B981",
+      "warning": "#F59E0B",
+      "info": "#3B82F6"
+    },
+    "typography": {
+      "fontFamily": {
+        "heading": "Inter",
+        "body": "Inter"
+      },
+      "fontSize": {
+        "base": 16,
+        "scale": 1.25
+      },
+      "fontWeight": {
+        "normal": 400,
+        "medium": 500,
+        "semibold": 600,
+        "bold": 700
+      },
+      "lineHeight": {
+        "tight": 1.2,
+        "normal": 1.5,
+        "relaxed": 1.75
+      }
+    },
+    "spacing": {
+      "xs": "0.5rem",
+      "sm": "1rem",
+      "md": "1.5rem",
+      "lg": "2rem",
+      "xl": "3rem",
+      "2xl": "4rem",
+      "3xl": "6rem"
+    },
+    "borderRadius": {
+      "none": "0",
+      "sm": "0.25rem",
+      "md": "0.5rem",
+      "lg": "0.75rem",
+      "xl": "1rem",
+      "full": "9999px"
+    },
+    "shadows": {
+      "sm": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+      "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+      "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+      "xl": "0 20px 25px -5px rgba(0, 0, 0, 0.1)"
+    },
+    "animation": {
+      "duration": {
+        "fast": "150ms",
+        "normal": "300ms",
+        "slow": "500ms"
+      },
+      "easing": "cubic-bezier(0.4, 0, 0.2, 1)"
+    },
+    "layout": {
+      "containerWidth": "1280px",
+      "sidebarWidth": "280px",
+      "headerHeight": "64px"
+    },
+    "breakpoints": {
+      "sm": "640px",
+      "md": "768px",
+      "lg": "1024px",
+      "xl": "1280px",
+      "2xl": "1536px"
+    }
+  },
+  "features": {
+    "search": true,
+    "quickView": true,
+    "wishlist": true,
+    "compare": false,
+    "reviews": true,
+    "relatedProducts": true,
+    "recentlyViewed": true,
+    "newsletter": true,
+    "socialSharing": true,
+    "sizeChart": false,
+    "productVideos": false,
+    "productZoom": true,
+    "infiniteScroll": false,
+    "lazyLoading": true,
+    "stickyHeader": true,
+    "megaMenu": false,
+    "currencySelector": false,
+    "languageSelector": false,
+    "darkMode": false
+  },
+  "pages": {
+    "home": {
+      "sections": ["header", "hero", "categories", "product-grid", "features", "testimonials", "newsletter", "footer"]
+    },
+    "collection": {
+      "sections": ["header", "collection-banner", "filters", "product-grid", "footer"]
+    },
+    "product": {
+      "sections": ["header", "product-gallery", "product-info", "product-recommendations", "recently-viewed", "footer"]
+    },
+    "cart": {
+      "sections": ["header", "cart-items", "cart-summary", "cart-recommendations", "footer"]
+    },
+    "search": {
+      "sections": ["header", "search-bar", "search-results", "footer"]
+    }
+  },
+  "assets": {
+    "logo": "/themes/base/assets/logo.svg",
+    "favicon": "/themes/base/assets/favicon.ico",
+    "placeholder": "/themes/base/assets/placeholder.jpg"
+  },
+  "locales": ["en"],
+  "currency": "USD"
+}

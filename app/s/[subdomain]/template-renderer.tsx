@@ -1,7 +1,7 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { SectionRenderer } from './section-renderer';
-import { themeStyles, componentStyles } from '@/themes/commerce/styles/theme-styles';
 import { ThemeCSSVariables } from '@/components/theme-css-variables';
 
 interface TemplateRendererProps {
@@ -21,7 +21,47 @@ export function TemplateRenderer({
   globalSections,
   themeSettings
 }: TemplateRendererProps) {
-  const themeCode = store.themeCode || 'commerce';
+  const themeCode = store.themeCode || 'base';
+  const [themeStyles, setThemeStyles] = useState('');
+  const [componentStyles, setComponentStyles] = useState('');
+  
+  // Load theme styles dynamically
+  useEffect(() => {
+    const loadStyles = async () => {
+      try {
+        // Try using client-safe loader first
+        const { clientThemeLoader } = await import('@/lib/theme-registry/client-theme-loader');
+        const styles = await clientThemeLoader.loadStyles(themeCode);
+        
+        if (styles) {
+          setThemeStyles(styles.themeStyles || '');
+          setComponentStyles(styles.componentStyles || '');
+        } else {
+          // Fallback to direct import
+          const stylesModule = await import(`@/themes/${themeCode}/styles/theme-styles`);
+          setThemeStyles(stylesModule.themeStyles || '');
+          setComponentStyles(stylesModule.componentStyles || '');
+        }
+      } catch (error) {
+        console.error('Failed to load theme styles:', error);
+        // Try base theme as fallback
+        if (themeCode !== 'base') {
+          try {
+            const baseStyles = await import(`@/themes/base/styles/theme-styles`);
+            setThemeStyles(baseStyles.themeStyles || '');
+            setComponentStyles(baseStyles.componentStyles || '');
+          } catch {
+            setThemeStyles('');
+            setComponentStyles('');
+          }
+        } else {
+          setThemeStyles('');
+          setComponentStyles('');
+        }
+      }
+    };
+    loadStyles();
+  }, [themeCode]);
   
   // Check if any section has transparent header setting
   const hasTransparentHeader = sections?.some(
@@ -31,10 +71,10 @@ export function TemplateRenderer({
   return (
     <>
       {/* Theme Base Styles */}
-      <style dangerouslySetInnerHTML={{ __html: themeStyles }} />
+      {themeStyles && <style dangerouslySetInnerHTML={{ __html: themeStyles }} />}
       
       {/* Theme Component Styles */}
-      <style dangerouslySetInnerHTML={{ __html: componentStyles }} />
+      {componentStyles && <style dangerouslySetInnerHTML={{ __html: componentStyles }} />}
       
       {/* Theme CSS Variables */}
       {themeSettings && <ThemeCSSVariables themeSettings={themeSettings} />}

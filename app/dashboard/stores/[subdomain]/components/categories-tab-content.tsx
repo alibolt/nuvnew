@@ -397,23 +397,23 @@ function CategoriesListPanel({ store, onAddCategory, onEditCategory, refreshKey 
               )}
 
               {/* Categories Table */}
-              <div className="nuvi-overflow-x-auto">
-                <table className="nuvi-w-full">
+              <div style={{ overflow: 'hidden' }}>
+                <table className="nuvi-table" style={{ width: '100%' }}>
                   <thead>
-                    <tr className="nuvi-border-b">
-                      <th className="nuvi-text-left nuvi-py-md nuvi-px-md nuvi-font-medium" style={{ width: '40px' }}>
+                    <tr style={{ fontSize: '12px' }}>
+                      <th style={{ width: '40px', padding: '6px 12px' }}>
                         <input
                           type="checkbox"
                           checked={selectedCategories.length === filteredCategories.length && filteredCategories.length > 0}
                           onChange={handleSelectAll}
-                          className="nuvi-checkbox"
+                          className="nuvi-checkbox-custom"
                         />
                       </th>
-                      <th className="nuvi-text-left nuvi-py-md nuvi-px-md nuvi-font-medium">Collection</th>
-                      <th className="nuvi-text-left nuvi-py-md nuvi-px-md nuvi-font-medium">Type</th>
-                      <th className="nuvi-text-left nuvi-py-md nuvi-px-md nuvi-font-medium">Products</th>
-                      <th className="nuvi-text-left nuvi-py-md nuvi-px-md nuvi-font-medium">Status</th>
-                      <th className="nuvi-text-right nuvi-py-md nuvi-px-md nuvi-font-medium">Actions</th>
+                      <th style={{ textAlign: 'left', padding: '6px 12px', fontWeight: '600' }}>Collection</th>
+                      <th style={{ textAlign: 'left', padding: '6px 12px', fontWeight: '600' }}>Type</th>
+                      <th style={{ textAlign: 'left', padding: '6px 12px', fontWeight: '600' }}>Products</th>
+                      <th style={{ textAlign: 'left', padding: '6px 12px', fontWeight: '600' }}>Status</th>
+                      <th style={{ textAlign: 'right', padding: '6px 12px', fontWeight: '600' }}>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -427,26 +427,37 @@ function CategoriesListPanel({ store, onAddCategory, onEditCategory, refreshKey 
                       </tr>
                     ) : (
                       filteredCategories.map((category) => (
-                        <tr key={category.id} className="nuvi-border-b">
-                          <td className="nuvi-py-md nuvi-px-md">
+                        <tr key={category.id} style={{ fontSize: '13px' }}>
+                          <td style={{ padding: '8px 12px' }}>
                             <input
                               type="checkbox"
                               checked={selectedCategories.includes(category.id)}
                               onChange={() => handleSelectCategory(category.id)}
-                              className="nuvi-checkbox"
+                              className="nuvi-checkbox-custom"
                             />
                           </td>
-                          <td className="nuvi-py-md nuvi-px-md">
-                            <div className="nuvi-flex nuvi-items-center nuvi-gap-md">
-                              <div className="nuvi-w-16 nuvi-h-16 nuvi-bg-gray-100 nuvi-rounded-lg nuvi-flex nuvi-items-center nuvi-justify-center nuvi-overflow-hidden">
+                          <td style={{ padding: '8px 12px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                              <div style={{ 
+                                width: '40px', 
+                                height: '40px', 
+                                minWidth: '40px',
+                                backgroundColor: '#F3F4F6', 
+                                borderRadius: '6px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                overflow: 'hidden',
+                                flexShrink: 0
+                              }}>
                                 {category.image ? (
                                   <img 
                                     src={category.image} 
                                     alt={category.name}
-                                    className="nuvi-w-full nuvi-h-full nuvi-object-cover"
+                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                   />
                                 ) : (
-                                  <FolderTree className="h-6 w-6 nuvi-text-gray-400" />
+                                  <FolderTree size={20} color="#9CA3AF" />
                                 )}
                               </div>
                               <div>
@@ -488,19 +499,21 @@ function CategoriesListPanel({ store, onAddCategory, onEditCategory, refreshKey 
                                   window.open(`${baseUrl}/collections/${category.slug}`, '_blank');
                                 }}
                               >
-                                <Eye className="h-4 w-4" />
+                                <Eye size={14} />
                               </button>
                               <button 
                                 onClick={() => onEditCategory(category.id)}
-                                className="nuvi-btn nuvi-btn-sm nuvi-btn-ghost"
+                                className="nuvi-btn nuvi-btn-ghost nuvi-btn-xs"
+                                title="Edit"
                               >
-                                <Edit className="h-4 w-4" />
+                                <Edit size={14} />
                               </button>
                               <button 
                                 onClick={() => handleDelete(category.id)}
-                                className="nuvi-btn nuvi-btn-sm nuvi-btn-ghost"
+                                className="nuvi-btn nuvi-btn-ghost nuvi-btn-xs"
+                                title="Delete"
                               >
-                                <MoreVertical className="h-4 w-4" />
+                                <Trash2 size={14} />
                               </button>
                             </div>
                           </td>

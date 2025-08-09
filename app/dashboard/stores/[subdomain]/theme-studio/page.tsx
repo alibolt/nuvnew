@@ -6,11 +6,14 @@ import { ThemeStudioProvider } from './context/theme-studio-context';
 
 export default async function ThemeStudioPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ subdomain: string }>;
+  searchParams: Promise<{ theme?: string }>;
 }) {
   const session = await requireAuth();
   const { subdomain } = await params;
+  const { theme } = await searchParams;
   
   const store = await prisma.store.findFirst({
     where: {
@@ -65,6 +68,9 @@ export default async function ThemeStudioPage({
     }
   }
 
+  // Use theme from URL parameter if provided, otherwise use store's theme
+  const selectedTheme = theme || store.themeCode || 'base';
+  
   return (
     <ThemeStudioProvider>
       <ThemeStudioNext 
@@ -72,7 +78,7 @@ export default async function ThemeStudioPage({
           id: store.id,
           name: store.name,
           subdomain: store.subdomain,
-          themeCode: store.themeCode || 'commerce',
+          themeCode: selectedTheme,
           themeSettings: store.themeSettings || {},
           defaultTemplateId: defaultTemplate.id
         }} 

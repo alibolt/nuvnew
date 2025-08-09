@@ -1,0 +1,17 @@
+<svg width="400" height="100" viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Cotton Yarn Logo - White Version -->
+  <g id="cotton-yarn-logo-white">
+    <!-- Logo mark -->
+    <circle cx="50" cy="50" r="35" fill="none" stroke="#ffffff" stroke-width="2.5"/>
+    <path d="M 50,25 Q 38,40 50,55 T 50,75" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+    <path d="M 50,40 Q 62,48 50,55" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/>
+    
+    <!-- Typography -->
+    <text x="110" y="55" font-family="Helvetica, Arial, sans-serif" font-size="36" font-weight="300" fill="#ffffff" letter-spacing="5">
+      COTTON
+    </text>
+    <text x="110" y="55" font-family="Helvetica, Arial, sans-serif" font-size="36" font-weight="700" fill="#ffffff" letter-spacing="5">
+      <tspan x="280">YARN</tspan>
+    </text>
+  </g>
+</svg>

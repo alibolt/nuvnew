@@ -36,8 +36,8 @@ export async function GET(
       return apiResponse.notFound('Store ');
     }
 
-    // Use hybrid template loader
-    const themeCode = 'commerce'; // Changed from 'default' to 'commerce'
+    // Use hybrid template loader with store's actual theme
+    const themeCode = store.themeCode || 'base';
     logger.debug('Using theme:', themeCode);
     
     // Clear cache to ensure fresh data

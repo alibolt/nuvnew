@@ -5,7 +5,7 @@ import { SectionRenderer } from './section-renderer';
 import type { PageTemplate } from '@/lib/page-templates';
 import { ThemeFontLoader } from '@/lib/theme-font-loader';
 import { ProductProvider } from '@/contexts/product-context';
-import { trackProductView } from '@/themes/commerce/sections/recently-viewed';
+import { trackProductView } from '@/lib/recently-viewed';
 import { generateThemeCSSVariables } from '@/lib/theme-utils';
 import { ThemeStyles } from '@/components/theme-styles-provider';
 

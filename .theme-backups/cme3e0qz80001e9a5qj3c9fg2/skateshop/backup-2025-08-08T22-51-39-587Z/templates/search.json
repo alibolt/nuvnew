@@ -1,0 +1,24 @@
+{
+  "name": "Search",
+  "type": "search",
+  "sections": [
+    {
+      "id": "search-results",
+      "type": "search-results",
+      "settings": {
+        "title": "Search Results",
+        "showFilters": true,
+        "showSorting": true,
+        "showViewToggle": true,
+        "gridColumns": 4,
+        "showPriceFilter": true,
+        "showCategoryFilter": true,
+        "showAvailabilityFilter": true,
+        "noResultsMessage": "No products found",
+        "noResultsButtonText": "Browse All Products",
+        "noResultsButtonLink": "/collections/all",
+        "productsPerPage": 12
+      }
+    }
+  ]
+}

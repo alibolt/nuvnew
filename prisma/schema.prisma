@@ -63,6 +63,7 @@ model Store {
   giftCards       GiftCard[]
   staffMembers    StaffMember[]
   subscription    Subscription?
+  fileHistory     ThemeFileHistory[]
 }
 
 model StaffMember {
@@ -358,6 +359,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   store         Store[]
+  fileHistory   ThemeFileHistory[]
 }
 
 model VerificationToken {
@@ -1235,4 +1237,27 @@ model Translation {
   @@unique([storeId, language, namespace, key])
   @@index([storeId, language])
   @@index([namespace])
+}
+
+// Theme File History
+model ThemeFileHistory {
+  id          String    @id @default(cuid())
+  storeId     String
+  themeCode   String
+  filePath    String
+  content     String    
+  changeType  String    // 'create', 'update', 'delete'
+  userId      String?
+  userName    String?
+  message     String?   // Optional commit message
+  diff        String?   // Store diff for quick preview
+  fileSize    Int?
+  createdAt   DateTime  @default(now())
+  
+  store       Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  @@index([storeId, themeCode, filePath])
+  @@index([createdAt])
+  @@index([userId])
 }

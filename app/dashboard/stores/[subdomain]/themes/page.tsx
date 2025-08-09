@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
 import { DashboardWrapper } from '@/components/dashboard/dashboard-wrapper';
-import { ThemesPage } from './themes-page';
+import { ThemesContent } from './themes-content';
 
 export default async function ThemesPageRoute({
   params,
@@ -63,7 +63,7 @@ export default async function ThemesPageRoute({
       session={session} 
       activeTab="themes"
     >
-      <ThemesPage subdomain={subdomain} />
+      <ThemesContent store={store} />
     </DashboardWrapper>
   );
 }

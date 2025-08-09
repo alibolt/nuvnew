@@ -1,0 +1,32 @@
+{
+  "name": "Collection",
+  "type": "collection",
+  "sections": [
+    {
+      "id": "collection-hero",
+      "type": "hero",
+      "settings": {
+        "title": "{{ collection.name }}",
+        "subtitle": "{{ collection.description }}",
+        "backgroundImage": "",
+        "height": "small",
+        "alignment": "center",
+        "showButton": false
+      }
+    },
+    {
+      "id": "collection-products",
+      "type": "product-grid",
+      "settings": {
+        "title": "",
+        "gridColumns": 4,
+        "showPrice": true,
+        "showRating": false,
+        "showQuickAdd": true,
+        "productsCount": 12,
+        "enableFilters": true,
+        "enableSorting": true
+      }
+    }
+  ]
+}

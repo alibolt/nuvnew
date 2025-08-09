@@ -1,0 +1,23 @@
+{
+  "name": "Cart",
+  "type": "cart",
+  "sections": [
+    {
+      "id": "cart",
+      "type": "cart",
+      "settings": {
+        "title": "Shopping Cart",
+        "emptyCartMessage": "Your cart is empty",
+        "emptyCartButtonText": "Start Shopping",
+        "emptyCartButtonLink": "/collections/all",
+        "showRecommendations": true,
+        "recommendationsTitle": "You Might Also Like",
+        "showCouponCode": true,
+        "showShippingCalculator": false,
+        "continueShopping": true,
+        "continueShoppingText": "Continue Shopping",
+        "continueShoppingLink": "/collections/all"
+      }
+    }
+  ]
+}

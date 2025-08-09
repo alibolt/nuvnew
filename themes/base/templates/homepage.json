@@ -1,0 +1,58 @@
+{
+  "name": "Homepage",
+  "type": "homepage",
+  "sections": [
+    {
+      "type": "header",
+      "enabled": true,
+      "settings": {
+        "logoText": "Skateshop",
+        "sticky": true
+      }
+    },
+    {
+      "type": "hero",
+      "enabled": true,
+      "settings": {
+        "title": "Skateshop",
+        "subtitle": "An open source e-commerce skateshop",
+        "description": "Built with everything new in Next.js. Buy and sell skateboarding gears from independent brands and stores.",
+        "primaryButtonText": "Buy now",
+        "primaryButtonLink": "/products",
+        "secondaryButtonText": "Sell now",
+        "secondaryButtonLink": "/dashboard/stores",
+        "backgroundStyle": "dots"
+      }
+    },
+    {
+      "type": "categories",
+      "enabled": true,
+      "settings": {
+        "title": "Shop by Category",
+        "subtitle": "Find your perfect skateboarding gear"
+      }
+    },
+    {
+      "type": "product-grid",
+      "enabled": true,
+      "settings": {
+        "title": "Featured Products",
+        "subtitle": "Hand-picked by our team",
+        "limit": 8
+      }
+    },
+    {
+      "type": "newsletter",
+      "enabled": true,
+      "settings": {
+        "title": "Subscribe to our newsletter",
+        "subtitle": "Get the latest updates on new products and upcoming sales"
+      }
+    },
+    {
+      "type": "footer",
+      "enabled": true,
+      "settings": {}
+    }
+  ]
+}

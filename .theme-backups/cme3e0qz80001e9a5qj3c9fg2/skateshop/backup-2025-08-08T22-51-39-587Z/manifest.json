@@ -1,0 +1,33 @@
+{
+  "id": "skateshop",
+  "name": "Skateshop Theme",
+  "version": "1.2.0",
+  "minPlatformVersion": "1.0.0",
+  "maxPlatformVersion": "2.0.0",
+  "author": "Skateshop Team",
+  "description": "Bold and modern theme for skateboard shops",
+  "preview": "/themes/skateshop/preview.png",
+  "entryPoints": {
+    "main": "index.ts",
+    "sections": "sections",
+    "blocks": "blocks",
+    "styles": "styles/theme-styles.js",
+    "config": "theme.json"
+  },
+  "capabilities": [
+    "cart",
+    "checkout",
+    "search",
+    "filters",
+    "product-variants",
+    "collections",
+    "github-integration",
+    "social-feed"
+  ],
+  "settings": {
+    "colors": ["primary", "secondary", "accent", "gradient", "background", "text"],
+    "typography": ["headingFont", "bodyFont", "logoFont", "baseFontSize"],
+    "layout": ["containerWidth", "sectionPadding", "elementSpacing", "borderRadius"],
+    "skateshop": ["showGithubStars", "instagramFeed", "skaterReviews"]
+  }
+}

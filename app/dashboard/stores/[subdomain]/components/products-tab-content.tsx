@@ -365,29 +365,30 @@ function ProductsListPanel({ store, onAddProduct, onEditProduct, refreshKey }: {
               )}
 
               {/* Products Table */}
-              <div className="nuvi-overflow-x-auto">
-                <table className="nuvi-w-full">
+              <div style={{ overflow: 'hidden' }}>
+                <table className="nuvi-table" style={{ width: '100%' }}>
                   <thead>
-                    <tr className="nuvi-border-b">
-                      <th className="nuvi-text-left nuvi-py-md nuvi-px-md nuvi-font-medium" style={{ width: '40px' }}>
+                    <tr style={{ fontSize: '12px' }}>
+                      <th style={{ width: '40px', padding: '6px 12px' }}>
                         <input
                           type="checkbox"
                           checked={selectedProducts.length === filteredProducts.length && filteredProducts.length > 0}
                           onChange={handleSelectAll}
-                          className="nuvi-checkbox"
+                          className="nuvi-checkbox-custom"
                         />
                       </th>
-                      <th className="nuvi-text-left nuvi-py-md nuvi-px-md nuvi-font-medium">Product</th>
-                      <th className="nuvi-text-left nuvi-py-md nuvi-px-md nuvi-font-medium">Status</th>
-                      <th className="nuvi-text-left nuvi-py-md nuvi-px-md nuvi-font-medium">Inventory</th>
-                      <th className="nuvi-text-left nuvi-py-md nuvi-px-md nuvi-font-medium">Type</th>
-                      <th className="nuvi-text-right nuvi-py-md nuvi-px-md nuvi-font-medium">Actions</th>
+                      <th style={{ textAlign: 'left', padding: '6px 12px', fontWeight: '600' }}>Product</th>
+                      <th style={{ textAlign: 'left', padding: '6px 12px', fontWeight: '600' }}>Category</th>
+                      <th style={{ textAlign: 'left', padding: '6px 12px', fontWeight: '600' }}>Stock</th>
+                      <th style={{ textAlign: 'left', padding: '6px 12px', fontWeight: '600' }}>Price</th>
+                      <th style={{ textAlign: 'left', padding: '6px 12px', fontWeight: '600' }}>Status</th>
+                      <th style={{ textAlign: 'right', padding: '6px 12px', fontWeight: '600' }}>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredProducts.length === 0 ? (
                       <tr>
-                        <td colSpan={6} className="nuvi-py-xl nuvi-text-center nuvi-text-muted">
+                        <td colSpan={7} className="nuvi-py-xl nuvi-text-center nuvi-text-muted">
                           {searchTerm || filterCategory !== 'all' || filterStatus !== 'all' 
                             ? 'No products found matching your filters' 
                             : 'No products yet'}
@@ -406,12 +407,23 @@ function ProductsListPanel({ store, onAddProduct, onEditProduct, refreshKey }: {
                                 type="checkbox"
                                 checked={selectedProducts.includes(product.id)}
                                 onChange={() => handleSelectProduct(product.id)}
-                                className="nuvi-checkbox"
+                                className="nuvi-checkbox-custom"
                               />
                             </td>
-                            <td className="nuvi-py-md nuvi-px-md">
-                              <div className="nuvi-flex nuvi-items-center nuvi-gap-md">
-                                <div className="nuvi-w-16 nuvi-h-16 nuvi-bg-gray-100 nuvi-rounded-lg nuvi-flex nuvi-items-center nuvi-justify-center nuvi-overflow-hidden">
+                            <td style={{ padding: '8px 12px' }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                <div style={{ 
+                                  width: '40px', 
+                                  height: '40px', 
+                                  minWidth: '40px',
+                                  backgroundColor: '#F3F4F6', 
+                                  borderRadius: '6px',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  overflow: 'hidden',
+                                  flexShrink: 0
+                                }}>
                                   {(() => {
                                     // Try to get image from product.images (handles imported products)
                                     if (product.images) {
@@ -434,7 +446,7 @@ function ProductsListPanel({ store, onAddProduct, onEditProduct, refreshKey }: {
                                               <img 
                                                 src={imageUrl} 
                                                 alt={product.title}
-                                                className="nuvi-w-full nuvi-h-full nuvi-object-cover"
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                               />
                                             );
                                           }
@@ -450,49 +462,57 @@ function ProductsListPanel({ store, onAddProduct, onEditProduct, refreshKey }: {
                                         <img 
                                           src={product.variants[0].images[0].url} 
                                           alt={product.title}
-                                          className="nuvi-w-full nuvi-h-full nuvi-object-cover"
+                                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                         />
                                       );
                                     }
                                     
                                     // No image found
-                                    return <ImageIcon className="h-6 w-6 nuvi-text-gray-400" />;
+                                    return <Package size={20} color="#9CA3AF" />;
                                   })()}
                                 </div>
                                 <div>
-                                  <p className="nuvi-font-medium">{product.title}</p>
-                                  <p className="nuvi-text-sm nuvi-text-muted">
-                                    ${firstVariant?.price?.toFixed(2) || '0.00'}
-                                  </p>
+                                  <div style={{ fontWeight: '500' }}>{product.title}</div>
+                                  <div style={{ fontSize: '11px', color: '#6B7280' }}>
+                                    SKU: {product.sku || firstVariant?.sku || `PRD-${product.id.slice(0, 6).toUpperCase()}`}
+                                  </div>
                                 </div>
                               </div>
                             </td>
-                            <td className="nuvi-py-md nuvi-px-md">
-                              <span className={`nuvi-badge ${
-                                product.isActive ? 'nuvi-badge-success' : 'nuvi-badge-warning'
+                            <td style={{ padding: '8px 12px' }}>
+                              <span className="nuvi-badge nuvi-badge-sm nuvi-badge-secondary">
+                                {categories.find(c => c.id === product.categoryId)?.name || 'Uncategorized'}
+                              </span>
+                            </td>
+                            <td style={{ padding: '8px 12px' }}>
+                              {product.productType === 'digital' ? (
+                                <span style={{ fontSize: '13px', color: '#6B7280' }}>Digital</span>
+                              ) : (
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                  <span style={{ fontWeight: '500', color: isLowStock ? '#DC2626' : undefined }}>
+                                    {totalStock}
+                                  </span>
+                                  <span style={{ fontSize: '11px', color: isLowStock ? '#DC2626' : '#6B7280' }}>
+                                    {isLowStock ? 'low stock' : 'in stock'}
+                                  </span>
+                                </div>
+                              )}
+                            </td>
+                            <td style={{ padding: '8px 12px', fontWeight: '500' }}>
+                              ${firstVariant?.price?.toFixed(2) || '0.00'}
+                            </td>
+                            <td style={{ padding: '8px 12px' }}>
+                              <span className={`nuvi-badge nuvi-badge-sm ${
+                                product.isActive ? 'nuvi-badge-success' : 'nuvi-badge-secondary'
                               }`}>
                                 {product.isActive ? 'Active' : 'Draft'}
                               </span>
                             </td>
-                            <td className="nuvi-py-md nuvi-px-md">
-                              {product.productType === 'digital' ? (
-                                <span className="nuvi-text-sm">Digital Product</span>
-                              ) : (
-                                <div className="nuvi-flex nuvi-items-center nuvi-gap-sm">
-                                  <span className="nuvi-text-sm">{totalStock} in stock</span>
-                                  {isLowStock && <AlertCircle className="h-4 w-4 nuvi-text-warning" />}
-                                </div>
-                              )}
-                            </td>
-                            <td className="nuvi-py-md nuvi-px-md">
-                              <span className="nuvi-text-sm">
-                                {product.productType.charAt(0).toUpperCase() + product.productType.slice(1)}
-                              </span>
-                            </td>
-                            <td className="nuvi-py-md nuvi-px-md nuvi-text-right">
-                              <div className="nuvi-flex nuvi-items-center nuvi-gap-sm nuvi-justify-end">
+                            <td style={{ padding: '8px 12px', textAlign: 'right' }}>
+                              <div style={{ display: 'flex', gap: '4px', justifyContent: 'flex-end' }}>
                                 <button 
-                                  className="nuvi-btn nuvi-btn-sm nuvi-btn-ghost"
+                                  className="nuvi-btn nuvi-btn-ghost nuvi-btn-xs"
+                                  title="View"
                                   onClick={() => {
                                     // For local development
                                     const baseUrl = process.env.NODE_ENV === 'development' 
@@ -503,16 +523,17 @@ function ProductsListPanel({ store, onAddProduct, onEditProduct, refreshKey }: {
                                     window.open(`${baseUrl}/products/${product.slug}`, '_blank');
                                   }}
                                 >
-                                  <Eye className="h-4 w-4" />
+                                  <Eye size={14} />
                                 </button>
                                 <button 
                                   onClick={() => onEditProduct(product.id)}
-                                  className="nuvi-btn nuvi-btn-sm nuvi-btn-ghost"
+                                  className="nuvi-btn nuvi-btn-ghost nuvi-btn-xs"
+                                  title="Edit"
                                 >
-                                  <Edit className="h-4 w-4" />
+                                  <Edit size={14} />
                                 </button>
-                                <button className="nuvi-btn nuvi-btn-sm nuvi-btn-ghost">
-                                  <MoreVertical className="h-4 w-4" />
+                                <button className="nuvi-btn nuvi-btn-ghost nuvi-btn-xs" title="Delete">
+                                  <Trash2 size={14} />
                                 </button>
                               </div>
                             </td>

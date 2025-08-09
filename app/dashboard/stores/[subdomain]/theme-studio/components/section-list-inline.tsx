@@ -108,12 +108,13 @@ const getPageSpecificSections = (selectedPage: string) => {
 
 // Common sections that should be available on all pages
 const commonSections = [
-  'hero', 'hero-banner', 'rich-text', 'image-with-text', 'video', 
+  'hero', 'hero-banner', 'hero-skateshop', 'rich-text', 'image-with-text', 'video', 
   'newsletter', 'testimonials', 'countdown', 'instagram-feed',
   'logo-list', 'collections', 'collection-list', 'featured-products',
   'best-sellers', 'recently-viewed', 'product-recommendations',
   'faq', 'contact-form', 'collection-banner', 'main-collection-product-grid',
-  'container'
+  'container', 'categories', 'features', 'product-grid', 'cta',
+  'header', 'footer', 'announcement-bar'
 ];
 
 // Get all page-specific section types across all pages
@@ -127,12 +128,10 @@ const getAllPageSpecificSectionTypes = () => {
 
 // Check if section should be shown based on current page
 const shouldShowSection = (sectionType: string, selectedPage: string) => {
-  // Global sections (header, footer, announcement-bar) should only be shown on homepage
-  if (['header', 'footer', 'announcement-bar'].includes(sectionType)) {
-    return selectedPage === 'homepage';
-  }
+  // For theme-specific sections (from available-sections.ts), always show them
+  // These include hero-skateshop, categories, features, etc.
   
-  // Always show common sections
+  // Always show common sections (these work on all pages)
   if (commonSections.includes(sectionType)) {
     return true;
   }
@@ -146,8 +145,9 @@ const shouldShowSection = (sectionType: string, selectedPage: string) => {
     return currentPageAllowedTypes.includes(sectionType);
   }
   
-  // If section is not recognized, don't show it
-  return false;
+  // For any section type not explicitly listed (like theme-specific sections),
+  // show them - this allows themes to define their own custom sections
+  return true;
 };
 
 // Section categories for filtering
@@ -166,13 +166,13 @@ const sectionCategories = {
   },
   content: {
     title: 'Content',
-    types: ['hero', 'rich-text', 'image-with-text', 'video', 'faq'],
+    types: ['hero', 'hero-skateshop', 'rich-text', 'image-with-text', 'video', 'faq', 'features', 'cta'],
     icon: Type,
     color: 'green'
   },
   commerce: {
     title: 'Commerce', 
-    types: ['product-grid', 'featured-products', 'collections', 'cart', 'collection', 'search-results'],
+    types: ['product-grid', 'featured-products', 'collections', 'cart', 'collection', 'search-results', 'categories'],
     icon: ShoppingBag,
     color: 'purple'
   },
@@ -193,11 +193,15 @@ const sectionCategories = {
 // Icon mapping
 const sectionIcons: Record<string, any> = {
   'hero': Layout,
+  'hero-skateshop': Layout,
   'header': Layout,
   'footer': Layout,
   'announcement-bar': Sparkles,
   'featured-products': ShoppingBag,
   'product-grid': Grid,
+  'categories': Grid,
+  'features': Star,
+  'cta': Sparkles,
   'collections': Palette,
   'image-with-text': Image,
   'rich-text': Type,

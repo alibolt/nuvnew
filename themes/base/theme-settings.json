@@ -1,0 +1,273 @@
+{
+  "name": "Base Theme Settings",
+  "version": "1.0.0",
+  "sections": [
+    {
+      "id": "colors",
+      "name": "Colors",
+      "icon": "Palette",
+      "settings": [
+        {
+          "id": "primary_color",
+          "type": "color",
+          "label": "Primary Color",
+          "default": "#3B82F6",
+          "description": "Main brand color used throughout the site"
+        },
+        {
+          "id": "secondary_color",
+          "type": "color",
+          "label": "Secondary Color",
+          "default": "#10B981",
+          "description": "Accent color for highlights"
+        },
+        {
+          "id": "background_color",
+          "type": "color",
+          "label": "Background Color",
+          "default": "#FFFFFF",
+          "description": "Main background color"
+        },
+        {
+          "id": "text_color",
+          "type": "color",
+          "label": "Text Color",
+          "default": "#1F2937",
+          "description": "Primary text color"
+        },
+        {
+          "id": "border_color",
+          "type": "color",
+          "label": "Border Color",
+          "default": "#E5E7EB",
+          "description": "Default border color"
+        },
+        {
+          "id": "error_color",
+          "type": "color",
+          "label": "Error Color",
+          "default": "#EF4444",
+          "description": "Color for error messages"
+        },
+        {
+          "id": "success_color",
+          "type": "color",
+          "label": "Success Color",
+          "default": "#10B981",
+          "description": "Color for success messages"
+        }
+      ]
+    },
+    {
+      "id": "typography",
+      "name": "Typography",
+      "icon": "Type",
+      "settings": [
+        {
+          "id": "font_family_heading",
+          "type": "select",
+          "label": "Heading Font",
+          "default": "Inter",
+          "options": [
+            { "value": "Inter", "label": "Inter" },
+            { "value": "Roboto", "label": "Roboto" },
+            { "value": "Poppins", "label": "Poppins" },
+            { "value": "Montserrat", "label": "Montserrat" },
+            { "value": "Playfair Display", "label": "Playfair Display" },
+            { "value": "Lato", "label": "Lato" }
+          ],
+          "description": "Font for headings"
+        },
+        {
+          "id": "font_family_body",
+          "type": "select",
+          "label": "Body Font",
+          "default": "Inter",
+          "options": [
+            { "value": "Inter", "label": "Inter" },
+            { "value": "Roboto", "label": "Roboto" },
+            { "value": "Open Sans", "label": "Open Sans" },
+            { "value": "Lato", "label": "Lato" },
+            { "value": "Nunito", "label": "Nunito" },
+            { "value": "Source Sans Pro", "label": "Source Sans Pro" }
+          ],
+          "description": "Font for body text"
+        },
+        {
+          "id": "font_size_base",
+          "type": "range",
+          "label": "Base Font Size",
+          "default": 16,
+          "min": 14,
+          "max": 20,
+          "unit": "px",
+          "description": "Base font size in pixels"
+        },
+        {
+          "id": "heading_scale",
+          "type": "select",
+          "label": "Heading Scale",
+          "default": "1.25",
+          "options": [
+            { "value": "1.2", "label": "Minor Third (1.2)" },
+            { "value": "1.25", "label": "Major Third (1.25)" },
+            { "value": "1.333", "label": "Perfect Fourth (1.333)" },
+            { "value": "1.414", "label": "Augmented Fourth (1.414)" },
+            { "value": "1.5", "label": "Perfect Fifth (1.5)" }
+          ],
+          "description": "Scale ratio for heading sizes"
+        },
+        {
+          "id": "line_height",
+          "type": "select",
+          "label": "Line Height",
+          "default": "1.5",
+          "options": [
+            { "value": "1.2", "label": "Tight (1.2)" },
+            { "value": "1.5", "label": "Normal (1.5)" },
+            { "value": "1.75", "label": "Relaxed (1.75)" },
+            { "value": "2", "label": "Loose (2)" }
+          ],
+          "description": "Line height for body text"
+        }
+      ]
+    },
+    {
+      "id": "layout",
+      "name": "Layout",
+      "icon": "Layout",
+      "settings": [
+        {
+          "id": "container_width",
+          "type": "select",
+          "label": "Container Width",
+          "default": "1280",
+          "options": [
+            { "value": "1024", "label": "Small (1024px)" },
+            { "value": "1280", "label": "Medium (1280px)" },
+            { "value": "1536", "label": "Large (1536px)" },
+            { "value": "full", "label": "Full Width" }
+          ],
+          "description": "Maximum width of content container"
+        },
+        {
+          "id": "section_spacing",
+          "type": "select",
+          "label": "Section Spacing",
+          "default": "large",
+          "options": [
+            { "value": "small", "label": "Small" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "large", "label": "Large" },
+            { "value": "extra-large", "label": "Extra Large" }
+          ],
+          "description": "Spacing between sections"
+        },
+        {
+          "id": "border_radius",
+          "type": "select",
+          "label": "Border Radius",
+          "default": "medium",
+          "options": [
+            { "value": "none", "label": "None (0px)" },
+            { "value": "small", "label": "Small (4px)" },
+            { "value": "medium", "label": "Medium (8px)" },
+            { "value": "large", "label": "Large (12px)" },
+            { "value": "extra-large", "label": "Extra Large (16px)" }
+          ],
+          "description": "Default border radius for cards and buttons"
+        },
+        {
+          "id": "sidebar_position",
+          "type": "select",
+          "label": "Sidebar Position",
+          "default": "left",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "right", "label": "Right" },
+            { "value": "none", "label": "No Sidebar" }
+          ],
+          "description": "Position of sidebar on collection pages"
+        }
+      ]
+    },
+    {
+      "id": "product",
+      "name": "Product",
+      "icon": "ShoppingBag",
+      "settings": [
+        {
+          "id": "product_card_style",
+          "type": "select",
+          "label": "Product Card Style",
+          "default": "standard",
+          "options": [
+            { "value": "standard", "label": "Standard" },
+            { "value": "minimal", "label": "Minimal" },
+            { "value": "detailed", "label": "Detailed" }
+          ],
+          "description": "Product card display style"
+        },
+        {
+          "id": "show_vendor",
+          "type": "checkbox",
+          "label": "Show Vendor",
+          "default": false,
+          "description": "Display vendor/brand on product cards"
+        },
+        {
+          "id": "show_quick_add",
+          "type": "checkbox",
+          "label": "Show Quick Add",
+          "default": true,
+          "description": "Show quick add button on product cards"
+        },
+        {
+          "id": "image_aspect_ratio",
+          "type": "select",
+          "label": "Image Aspect Ratio",
+          "default": "square",
+          "options": [
+            { "value": "square", "label": "Square (1:1)" },
+            { "value": "portrait", "label": "Portrait (3:4)" },
+            { "value": "landscape", "label": "Landscape (4:3)" }
+          ],
+          "description": "Product image aspect ratio"
+        }
+      ]
+    },
+    {
+      "id": "cart",
+      "name": "Cart",
+      "icon": "ShoppingCart",
+      "settings": [
+        {
+          "id": "cart_type",
+          "type": "select",
+          "label": "Cart Type",
+          "default": "drawer",
+          "options": [
+            { "value": "drawer", "label": "Drawer" },
+            { "value": "modal", "label": "Modal" },
+            { "value": "page", "label": "Page" }
+          ],
+          "description": "Cart display type"
+        },
+        {
+          "id": "show_cart_note",
+          "type": "checkbox",
+          "label": "Show Cart Note",
+          "default": true,
+          "description": "Allow customers to add notes"
+        },
+        {
+          "id": "show_shipping_calculator",
+          "type": "checkbox",
+          "label": "Show Shipping Calculator",
+          "default": true,
+          "description": "Display shipping calculator in cart"
+        }
+      ]
+    }
+  ]
+}
